@@ -25,7 +25,9 @@ public class AddRecipeActivity extends AppCompatActivity {
             recipeSuitedForEdt,
             recipeImgEdt,
             recipeLinkEdt,
-            recipeDescEdt;
+            recipeDescEdt,
+            recipeMethodEdt,
+            recipeIngredientsEdt;
     private Button addRecipeBtn;
     private ProgressBar loadingPB;
     private FirebaseDatabase firebaseDatabase;
@@ -44,6 +46,8 @@ public class AddRecipeActivity extends AppCompatActivity {
         recipeImgEdt = findViewById(R.id.idEdtRecipeImageLink);
         recipeLinkEdt = findViewById(R.id.idEdtRecipeLink);
         recipeDescEdt = findViewById(R.id.idEdtRecipeDesc);
+        recipeMethodEdt = findViewById(R.id.idEdtRecipeMethod);
+        recipeIngredientsEdt = findViewById(R.id.idEdtRecipeIngredients);
         addRecipeBtn = findViewById(R.id.idBtnAddRecipe);
         loadingPB = findViewById(R.id.idPBLoading);
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -61,8 +65,10 @@ public class AddRecipeActivity extends AppCompatActivity {
                 String recipeImg = recipeImgEdt.getText().toString();
                 String recipeLink = recipeLinkEdt.getText().toString();
                 String recipeDesc = recipeDescEdt.getText().toString();
+                String recipeMethod = recipeMethodEdt.getText().toString();
+                String recipeIngredients = recipeIngredientsEdt.getText().toString();
                 recipeID = recipeName;
-                RecipeRVModal recipeRVModal = new RecipeRVModal(recipeName,recipeCookingTime,recipeSuitedFor,recipeImg,recipeLink,recipeDesc,recipeID);
+                RecipeRVModal recipeRVModal = new RecipeRVModal(recipeName,recipeCookingTime,recipeSuitedFor,recipeImg,recipeLink,recipeDesc,recipeMethod,recipeIngredients,recipeID);
 
                 databaseReference.addValueEventListener(new ValueEventListener() {
                     @Override

@@ -10,7 +10,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,7 +31,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements RecipeRVAdapter.RecipeClickInterface {
@@ -118,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements RecipeRVAdapter.R
         displayBottomSheet(recipeRVModalArrayList.get(position));
     }
 
+    @SuppressLint("SetTextI18n")
     private void displayBottomSheet(RecipeRVModal recipeRVModal){
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
         View layout = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_dialog,bottomSheetRL);
@@ -161,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements RecipeRVAdapter.R
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main,menu);
+        getMenuInflater().inflate(R.menu.settings_main,menu);
         return true;
     }
 

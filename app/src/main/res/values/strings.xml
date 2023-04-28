@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Firebase CRUD Application</string>
+    <string name="app_name">FoodPlannerApp</string>
     <string name="enter_user_name">Enter User Name</string>
     <string name="enter_password">Enter Password</string>
     <string name="confirm_password">Confirm Password</string>
@@ -16,4 +16,13 @@
     <string name="enter_recipe_description">Enter Recipe Description</string>
     <string name="update_recipe">Update \nRecipe</string>
     <string name="delete_recipe">Delete \nRecipe</string>
+    <string name="recipe_search">Recipe Search</string>
+    <string name="scan_recipes">Scan Recipes</string>
+    <string name="meal_planner">Meal Planner</string>
+    <string name="shopping_list">Shopping List</string>
+    <string name="edit_account">Edit Account</string>
+    <string name="log_out">Log Out</string>
+    <string name="enter_cooking_method">Enter Cooking Method</string>
+    <string name="enter_recipe_ingredients">Enter Recipe Ingredients</string>
+    <string name="add_recipe">Add Recipe</string>
 </resources>
