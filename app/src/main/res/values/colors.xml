@@ -11,7 +11,8 @@
     
     <color name="blue_shade_1">#c0ecff</color>
     <color name="blue_shade_2">#1A4B6A</color>
-    <color name="green_shade_1">#C3F136</color>
+    <color name="blue_shade_3">#57B6EA</color>
+    <color name="green_shade_1">#A0D41C</color>
     <color name="green_shade_2">#5B9F06</color>
     <color name="mtrl_textinput_default_box_stroke_color" tools:overrise="true">#296D98</color>
 </resources>

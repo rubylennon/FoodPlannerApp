@@ -9,8 +9,8 @@
         android:id="@+id/idTVRecipeName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Recipe Name"
-        android:textColor="@color/white"
+        android:text="@string/recipe_name"
+        android:textColor="@color/blue_shade_2"
         android:textStyle="bold"
         android:layout_margin="4dp"
         android:padding="4dp"
@@ -30,11 +30,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/idTVRecipeName"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="4dp"
         android:layout_toRightOf="@id/idIVRecipe"
-        android:layout_margin="4dp"
         android:padding="3dp"
-        android:text="Description"
-        android:textColor="@color/white" />
+        android:text="@string/description"
+        android:textColor="@color/blue_shade_2" />
 
     <TextView
         android:id="@+id/idTVSuitedFor"
@@ -43,7 +46,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Suitable For"
-        android:textColor="@color/white"
+        android:textColor="@color/blue_shade_2"
         android:padding="3dp"
         android:layout_margin="4dp" />
 
@@ -53,10 +56,10 @@
         android:layout_below="@id/idTVSuitedFor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Cooking Time"
+        android:text="@string/cooking_time"
         android:textStyle="bold"
         android:textSize="18sp"
-        android:textColor="@color/white"
+        android:textColor="@color/blue_shade_2"
         android:padding="3dp"
         android:layout_margin="4dp" />
 
@@ -65,6 +68,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:weightSum="2"
+        android:id="@+id/idBtnGroup1"
         android:layout_below="@id/idTVCookingTime">
 
         <Button
@@ -73,7 +77,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_margin="4dp"
-            android:text="Edit Recipe"
+            android:text="@string/edit_recipe"
             android:textAllCaps="false"
             android:textColor="@color/white" />
 
@@ -83,10 +87,28 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_margin="4dp"
-            android:text="View Details"
+            android:text="@string/view_details"
             android:textAllCaps="false"
             android:textColor="@color/white" />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:layout_below="@id/idBtnGroup1">
+
+        <Button
+            android:id="@+id/idBtnViewSource"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="4dp"
+            android:text="View Source"
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
     </LinearLayout>
 
 </RelativeLayout>

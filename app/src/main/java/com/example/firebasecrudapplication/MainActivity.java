@@ -132,11 +132,12 @@ public class MainActivity extends AppCompatActivity implements RecipeRVAdapter.R
         ImageView recipeIV = layout.findViewById(R.id.idIVRecipe);
         Button editBtn = layout.findViewById(R.id.idBtnEdit);
         Button viewDetailsBtn = layout.findViewById(R.id.idBtnViewDetails);
+        Button viewSourceBtn = layout.findViewById(R.id.idBtnViewSource);
 
         recipeNameTV.setText(recipeRVModal.getRecipeName());
         recipeDescTV.setText(recipeRVModal.getRecipeDescription());
-        recipeSuitedForTV.setText(recipeRVModal.getRecipeSuitedFor());
-        recipeCookingTimeTV.setText("Cooking Time " + recipeRVModal.getRecipeCookingTime());
+        recipeSuitedForTV.setText("Suitable For: " + recipeRVModal.getRecipeSuitedFor());
+        recipeCookingTimeTV.setText("Cooking Time: " + recipeRVModal.getRecipeCookingTime());
         Picasso.get().load(recipeRVModal.getRecipeImg()).into(recipeIV);
 
         editBtn.setOnClickListener(new View.OnClickListener() {
@@ -149,6 +150,15 @@ public class MainActivity extends AppCompatActivity implements RecipeRVAdapter.R
         });
 
         viewDetailsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, ViewRecipeActivity.class);
+                i.putExtra("recipe", recipeRVModal);
+                startActivity(i);
+            }
+        });
+
+        viewSourceBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(Intent.ACTION_VIEW);

@@ -23,6 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".EditRecipeActivity" />
+        <activity android:name=".ViewRecipeActivity" />
         <activity android:name=".AddRecipeActivity" />
         <activity android:name=".MainActivity" />
     </application>

@@ -26,7 +26,9 @@ public class EditRecipeActivity extends AppCompatActivity {
             recipeSuitedForEdt,
             recipeImgEdt,
             recipeLinkEdt,
-            recipeDescEdt;
+            recipeDescEdt,
+            recipeMethodEdt,
+            recipeIngredientsEdt;
     private Button updateRecipeBtn,
             deleteRecipeBtn;
     private ProgressBar loadingPB;
@@ -48,6 +50,8 @@ public class EditRecipeActivity extends AppCompatActivity {
         recipeImgEdt = findViewById(R.id.idEdtRecipeImageLink);
         recipeLinkEdt = findViewById(R.id.idEdtRecipeLink);
         recipeDescEdt = findViewById(R.id.idEdtRecipeDesc);
+        recipeMethodEdt = findViewById(R.id.idEdtRecipeMethod);
+        recipeIngredientsEdt = findViewById(R.id.idEdtRecipeIngredients);
         updateRecipeBtn = findViewById(R.id.idBtnUpdateRecipe);
         deleteRecipeBtn = findViewById(R.id.idBtnDeleteRecipe);
         loadingPB = findViewById(R.id.idPBLoading);
@@ -60,6 +64,8 @@ public class EditRecipeActivity extends AppCompatActivity {
             recipeImgEdt.setText(recipeRVModal.getRecipeImg());
             recipeLinkEdt.setText(recipeRVModal.getRecipeLink());
             recipeDescEdt.setText(recipeRVModal.getRecipeDescription());
+            recipeMethodEdt.setText(recipeRVModal.getRecipeMethod());
+            recipeIngredientsEdt.setText(recipeRVModal.getRecipeIngredients());
             recipeID = recipeRVModal.getRecipeID();
         }
 
@@ -75,6 +81,8 @@ public class EditRecipeActivity extends AppCompatActivity {
                 String recipeImg = recipeImgEdt.getText().toString();
                 String recipeLink = recipeLinkEdt.getText().toString();
                 String recipeDesc = recipeDescEdt.getText().toString();
+                String recipeMethod = recipeMethodEdt.getText().toString();
+                String recipeIngredients = recipeIngredientsEdt.getText().toString();
 
                 Map<String,Object> map = new HashMap<>();
                 map.put("recipeName",recipeName);
@@ -83,6 +91,8 @@ public class EditRecipeActivity extends AppCompatActivity {
                 map.put("recipeImg",recipeImg);
                 map.put("recipeLink",recipeLink);
                 map.put("recipeDescription",recipeDesc);
+                map.put("recipeMethod",recipeMethod);
+                map.put("recipeIngredients",recipeIngredients);
                 map.put("recipeID",recipeID);
 
                 databaseReference.addValueEventListener(new ValueEventListener() {

@@ -11,7 +11,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/blue_shade_1" >
+        android:background="@color/blue_shade_3" >
 
         <ImageView
             android:id="@+id/idTVRecipe"
@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:text="Recipe Name"
             android:singleLine="true"
-            android:textColor="@color/white"
+            android:textColor="@color/blue_shade_2"
             android:textStyle="bold"
             android:layout_below="@id/idTVRecipe"
             android:layout_margin="3dp"
@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:text="Cooking Time"
             android:singleLine="true"
-            android:textColor="@color/white"
+            android:textColor="@color/blue_shade_2"
             android:textStyle="bold"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
