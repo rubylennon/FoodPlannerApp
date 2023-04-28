@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group >
+        <item
+            android:id="@+id/idSearch"
+            android:title="@string/recipe_search" />
+        <item
+            android:id="@+id/idScan"
+            android:title="@string/scan_recipes" />
+        <item
+            android:id="@+id/idMealPlan"
+            android:title="@string/meal_planner" />
+        <item
+            android:id="@+id/idShoppingList"
+            android:title="@string/shopping_list" />
+    </group>
+    <group >
+        <item
+            android:id="@+id/idEditAccount"
+            android:title="@string/edit_account" />
+        <item
+            android:id="@+id/idLogout"
+            android:title="@string/log_out" />
+    </group>
+
+</menu>

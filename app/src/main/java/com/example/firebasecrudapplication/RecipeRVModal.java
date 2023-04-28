@@ -13,19 +13,23 @@ public class RecipeRVModal implements Parcelable {
     private String recipeImg;
     private String recipeLink;
     private String recipeDescription;
+    private String recipeMethod;
+    private String recipeIngredients;
     private String recipeID;
 
     public RecipeRVModal(){
 
     }
 
-    public RecipeRVModal(String recipeName, String recipeCookingTime, String recipeSuitedFor, String recipeImg, String recipeLink, String recipeDescription, String recipeID) {
+    public RecipeRVModal(String recipeName, String recipeCookingTime, String recipeSuitedFor, String recipeImg, String recipeLink, String recipeDescription, String recipeMethod, String recipeIngredients, String recipeID) {
         this.recipeName = recipeName;
         this.recipeCookingTime = recipeCookingTime;
         this.recipeSuitedFor = recipeSuitedFor;
         this.recipeImg = recipeImg;
         this.recipeLink = recipeLink;
         this.recipeDescription = recipeDescription;
+        this.recipeMethod = recipeMethod;
+        this.recipeIngredients = recipeIngredients;
         this.recipeID = recipeID;
     }
 
@@ -36,6 +40,8 @@ public class RecipeRVModal implements Parcelable {
         recipeImg = in.readString();
         recipeLink = in.readString();
         recipeDescription = in.readString();
+        recipeMethod = in.readString();
+        recipeIngredients = in.readString();
         recipeID = in.readString();
     }
 
@@ -99,6 +105,22 @@ public class RecipeRVModal implements Parcelable {
         this.recipeDescription = recipeDescription;
     }
 
+    public String getRecipeMethod() {
+        return recipeMethod;
+    }
+
+    public void setRecipeMethod(String recipeMethod) {
+        this.recipeMethod = recipeMethod;
+    }
+
+    public String getRecipeIngredients() {
+        return recipeIngredients;
+    }
+
+    public void setRecipeIngredients(String recipeIngredients) {
+        this.recipeIngredients = recipeIngredients;
+    }
+
     public String getRecipeID() {
         return recipeID;
     }
@@ -120,6 +142,8 @@ public class RecipeRVModal implements Parcelable {
         dest.writeString(recipeImg);
         dest.writeString(recipeLink);
         dest.writeString(recipeDescription);
+        dest.writeString(recipeMethod);
+        dest.writeString(recipeIngredients);
         dest.writeString(recipeID);
     }
 }

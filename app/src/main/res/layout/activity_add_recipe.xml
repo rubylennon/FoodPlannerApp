@@ -25,16 +25,16 @@
                 android:hint="@string/enter_recipe_name"
                 style="@style/TextInputLayout"
                 android:padding="5dp"
-                android:textColorHint="@color/white"
-                app:hintTextColor="@color/white" >
+                android:textColorHint="@color/blue_shade_2"
+                app:hintTextColor="@color/blue_shade_2" >
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/idEdtRecipeName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:importantForAutofill="no"
                     android:inputType="text"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/white"
+                    android:textColor="@color/blue_shade_2"
+                    android:textColorHint="@color/blue_shade_2"
                     android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -47,16 +47,16 @@
                 android:hint="@string/enter_recipe_cooking_time"
                 style="@style/TextInputLayout"
                 android:padding="5dp"
-                android:textColorHint="@color/white"
-                app:hintTextColor="@color/white" >
+                android:textColorHint="@color/blue_shade_2"
+                app:hintTextColor="@color/blue_shade_2" >
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/idEdtRecipeCookingTime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:importantForAutofill="no"
                     android:inputType="number"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/white"
+                    android:textColor="@color/blue_shade_2"
+                    android:textColorHint="@color/blue_shade_2"
                     android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -69,16 +69,16 @@
                 android:hint="@string/enter_recipe_suited_for"
                 style="@style/TextInputLayout"
                 android:padding="5dp"
-                android:textColorHint="@color/white"
-                app:hintTextColor="@color/white" >
+                android:textColorHint="@color/blue_shade_2"
+                app:hintTextColor="@color/blue_shade_2" >
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/idEdtRecipeSuitedFor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:importantForAutofill="no"
                     android:inputType="text"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/white"
+                    android:textColor="@color/blue_shade_2"
+                    android:textColorHint="@color/blue_shade_2"
                     android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -91,16 +91,16 @@
                 android:hint="@string/enter_image_link"
                 style="@style/TextInputLayout"
                 android:padding="5dp"
-                android:textColorHint="@color/white"
-                app:hintTextColor="@color/white" >
+                android:textColorHint="@color/blue_shade_2"
+                app:hintTextColor="@color/blue_shade_2" >
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/idEdtRecipeImageLink"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:importantForAutofill="no"
                     android:inputType="text"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/white"
+                    android:textColor="@color/blue_shade_2"
+                    android:textColorHint="@color/blue_shade_2"
                     android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -113,38 +113,82 @@
                 android:hint="@string/enter_recipe_link"
                 style="@style/TextInputLayout"
                 android:padding="5dp"
-                android:textColorHint="@color/white"
-                app:hintTextColor="@color/white" >
+                android:textColorHint="@color/blue_shade_2"
+                app:hintTextColor="@color/blue_shade_2" >
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/idEdtRecipeLink"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:importantForAutofill="no"
                     android:inputType="text"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/white"
+                    android:textColor="@color/blue_shade_2"
+                    android:textColorHint="@color/blue_shade_2"
                     android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="100dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:hint="@string/enter_recipe_description"
                 style="@style/TextInputLayout"
                 android:padding="5dp"
-                android:textColorHint="@color/white"
-                app:hintTextColor="@color/white" >
+                android:textColorHint="@color/blue_shade_2"
+                app:hintTextColor="@color/blue_shade_2" >
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/idEdtRecipeDesc"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:importantForAutofill="no"
                     android:inputType="textMultiLine|textImeMultiLine"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/white"
+                    android:textColor="@color/blue_shade_2"
+                    android:textColorHint="@color/blue_shade_2"
+                    android:textSize="14sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:hint="@string/enter_cooking_method"
+                style="@style/TextInputLayout"
+                android:padding="5dp"
+                android:textColorHint="@color/blue_shade_2"
+                app:hintTextColor="@color/blue_shade_2" >
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/idEdtRecipeMethod"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:importantForAutofill="no"
+                    android:inputType="textMultiLine|textImeMultiLine"
+                    android:textColor="@color/blue_shade_2"
+                    android:textColorHint="@color/blue_shade_2"
+                    android:textSize="14sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:hint="@string/enter_recipe_ingredients"
+                style="@style/TextInputLayout"
+                android:padding="5dp"
+                android:textColorHint="@color/blue_shade_2"
+                app:hintTextColor="@color/blue_shade_2" >
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/idEdtRecipeIngredients"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:importantForAutofill="no"
+                    android:inputType="textMultiLine|textImeMultiLine"
+                    android:textColor="@color/blue_shade_2"
+                    android:textColorHint="@color/blue_shade_2"
                     android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -155,7 +199,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginTop="20dp"
-                android:text="Add Recipe"
+                android:text="@string/add_recipe"
                 android:textAllCaps="false"
                 android:background="@drawable/custom_button_back"
                 android:layout_marginBottom="10dp" />
