@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Firebase CRUD Application</string>
+    <string name="enter_user_name">Enter User Name</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="already_a_user_login_here">Already a User? Login Here</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="new_user_register_here">New User? Register Here</string>
+    <string name="enter_recipe_name">Enter Recipe Name</string>
+    <string name="enter_recipe_cooking_time">Enter Recipe Cooking Time</string>
+    <string name="enter_recipe_suited_for">Enter Recipe Suited For</string>
+    <string name="enter_recipe_image">Enter Recipe Image</string>
+    <string name="enter_recipe_link">Enter Recipe Link</string>
+    <string name="enter_image_link">Enter Image Link</string>
+    <string name="enter_recipe_description">Enter Recipe Description</string>
+    <string name="update_recipe">Update \nRecipe</string>
+    <string name="delete_recipe">Delete \nRecipe</string>
+</resources>
