@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blue_shade_1"
-    tools:context=".EditRecipeActivity" >
+    tools:context=".ViewRecipeActivity" >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -22,7 +22,8 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="10dp"
-                android:hint="@string/enter_recipe_name"
+                android:inputType="none"
+                android:hint="Name"
                 style="@style/TextInputLayout"
                 android:padding="5dp"
                 android:textColorHint="@color/blue_shade_2"
@@ -32,7 +33,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:importantForAutofill="no"
-                    android:inputType="text"
+                    android:inputType="none"
                     android:textColor="@color/blue_shade_2"
                     android:textColorHint="@color/blue_shade_2"
                     android:textSize="14sp" />
@@ -44,7 +45,8 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
-                android:hint="@string/enter_recipe_cooking_time"
+                android:inputType="none"
+                android:hint="Cooking Time"
                 style="@style/TextInputLayout"
                 android:padding="5dp"
                 android:textColorHint="@color/blue_shade_2"
@@ -54,7 +56,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:importantForAutofill="no"
-                    android:inputType="number"
+                    android:inputType="none"
                     android:textColor="@color/blue_shade_2"
                     android:textColorHint="@color/blue_shade_2"
                     android:textSize="14sp" />
@@ -66,7 +68,8 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
-                android:hint="@string/enter_recipe_suited_for"
+                android:inputType="none"
+                android:hint="Suitable For"
                 style="@style/TextInputLayout"
                 android:padding="5dp"
                 android:textColorHint="@color/blue_shade_2"
@@ -76,51 +79,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:importantForAutofill="no"
-                    android:inputType="text"
-                    android:textColor="@color/blue_shade_2"
-                    android:textColorHint="@color/blue_shade_2"
-                    android:textSize="14sp" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:hint="@string/enter_image_link"
-                style="@style/TextInputLayout"
-                android:padding="5dp"
-                android:textColorHint="@color/blue_shade_2"
-                app:hintTextColor="@color/blue_shade_2" >
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/idEdtRecipeImageLink"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:importantForAutofill="no"
-                    android:inputType="text"
-                    android:textColor="@color/blue_shade_2"
-                    android:textColorHint="@color/blue_shade_2"
-                    android:textSize="14sp" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:hint="@string/enter_recipe_link"
-                style="@style/TextInputLayout"
-                android:padding="5dp"
-                android:textColorHint="@color/blue_shade_2"
-                app:hintTextColor="@color/blue_shade_2" >
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/idEdtRecipeLink"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:importantForAutofill="no"
-                    android:inputType="text"
+                    android:inputType="none"
                     android:textColor="@color/blue_shade_2"
                     android:textColorHint="@color/blue_shade_2"
                     android:textSize="14sp" />
@@ -132,7 +91,8 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
-                android:hint="@string/enter_recipe_description"
+                android:inputType="none"
+                android:hint="Description"
                 style="@style/TextInputLayout"
                 android:padding="5dp"
                 android:textColorHint="@color/blue_shade_2"
@@ -142,7 +102,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:importantForAutofill="no"
-                    android:inputType="text"
+                    android:inputType="none"
                     android:textColor="@color/blue_shade_2"
                     android:textColorHint="@color/blue_shade_2"
                     android:textSize="14sp" />
@@ -154,7 +114,8 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
-                android:hint="@string/enter_cooking_method"
+                android:inputType="none"
+                android:hint="Cooking Method"
                 style="@style/TextInputLayout"
                 android:padding="5dp"
                 android:textColorHint="@color/blue_shade_2"
@@ -164,7 +125,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:importantForAutofill="no"
-                    android:inputType="textMultiLine|textImeMultiLine"
+                    android:inputType="none"
                     android:textColor="@color/blue_shade_2"
                     android:textColorHint="@color/blue_shade_2"
                     android:textSize="14sp" />
@@ -176,7 +137,8 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
-                android:hint="@string/enter_recipe_ingredients"
+                android:inputType="none"
+                android:hint="Ingredients"
                 style="@style/TextInputLayout"
                 android:padding="5dp"
                 android:textColorHint="@color/blue_shade_2"
@@ -186,7 +148,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:importantForAutofill="no"
-                    android:inputType="textMultiLine|textImeMultiLine"
+                    android:inputType="none"
                     android:textColor="@color/blue_shade_2"
                     android:textColorHint="@color/blue_shade_2"
                     android:textSize="14sp" />
@@ -198,34 +160,23 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginTop="20dp"
+                android:gravity="center"
                 android:layout_marginBottom="20dp"
                 android:weightSum="2"
                 android:orientation="horizontal" >
 
                 <Button
-                    android:id="@+id/idBtnUpdateRecipe"
+                    android:id="@+id/idBtnViewSourceRecipe"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:layout_weight="1"
-                    android:text="@string/update_recipe"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:background="@drawable/custom_button_back" />
-
-                <Button
-                    android:id="@+id/idBtnDeleteRecipe"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:layout_weight="1"
-                    android:text="@string/delete_recipe"
+                    android:text="@string/view_source_recipe_in_browser"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:background="@drawable/custom_button_back" />
 
             </LinearLayout>
-
         </LinearLayout>
 
         <ProgressBar
@@ -238,5 +189,4 @@
             android:visibility="gone" />
 
     </RelativeLayout>
-
 </ScrollView>

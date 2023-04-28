@@ -25,4 +25,10 @@
     <string name="enter_cooking_method">Enter Cooking Method</string>
     <string name="enter_recipe_ingredients">Enter Recipe Ingredients</string>
     <string name="add_recipe">Add Recipe</string>
+    <string name="recipe_name">Recipe Name</string>
+    <string name="description">Description</string>
+    <string name="cooking_time">Cooking Time</string>
+    <string name="edit_recipe">Edit Recipe</string>
+    <string name="view_details">View Details</string>
+    <string name="view_source_recipe_in_browser">View Source Recipe In Browser</string>
 </resources>
