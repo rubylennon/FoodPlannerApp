@@ -132,7 +132,6 @@ public class MainActivity extends AppCompatActivity implements RecipeRVAdapter.R
         ImageView recipeIV = layout.findViewById(R.id.idIVRecipe);
         Button editBtn = layout.findViewById(R.id.idBtnEdit);
         Button viewDetailsBtn = layout.findViewById(R.id.idBtnViewDetails);
-        Button viewSourceBtn = layout.findViewById(R.id.idBtnViewSource);
 
         recipeNameTV.setText(recipeRVModal.getRecipeName());
         recipeDescTV.setText(recipeRVModal.getRecipeDescription());
@@ -158,14 +157,6 @@ public class MainActivity extends AppCompatActivity implements RecipeRVAdapter.R
             }
         });
 
-        viewSourceBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(recipeRVModal.getRecipeLink()));
-                startActivity(i);
-            }
-        });
     }
 
     @Override
