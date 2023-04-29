@@ -1,7 +1,10 @@
 package com.example.firebasecrudapplication;
 
+import android.annotation.SuppressLint;
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.widget.Switch;
 
 import androidx.annotation.NonNull;
 
@@ -15,13 +18,15 @@ public class RecipeRVModal implements Parcelable {
     private String recipeDescription;
     private String recipeMethod;
     private String recipeIngredients;
+    private Boolean recipePublic;
     private String recipeID;
+    private String userID;
 
     public RecipeRVModal(){
 
     }
 
-    public RecipeRVModal(String recipeName, String recipeCookingTime, String recipeSuitedFor, String recipeImg, String recipeLink, String recipeDescription, String recipeMethod, String recipeIngredients, String recipeID) {
+    public RecipeRVModal(String recipeName, String recipeCookingTime, String recipeSuitedFor, String recipeImg, String recipeLink, String recipeDescription, String recipeMethod, String recipeIngredients, Boolean recipePublic, String recipeID, String userID) {
         this.recipeName = recipeName;
         this.recipeCookingTime = recipeCookingTime;
         this.recipeSuitedFor = recipeSuitedFor;
@@ -30,6 +35,8 @@ public class RecipeRVModal implements Parcelable {
         this.recipeDescription = recipeDescription;
         this.recipeMethod = recipeMethod;
         this.recipeIngredients = recipeIngredients;
+        this.recipePublic = recipePublic;
+        this.userID = userID;
         this.recipeID = recipeID;
     }
 
@@ -42,6 +49,10 @@ public class RecipeRVModal implements Parcelable {
         recipeDescription = in.readString();
         recipeMethod = in.readString();
         recipeIngredients = in.readString();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            recipePublic = in.readBoolean();
+        }
+        userID = in.readString();
         recipeID = in.readString();
     }
 
@@ -121,6 +132,22 @@ public class RecipeRVModal implements Parcelable {
         this.recipeIngredients = recipeIngredients;
     }
 
+    public Boolean getRecipePublic() {
+        return recipePublic;
+    }
+
+    public void setRecipePublic(Boolean recipePublic) {
+        this.recipePublic = recipePublic;
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
+    }
+
     public String getRecipeID() {
         return recipeID;
     }
@@ -144,6 +171,8 @@ public class RecipeRVModal implements Parcelable {
         dest.writeString(recipeDescription);
         dest.writeString(recipeMethod);
         dest.writeString(recipeIngredients);
+        dest.writeBoolean(recipePublic);
+        dest.writeString(userID);
         dest.writeString(recipeID);
     }
 }

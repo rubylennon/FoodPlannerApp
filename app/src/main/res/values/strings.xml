@@ -31,4 +31,5 @@
     <string name="edit_recipe">Edit Recipe</string>
     <string name="view_details">View Details</string>
     <string name="view_source_recipe_in_browser">View Source Recipe In Browser</string>
+    <string name="make_recipe_public">Make Recipe Public?</string>
 </resources>

@@ -1,17 +1,18 @@
 package com.example.firebasecrudapplication;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.TextView;
+import android.widget.Switch;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,11 +29,15 @@ public class AddRecipeActivity extends AppCompatActivity {
             recipeDescEdt,
             recipeMethodEdt,
             recipeIngredientsEdt;
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
+    private Switch recipePublicEdt;
     private Button addRecipeBtn;
     private ProgressBar loadingPB;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
     private String recipeID;
+    private String userID;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +53,9 @@ public class AddRecipeActivity extends AppCompatActivity {
         recipeDescEdt = findViewById(R.id.idEdtRecipeDesc);
         recipeMethodEdt = findViewById(R.id.idEdtRecipeMethod);
         recipeIngredientsEdt = findViewById(R.id.idEdtRecipeIngredients);
+        recipePublicEdt = findViewById(R.id.idPublicSwitch);
         addRecipeBtn = findViewById(R.id.idBtnAddRecipe);
+        userID = mAuth.getInstance().getCurrentUser().getUid();
         loadingPB = findViewById(R.id.idPBLoading);
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("Recipes");
@@ -67,8 +74,9 @@ public class AddRecipeActivity extends AppCompatActivity {
                 String recipeDesc = recipeDescEdt.getText().toString();
                 String recipeMethod = recipeMethodEdt.getText().toString();
                 String recipeIngredients = recipeIngredientsEdt.getText().toString();
+                Boolean recipePublic = recipePublicEdt.isChecked();
                 recipeID = recipeName;
-                RecipeRVModal recipeRVModal = new RecipeRVModal(recipeName,recipeCookingTime,recipeSuitedFor,recipeImg,recipeLink,recipeDesc,recipeMethod,recipeIngredients,recipeID);
+                RecipeRVModal recipeRVModal = new RecipeRVModal(recipeName,recipeCookingTime,recipeSuitedFor,recipeImg,recipeLink,recipeDesc,recipeMethod,recipeIngredients,recipePublic,recipeID,userID);
 
                 databaseReference.addValueEventListener(new ValueEventListener() {
                     @Override
