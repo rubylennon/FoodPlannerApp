@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/idRLBSheet"
-    android:background="@color/blue_shade_1">
+    android:background="@color/blue_shade_3">
 
     <TextView
         android:id="@+id/idTVRecipeName"
@@ -15,7 +15,7 @@
         android:layout_margin="4dp"
         android:padding="4dp"
         android:textSize="15sp" />
-    
+
     <ImageView
         android:id="@+id/idIVRecipe"
         android:layout_width="100dp"
@@ -41,14 +41,31 @@
 
     <TextView
         android:id="@+id/idTVSuitedFor"
-        android:layout_toRightOf="@id/idIVRecipe"
-        android:layout_below="@id/idTVDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Suitable For"
-        android:textColor="@color/blue_shade_2"
+        android:layout_below="@id/idTVDescription"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="4dp"
+        android:layout_toRightOf="@id/idIVRecipe"
         android:padding="3dp"
-        android:layout_margin="4dp" />
+        android:text="Suitable For"
+        android:textColor="@color/blue_shade_2" />
+
+    <!--<TextView
+        android:id="@+id/idTVServes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/idTVSuitedFor"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="4dp"
+        android:layout_toRightOf="@id/idIVRecipe"
+        android:padding="3dp"
+        android:text="Serves"
+        android:textColor="@color/blue_shade_2" />-->
 
     <TextView
         android:id="@+id/idTVCookingTime"

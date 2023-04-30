@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -48,7 +49,8 @@ public class MainActivity extends AppCompatActivity implements RecipeRVAdapter.R
 
     private RecyclerView recipeRV;
     private ProgressBar loadingPB;
-    private FloatingActionButton addFAB;
+    //private FloatingActionButton addFAB;
+    private ImageButton addFAB;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
     private ArrayList<RecipeRVModal> recipeRVModalArrayList;
