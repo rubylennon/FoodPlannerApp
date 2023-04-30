@@ -45,6 +45,9 @@ public class AddRecipeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_recipe);
 
+        // set the actionbar title
+        setTitle("Add Recipe");
+
         // initialise variables
         recipeNameEdt = findViewById(R.id.idEdtRecipeName);
         recipeCookingTimeEdt = findViewById(R.id.idEdtRecipeCookingTime);

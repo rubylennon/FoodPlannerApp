@@ -48,6 +48,9 @@ public class ViewRecipeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_recipe);
 
+        // set the actionbar title
+        setTitle("Recipe Details");
+
         // initialise variables
         firebaseDatabase = FirebaseDatabase.getInstance();
         recipeNameEdt = findViewById(R.id.idEdtRecipeName);
