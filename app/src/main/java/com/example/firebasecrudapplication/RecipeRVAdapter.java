@@ -38,7 +38,7 @@ public class RecipeRVAdapter extends RecyclerView.Adapter<RecipeRVAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull RecipeRVAdapter.ViewHolder holder, int position) {
         RecipeRVModal recipeRVModal = recipeRVModalArrayList.get(position);
-        holder.recipeNameTV.setText(recipeRVModal.getRecipeName());
+        holder.recipeNameTV.setText("Description: " + recipeRVModal.getRecipeName());
         holder.recipeCookingTimeTV.setText("Cooking Time: " + recipeRVModal.getRecipeCookingTime());
         Picasso.get().load(recipeRVModal.getRecipeImg()).into(holder.recipeTV);
         setAnimation(holder.itemView, position);
@@ -66,7 +66,7 @@ public class RecipeRVAdapter extends RecyclerView.Adapter<RecipeRVAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView recipeNameTV,recipeCookingTimeTV;
+        private TextView recipeNameTV, recipeServesTV,recipeCookingTimeTV;
         private ImageView recipeTV;
 
         public ViewHolder(@NonNull View itemView) {
