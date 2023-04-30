@@ -23,6 +23,7 @@ public class AddRecipeActivity extends AppCompatActivity {
     // variables
     private TextInputEditText recipeNameEdt,
             recipeCookingTimeEdt,
+            recipeServingsEdt,
             recipeSuitedForEdt,
             recipeImgEdt,
             recipeLinkEdt,
@@ -47,6 +48,7 @@ public class AddRecipeActivity extends AppCompatActivity {
         // initialise variables
         recipeNameEdt = findViewById(R.id.idEdtRecipeName);
         recipeCookingTimeEdt = findViewById(R.id.idEdtRecipeCookingTime);
+        recipeServingsEdt = findViewById(R.id.idEdtRecipeServings);
         recipeSuitedForEdt = findViewById(R.id.idEdtRecipeSuitedFor);
         recipeImgEdt = findViewById(R.id.idEdtRecipeImageLink);
         recipeLinkEdt = findViewById(R.id.idEdtRecipeLink);
@@ -68,6 +70,7 @@ public class AddRecipeActivity extends AppCompatActivity {
                 loadingPB.setVisibility(View.VISIBLE);
                 String recipeName = recipeNameEdt.getText().toString();
                 String recipeCookingTime = recipeCookingTimeEdt.getText().toString();
+                String recipeServings = recipeServingsEdt.getText().toString();
                 String recipeSuitedFor = recipeSuitedForEdt.getText().toString();
                 String recipeImg = recipeImgEdt.getText().toString();
                 String recipeLink = recipeLinkEdt.getText().toString();
@@ -76,7 +79,7 @@ public class AddRecipeActivity extends AppCompatActivity {
                 String recipeIngredients = recipeIngredientsEdt.getText().toString();
                 Boolean recipePublic = recipePublicEdt.isChecked();
                 recipeID = recipeName;
-                RecipeRVModal recipeRVModal = new RecipeRVModal(recipeName,recipeCookingTime,recipeSuitedFor,recipeImg,recipeLink,recipeDesc,recipeMethod,recipeIngredients,recipePublic,recipeID,userID);
+                RecipeRVModal recipeRVModal = new RecipeRVModal(recipeName,recipeCookingTime,recipeServings,recipeSuitedFor,recipeImg,recipeLink,recipeDesc,recipeMethod,recipeIngredients,recipePublic,recipeID,userID);
 
                 databaseReference.addValueEventListener(new ValueEventListener() {
                     @Override

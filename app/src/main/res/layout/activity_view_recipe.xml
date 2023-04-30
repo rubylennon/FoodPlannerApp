@@ -69,6 +69,29 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:inputType="none"
+                android:hint="Serves"
+                style="@style/TextInputLayout"
+                android:padding="5dp"
+                android:textColorHint="@color/blue_shade_2"
+                app:hintTextColor="@color/blue_shade_2" >
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/idEdtRecipeServings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:importantForAutofill="no"
+                    android:inputType="none"
+                    android:textColor="@color/blue_shade_2"
+                    android:textColorHint="@color/blue_shade_2"
+                    android:textSize="14sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:inputType="none"
                 android:hint="Suitable For"
                 style="@style/TextInputLayout"
                 android:padding="5dp"
@@ -115,7 +138,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:inputType="none"
-                android:hint="Cooking Method"
+                android:hint="@string/cooking_method"
                 style="@style/TextInputLayout"
                 android:padding="5dp"
                 android:textColorHint="@color/blue_shade_2"
@@ -138,7 +161,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:inputType="none"
-                android:hint="Ingredients"
+                android:hint="@string/ingredients"
                 style="@style/TextInputLayout"
                 android:padding="5dp"
                 android:textColorHint="@color/blue_shade_2"
@@ -153,6 +176,16 @@
                     android:textColorHint="@color/blue_shade_2"
                     android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <Switch
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:id="@+id/idPublicSwitch"
+                android:text="@string/recipe_public"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -189,4 +222,5 @@
             android:visibility="gone" />
 
     </RelativeLayout>
+
 </ScrollView>

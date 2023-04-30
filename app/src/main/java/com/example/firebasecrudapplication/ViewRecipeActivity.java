@@ -3,12 +3,14 @@ package com.example.firebasecrudapplication;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
@@ -24,16 +26,22 @@ import java.util.Map;
 public class ViewRecipeActivity extends AppCompatActivity {
     private TextInputEditText recipeNameEdt,
             recipeCookingTimeEdt,
+            recipeServingsEdt,
             recipeSuitedForEdt,
             recipeDescEdt,
             recipeMethodEdt,
             recipeIngredientsEdt;
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
+    private Switch recipePublicEdt;
     private Button viewSourceRecipe;
     private ProgressBar loadingPB;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
     private String recipeID;
     private RecipeRVModal recipeRVModal;
+
+    public ViewRecipeActivity() {
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,26 +52,62 @@ public class ViewRecipeActivity extends AppCompatActivity {
         firebaseDatabase = FirebaseDatabase.getInstance();
         recipeNameEdt = findViewById(R.id.idEdtRecipeName);
         recipeCookingTimeEdt = findViewById(R.id.idEdtRecipeCookingTime);
+        recipeServingsEdt = findViewById(R.id.idEdtRecipeServings);
         recipeSuitedForEdt = findViewById(R.id.idEdtRecipeSuitedFor);
         recipeDescEdt = findViewById(R.id.idEdtRecipeDesc);
         recipeMethodEdt = findViewById(R.id.idEdtRecipeMethod);
         recipeIngredientsEdt = findViewById(R.id.idEdtRecipeIngredients);
+        recipePublicEdt = findViewById(R.id.idPublicSwitch);
         viewSourceRecipe = findViewById(R.id.idBtnViewSourceRecipe);
         loadingPB = findViewById(R.id.idPBLoading);
         recipeRVModal = getIntent().getParcelableExtra("recipe");
 
+        // populate the layout fields with the recipe details from the database
         if (recipeRVModal != null){
             recipeNameEdt.setText(recipeRVModal.getRecipeName());
             recipeCookingTimeEdt.setText(recipeRVModal.getRecipeCookingTime());
+            recipeServingsEdt.setText(recipeRVModal.getRecipeServings());
             recipeSuitedForEdt.setText(recipeRVModal.getRecipeSuitedFor());
             recipeDescEdt.setText(recipeRVModal.getRecipeDescription());
             recipeMethodEdt.setText(recipeRVModal.getRecipeMethod());
             recipeIngredientsEdt.setText(recipeRVModal.getRecipeIngredients());
+            recipePublicEdt.setChecked(recipeRVModal.getRecipePublic().equals(true));
             recipeID = recipeRVModal.getRecipeID();
         }
 
+        // set input fields to non focusable
+        recipeNameEdt.setFocusable(false);
+        recipeCookingTimeEdt.setFocusable(false);
+        recipeServingsEdt.setFocusable(false);
+        recipeSuitedForEdt.setFocusable(false);
+        recipeDescEdt.setFocusable(false);
+        recipeMethodEdt.setFocusable(false);
+        recipeIngredientsEdt.setFocusable(false);
+
+        // disable input fields
+        recipeNameEdt.setEnabled(false);
+        recipeCookingTimeEdt.setEnabled(false);
+        recipeServingsEdt.setEnabled(false);
+        recipeSuitedForEdt.setEnabled(false);
+        recipeDescEdt.setEnabled(false);
+        recipeMethodEdt.setEnabled(false);
+        recipeIngredientsEdt.setEnabled(false);
+
+        // disable input fields cursor visibility
+        recipeNameEdt.setCursorVisible(false);
+        recipeCookingTimeEdt.setCursorVisible(false);
+        recipeServingsEdt.setCursorVisible(false);
+        recipeSuitedForEdt.setCursorVisible(false);
+        recipeDescEdt.setCursorVisible(false);
+        recipeMethodEdt.setCursorVisible(false);
+        recipeIngredientsEdt.setCursorVisible(false);
+
+        // set switch button to non clickable
+        recipePublicEdt.setClickable(false);
+
         databaseReference = firebaseDatabase.getReference("Recipes").child(recipeID);
 
+        // view recipe source page in browser using recipe link
         viewSourceRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
