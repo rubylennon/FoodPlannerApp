@@ -32,4 +32,8 @@
     <string name="view_details">View Details</string>
     <string name="view_source_recipe_in_browser">View Source Recipe In Browser</string>
     <string name="make_recipe_public">Make Recipe Public?</string>
+    <string name="recipe_public">Recipe Public?</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="cooking_method">Cooking Method</string>
+    <string name="enter_recipe_servings">Enter Recipe Servings</string>
 </resources>

@@ -12,6 +12,7 @@ public class RecipeRVModal implements Parcelable {
     // variables
     private String recipeName;
     private String recipeCookingTime;
+    private String recipeServings;
     private String recipeSuitedFor;
     private String recipeImg;
     private String recipeLink;
@@ -26,9 +27,10 @@ public class RecipeRVModal implements Parcelable {
 
     }
 
-    public RecipeRVModal(String recipeName, String recipeCookingTime, String recipeSuitedFor, String recipeImg, String recipeLink, String recipeDescription, String recipeMethod, String recipeIngredients, Boolean recipePublic, String recipeID, String userID) {
+    public RecipeRVModal(String recipeName, String recipeCookingTime, String recipeServings, String recipeSuitedFor, String recipeImg, String recipeLink, String recipeDescription, String recipeMethod, String recipeIngredients, Boolean recipePublic, String recipeID, String userID) {
         this.recipeName = recipeName;
         this.recipeCookingTime = recipeCookingTime;
+        this.recipeServings = recipeServings;
         this.recipeSuitedFor = recipeSuitedFor;
         this.recipeImg = recipeImg;
         this.recipeLink = recipeLink;
@@ -43,6 +45,7 @@ public class RecipeRVModal implements Parcelable {
     protected RecipeRVModal(Parcel in) {
         recipeName = in.readString();
         recipeCookingTime = in.readString();
+        recipeServings = in.readString();
         recipeSuitedFor = in.readString();
         recipeImg = in.readString();
         recipeLink = in.readString();
@@ -82,6 +85,14 @@ public class RecipeRVModal implements Parcelable {
 
     public void setRecipeCookingTime(String recipeCookingTime) {
         this.recipeCookingTime = recipeCookingTime;
+    }
+
+    public String getRecipeServings() {
+        return recipeServings;
+    }
+
+    public void setRecipeServings(String recipeServings) {
+        this.recipeServings = recipeServings;
     }
 
     public String getRecipeSuitedFor() {
@@ -165,13 +176,16 @@ public class RecipeRVModal implements Parcelable {
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeString(recipeName);
         dest.writeString(recipeCookingTime);
+        dest.writeString(recipeServings);
         dest.writeString(recipeSuitedFor);
         dest.writeString(recipeImg);
         dest.writeString(recipeLink);
         dest.writeString(recipeDescription);
         dest.writeString(recipeMethod);
         dest.writeString(recipeIngredients);
-        dest.writeBoolean(recipePublic);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            dest.writeBoolean(recipePublic);
+        }
         dest.writeString(userID);
         dest.writeString(recipeID);
     }
