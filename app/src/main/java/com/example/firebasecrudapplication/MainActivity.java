@@ -1,14 +1,18 @@
+/*
+ * @Author: Ruby Lennon (x19128355)
+ * 27th February 2023
+ * MainActivity.java
+ * Description - Main Activity of Java Android App 'FoodPlannerApp'
+ */
+
+// @REF: GeeksForGeeks - https://www.youtube.com/watch?v=-Gvpf8tXpbc
+// Ref Description - User Authentication and CRUD Operation with Firebase Realtime Database in Android
+
 package com.example.firebasecrudapplication;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
+// imports
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,6 +25,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,6 +42,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements RecipeRVAdapter.RecipeClickInterface {
 
@@ -50,6 +61,10 @@ public class MainActivity extends AppCompatActivity implements RecipeRVAdapter.R
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // set the actionbar title
+        setTitle("Recipes");
+
         recipeRV = findViewById(R.id.idRVRecipes);
         loadingPB = findViewById(R.id.idPBLoading);
         addFAB = findViewById(R.id.idAddFAB);
@@ -70,7 +85,6 @@ public class MainActivity extends AppCompatActivity implements RecipeRVAdapter.R
         });
 
         getAllRecipes();
-
 
     }
 
@@ -168,11 +182,15 @@ public class MainActivity extends AppCompatActivity implements RecipeRVAdapter.R
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
         int id = item.getItemId();
         switch (id) {
+            case R.id.idEditAccount:
+                Intent i = new Intent(MainActivity.this, EditAccountActivity.class);
+                startActivity(i);
+                return true;
             case R.id.idLogout:
                 Toast.makeText(this, "User Logged Out", Toast.LENGTH_SHORT).show();
                 mAuth.signOut();
-                Intent i = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(i);
+                Intent i2 = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(i2);
                 this.finish();
                 return true;
             default:

@@ -51,6 +51,9 @@ public class EditRecipeActivity extends AppCompatActivity {
         // use the edit recipe activity layout
         setContentView(R.layout.activity_edit_recipe);
 
+        // set the actionbar title
+        setTitle("Edit Recipe");
+
         // initialise variables
         firebaseDatabase = FirebaseDatabase.getInstance();
         recipeNameEdt = findViewById(R.id.idEdtRecipeName);
