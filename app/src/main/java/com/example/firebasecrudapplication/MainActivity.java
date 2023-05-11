@@ -5,7 +5,7 @@
  * Description - Main Activity of Java Android App 'FoodPlannerApp'
  */
 
-// @REF: GeeksForGeeks - https://www.youtube.com/watch?v=-Gvpf8tXpbc
+// @REF: GeeksForGeeks Tutorial - https://www.youtube.com/watch?v=-Gvpf8tXpbc
 // Ref Description - User Authentication and CRUD Operation with Firebase Realtime Database in Android
 
 package com.example.firebasecrudapplication;
@@ -46,10 +46,9 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements RecipeRVAdapter.RecipeClickInterface {
-
+    // declare variables
     private RecyclerView recipeRV;
     private ProgressBar loadingPB;
-    //private FloatingActionButton addFAB;
     private ImageButton addFAB;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
@@ -64,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements RecipeRVAdapter.R
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // set the actionbar title
+        // set the actionbar title to Recipes
         setTitle("Recipes");
 
         recipeRV = findViewById(R.id.idRVRecipes);
