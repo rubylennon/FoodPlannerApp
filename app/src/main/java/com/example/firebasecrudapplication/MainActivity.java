@@ -187,11 +187,15 @@ public class MainActivity extends AppCompatActivity implements RecipeRVAdapter.R
                 Intent i = new Intent(MainActivity.this, EditAccountActivity.class);
                 startActivity(i);
                 return true;
+            case R.id.idScan:
+                Intent i2 = new Intent(MainActivity.this, IngredientsScannerActivity.class);
+                startActivity(i2);
+                return true;
             case R.id.idLogout:
                 Toast.makeText(this, "User Logged Out", Toast.LENGTH_SHORT).show();
                 mAuth.signOut();
-                Intent i2 = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(i2);
+                Intent i3 = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(i3);
                 this.finish();
                 return true;
             default:
