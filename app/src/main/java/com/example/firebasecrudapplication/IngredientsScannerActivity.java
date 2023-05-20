@@ -45,6 +45,7 @@ public class IngredientsScannerActivity extends AppCompatActivity implements Ada
         textview_data = findViewById(R.id.ocr_result);
         mImageView = findViewById(R.id.image_view);
         mTextButton = findViewById(R.id.button_text);
+
         mTextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -159,6 +160,8 @@ public class IngredientsScannerActivity extends AppCompatActivity implements Ada
                     mImageView.getHeight();
         }
 
+        Log.i("mImageMaxHeight", Integer.toString(mImageMaxHeight));
+
         return mImageMaxHeight;
     }
 
@@ -170,6 +173,10 @@ public class IngredientsScannerActivity extends AppCompatActivity implements Ada
         int maxHeightForPortraitMode = getImageMaxHeight();
         targetWidth = maxWidthForPortraitMode;
         targetHeight = maxHeightForPortraitMode;
+
+        Log.i("targetWidth", Integer.toString(targetWidth));
+        Log.i("targetHeight", Integer.toString(targetHeight));
+
         return new Pair<>(targetWidth, targetHeight);
     }
 
@@ -195,11 +202,19 @@ public class IngredientsScannerActivity extends AppCompatActivity implements Ada
             int targetWidth = targetedSize.first;
             int maxHeight = targetedSize.second;
 
+            Log.i("targetWidth", Integer.toString(targetWidth));
+            Log.i("maxHeight", Integer.toString(maxHeight));
+
+            Log.i("mSelectedImage.getWidth()", Integer.toString(mSelectedImage.getWidth()));
+            Log.i("mSelectedImage.getWidth()", Integer.toString(mSelectedImage.getWidth()));
+
             // Determine how much to scale down the image
             float scaleFactor =
                     Math.max(
                             (float) mSelectedImage.getWidth() / (float) targetWidth,
-                            (float) mSelectedImage.getHeight() / (float) maxHeight);
+                            (float) mSelectedImage.getWidth() / (float) maxHeight);
+
+            Log.i("scaleFactor", String.valueOf(scaleFactor));
 
             Bitmap resizedBitmap =
                     Bitmap.createScaledBitmap(
@@ -209,6 +224,7 @@ public class IngredientsScannerActivity extends AppCompatActivity implements Ada
                             true);
 
             mImageView.setImageBitmap(resizedBitmap);
+
             mSelectedImage = resizedBitmap;
         }
     }
