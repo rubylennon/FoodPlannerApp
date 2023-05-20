@@ -8,7 +8,7 @@
             android:title="@string/recipe_search" />
         <item
             android:id="@+id/idScan"
-            android:title="@string/scan_recipes" />
+            android:title="Ingredients List Scanner" />
         <item
             android:id="@+id/idMealPlan"
             android:title="@string/meal_planner" />
