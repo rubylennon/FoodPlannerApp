@@ -9,6 +9,7 @@ package com.example.firebasecrudapplication;
 
 // @REF: select image from gallery and show it in ImageView - https://www.youtube.com/watch?v=i3-WL9Xv4hA
 // @REF: Google MLKit Samples - https://github.com/googlesamples/mlkit/tree/master/android/vision-quickstart
+// @REF: How to Capture Image And Display in ImageView in android Studio - https://www.youtube.com/watch?v=d7Nia9vKUDM
 
 import android.content.Context;
 import android.content.Intent;
@@ -87,11 +88,21 @@ public class IngredientsScannerActivity extends AppCompatActivity implements Ada
             }
         });
 
+        // select image button event listener
         mSelectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(i, 1);
+            }
+        });
+
+        // take photo button event listener
+        mCaptureButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(i, 2);
             }
         });
 
@@ -119,9 +130,16 @@ public class IngredientsScannerActivity extends AppCompatActivity implements Ada
 
         String[] permissionsStorage = {Manifest.permission.READ_EXTERNAL_STORAGE};
         int requestExternalStorage = 1;
-        int permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
-        if (permission != PackageManager.PERMISSION_GRANTED) {
+        int externalStoragePermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+        if (externalStoragePermission != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, permissionsStorage, requestExternalStorage);
+        }
+
+        String[] permissionsCamera = {Manifest.permission.CAMERA};
+        int requestCamera = 1;
+        int cameraPermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
+        if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, permissionsCamera, requestCamera);
         }
     }
 
@@ -333,6 +351,17 @@ public class IngredientsScannerActivity extends AppCompatActivity implements Ada
             cursor.close();
 
             mImageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+
+            mImageView.buildDrawingCache();
+            mSelectedImage = mImageView.getDrawingCache();
+
+        } else if (requestCode == 2 && resultCode == RESULT_OK && null != data){
+            Bitmap capturedImage = (Bitmap)data.getExtras().get("data");
+
+            mImageView.setImageBitmap(capturedImage);
+
+            mImageView.buildDrawingCache();
+            mSelectedImage = mImageView.getDrawingCache();
         }
     }
 }
