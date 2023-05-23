@@ -29,6 +29,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,6 +47,7 @@ import com.google.mlkit.vision.text.TextRecognition;
 import com.google.mlkit.vision.text.TextRecognizer;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 public class IngredientsScannerActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -53,7 +55,8 @@ public class IngredientsScannerActivity extends AppCompatActivity implements Ada
     private Button mTextButton;
     private Button mCaptureButton;
     private Button mSelectButton;
-    TextView textview_data;
+    private TextView textview_data;
+    private ListView mListView;
     private Bitmap mSelectedImage;
     // Max width (portrait mode)
     private Integer mImageMaxWidth;
@@ -63,8 +66,6 @@ public class IngredientsScannerActivity extends AppCompatActivity implements Ada
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        final int REQUEST_CAMERA_CODE = 100;
-//        final int REQUEST_STORAGE_CODE = 100;
 
         // set the actionbar title to Recipes
         setTitle("Ingredients Scanner");
@@ -78,6 +79,7 @@ public class IngredientsScannerActivity extends AppCompatActivity implements Ada
         mTextButton = findViewById(R.id.detect_text);
         mCaptureButton = findViewById(R.id.capture_image);
         mSelectButton = findViewById(R.id.select_image);
+        mListView = findViewById(R.id.ingredients_list);
 
         // create on click listener for 'Find Text' button
         mTextButton.setOnClickListener(new View.OnClickListener() {
@@ -107,27 +109,14 @@ public class IngredientsScannerActivity extends AppCompatActivity implements Ada
         });
 
         // spinner setup
-        Spinner dropdown = findViewById(R.id.spinner);
-        String[] items = new String[]{"Test Image 1 (Text)", "Test Image 2 (Face)", "Test Image 3 (Label)"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout
-                .simple_spinner_dropdown_item, items);
-        dropdown.setAdapter(adapter);
-        dropdown.setOnItemSelectedListener(this);
+//        Spinner dropdown = findViewById(R.id.spinner);
+//        String[] items = new String[]{"Test Image 1 (Text)", "Test Image 2 (Face)", "Test Image 3 (Label)"};
+//        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout
+//                .simple_spinner_dropdown_item, items);
+//        dropdown.setAdapter(adapter);
+//        dropdown.setOnItemSelectedListener(this);
 
-//        // get camera permissions if they are not already enabled
-//        if (ContextCompat.checkSelfPermission(IngredientsScannerActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
-//            ActivityCompat.requestPermissions(IngredientsScannerActivity.this, new String[]{
-//                    Manifest.permission.CAMERA
-//            }, REQUEST_CAMERA_CODE);
-//        }
-
-//        // get external permissions if they are not already enabled
-//        if (ContextCompat.checkSelfPermission(IngredientsScannerActivity.this, Manifest.permission.MANAGE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-//            ActivityCompat.requestPermissions(IngredientsScannerActivity.this, new String[]{
-//                    Manifest.permission.MANAGE_EXTERNAL_STORAGE
-//            }, REQUEST_STORAGE_CODE);
-//        }
-
+        // request read external storage permission if it is not already available
         String[] permissionsStorage = {Manifest.permission.READ_EXTERNAL_STORAGE};
         int requestExternalStorage = 1;
         int externalStoragePermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
@@ -135,12 +124,19 @@ public class IngredientsScannerActivity extends AppCompatActivity implements Ada
             ActivityCompat.requestPermissions(this, permissionsStorage, requestExternalStorage);
         }
 
+        // request camera permission if it is not already available
         String[] permissionsCamera = {Manifest.permission.CAMERA};
         int requestCamera = 1;
         int cameraPermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
         if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, permissionsCamera, requestCamera);
         }
+
+        // create adapter view for Ingredients ListView
+        ArrayList<String> ingredientsList = new ArrayList<>();
+        ArrayAdapter ingredientsAdapter = new ArrayAdapter<String>(this, R.layout.ingredient_list_item, ingredientsList);
+        mListView.setAdapter(ingredientsAdapter);
+
     }
 
     private void runTextRecognition() {
@@ -337,29 +333,31 @@ public class IngredientsScannerActivity extends AppCompatActivity implements Ada
         return bitmap;
     }
 
+    // activity result handler for permissions
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        // if activity result is 1 (Gallery Image Selection Activity)
         if (requestCode == 1 && resultCode == RESULT_OK && null != data){
             Uri selectedImage = data.getData();
             String[] filepath = {MediaStore.Images.Media.DATA};
-
             Cursor cursor = getContentResolver().query(selectedImage, filepath, null, null, null);
             cursor.moveToFirst();
             int columnIndex = cursor.getColumnIndex(filepath[0]);
             String picturePath = cursor.getString(columnIndex);
             cursor.close();
 
+            // update the image view with the selected photo
             mImageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-
             mImageView.buildDrawingCache();
             mSelectedImage = mImageView.getDrawingCache();
 
+        // if activity result is 1 (Capture Photo Activity)
         } else if (requestCode == 2 && resultCode == RESULT_OK && null != data){
             Bitmap capturedImage = (Bitmap)data.getExtras().get("data");
 
+            // update the image view with the captured photo
             mImageView.setImageBitmap(capturedImage);
-
             mImageView.buildDrawingCache();
             mSelectedImage = mImageView.getDrawingCache();
         }
