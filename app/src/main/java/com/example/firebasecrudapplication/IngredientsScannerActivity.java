@@ -11,6 +11,7 @@ package com.example.firebasecrudapplication;
 // @REF: Google MLKit Samples - https://github.com/googlesamples/mlkit/tree/master/android/vision-quickstart
 // @REF: How to Capture Image And Display in ImageView in android Studio - https://www.youtube.com/watch?v=d7Nia9vKUDM
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -24,44 +25,55 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
-import android.Manifest;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.text.Text;
 import com.google.mlkit.vision.text.TextRecognition;
 import com.google.mlkit.vision.text.TextRecognizer;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IngredientsScannerActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class IngredientsScannerActivity extends AppCompatActivity implements IngredientRVAdapter.IngredientClickInterface {
     private ImageView mImageView;
     private Button mTextButton;
     private Button mCaptureButton;
     private Button mSelectButton;
     private TextView textview_data;
-    private ListView mListView;
     private Bitmap mSelectedImage;
     // Max width (portrait mode)
     private Integer mImageMaxWidth;
     // Max height (portrait mode)
     private Integer mImageMaxHeight;
+
+    private RecyclerView ingredientRV;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
+    private ArrayList<IngredientRVModal> ingredientRVModalArrayList;
+    private IngredientRVAdapter ingredientRVAdapter;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,13 +85,23 @@ public class IngredientsScannerActivity extends AppCompatActivity implements Ada
         // set activity_scan_ingredients as activity layout
         setContentView(R.layout.activity_scan_ingredients);
 
+        ingredientRV = findViewById(R.id.idRVIngredients);
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("Ingredients");
+        ingredientRVModalArrayList = new ArrayList<>();
+        mAuth = FirebaseAuth.getInstance();
+        ingredientRVAdapter = new IngredientRVAdapter(ingredientRVModalArrayList, this, this);
+        ingredientRV.setLayoutManager(new LinearLayoutManager(this));
+        ingredientRV.setAdapter(ingredientRVAdapter);
+
+        getAllIngredients();
+
         // find layout elements by id and assign to variables
         textview_data = findViewById(R.id.ocr_result);
         mImageView = findViewById(R.id.image_view);
         mTextButton = findViewById(R.id.detect_text);
         mCaptureButton = findViewById(R.id.capture_image);
         mSelectButton = findViewById(R.id.select_image);
-        mListView = findViewById(R.id.ingredients_list);
 
         // create on click listener for 'Find Text' button
         mTextButton.setOnClickListener(new View.OnClickListener() {
@@ -133,9 +155,42 @@ public class IngredientsScannerActivity extends AppCompatActivity implements Ada
         }
 
         // create adapter view for Ingredients ListView
-        ArrayList<String> ingredientsList = new ArrayList<>();
-        ArrayAdapter ingredientsAdapter = new ArrayAdapter<String>(this, R.layout.ingredient_list_item, ingredientsList);
-        mListView.setAdapter(ingredientsAdapter);
+//        ArrayList<String> ingredientsList = new ArrayList<>();
+//        ArrayAdapter ingredientsAdapter = new ArrayAdapter<String>(this, R.layout.ingredient_list_item, ingredientsList);
+//        mListView.setAdapter(ingredientsAdapter);
+
+    }
+
+    private void getAllIngredients() {
+
+        ingredientRVModalArrayList.clear();
+        databaseReference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                ingredientRVModalArrayList.add(snapshot.getValue(IngredientRVModal.class));
+                ingredientRVAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                ingredientRVAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                ingredientRVAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                ingredientRVAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
     }
 
