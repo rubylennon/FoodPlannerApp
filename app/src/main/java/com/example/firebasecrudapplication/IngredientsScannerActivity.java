@@ -56,7 +56,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IngredientsScannerActivity extends AppCompatActivity implements IngredientRVAdapter.IngredientClickInterface {
+public class IngredientsScannerActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, IngredientRVAdapter.IngredientClickInterface {
     private ImageView mImageView;
     private Button mTextButton;
     private Button mCaptureButton;
@@ -192,6 +192,11 @@ public class IngredientsScannerActivity extends AppCompatActivity implements Ing
             }
         });
 
+    }
+
+    @Override
+    public void onIngredientClick(int position) {
+        //add code here for ingredient click action
     }
 
     private void runTextRecognition() {
