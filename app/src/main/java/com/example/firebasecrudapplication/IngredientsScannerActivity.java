@@ -10,6 +10,8 @@ package com.example.firebasecrudapplication;
 // @REF: select image from gallery and show it in ImageView - https://www.youtube.com/watch?v=i3-WL9Xv4hA
 // @REF: Google MLKit Samples - https://github.com/googlesamples/mlkit/tree/master/android/vision-quickstart
 // @REF: How to Capture Image And Display in ImageView in android Studio - https://www.youtube.com/watch?v=d7Nia9vKUDM
+// @REF: Search Bar + RecyclerView+Firebase Realtime Database easy Steps - https://www.youtube.com/watch?v=PmqYd-AdmC0
+// @REF: User Authentication and CRUD Operation with Firebase Realtime Database in Android | GeeksforGeeks - https://www.youtube.com/watch?v=-Gvpf8tXpbc
 
 import android.Manifest;
 import android.content.Context;
@@ -34,6 +36,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -46,6 +49,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.text.Text;
 import com.google.mlkit.vision.text.TextRecognition;
@@ -67,13 +71,19 @@ public class IngredientsScannerActivity extends AppCompatActivity implements Ada
     private Integer mImageMaxWidth;
     // Max height (portrait mode)
     private Integer mImageMaxHeight;
-
     private RecyclerView ingredientRV;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
     private ArrayList<IngredientRVModal> ingredientRVModalArrayList;
     private IngredientRVAdapter ingredientRVAdapter;
     private FirebaseAuth mAuth;
+
+//    SEARCH CODE START
+    DatabaseReference searchRef;
+    ArrayList<Ingredient> list;
+    RecyclerView recyclerView;
+    SearchView searchView;
+//    SEARCH CODE END
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +104,7 @@ public class IngredientsScannerActivity extends AppCompatActivity implements Ada
         ingredientRV.setLayoutManager(new LinearLayoutManager(this));
         ingredientRV.setAdapter(ingredientRVAdapter);
 
+        // get all ingredients from
         getAllIngredients();
 
         // find layout elements by id and assign to variables
@@ -130,14 +141,6 @@ public class IngredientsScannerActivity extends AppCompatActivity implements Ada
             }
         });
 
-        // spinner setup
-//        Spinner dropdown = findViewById(R.id.spinner);
-//        String[] items = new String[]{"Test Image 1 (Text)", "Test Image 2 (Face)", "Test Image 3 (Label)"};
-//        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout
-//                .simple_spinner_dropdown_item, items);
-//        dropdown.setAdapter(adapter);
-//        dropdown.setOnItemSelectedListener(this);
-
         // request read external storage permission if it is not already available
         String[] permissionsStorage = {Manifest.permission.READ_EXTERNAL_STORAGE};
         int requestExternalStorage = 1;
@@ -154,11 +157,39 @@ public class IngredientsScannerActivity extends AppCompatActivity implements Ada
             ActivityCompat.requestPermissions(this, permissionsCamera, requestCamera);
         }
 
-        // create adapter view for Ingredients ListView
-//        ArrayList<String> ingredientsList = new ArrayList<>();
-//        ArrayAdapter ingredientsAdapter = new ArrayAdapter<String>(this, R.layout.ingredient_list_item, ingredientsList);
-//        mListView.setAdapter(ingredientsAdapter);
+        //    SEARCH CODE START
+        searchRef = FirebaseDatabase.getInstance().getReference().child("Ingredients");
+        recyclerView = findViewById(R.id.rv);
+        //    SEARCH CODE END
 
+    }
+
+    protected void onStart() {
+
+        super.onStart();
+
+        //    SEARCH CODE START
+        if(searchRef != null){
+            searchRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if(snapshot.exists()){
+                        list = new ArrayList<>();
+                        for(DataSnapshot ds : snapshot.getChildren()){
+                            list.add(ds.hashCode(Ingredient.class));
+                        }
+                        AdapterClass adapterClass = new AdapterClass(list);
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            })
+        }
+        //    SEARCH CODE END
     }
 
     private void getAllIngredients() {

@@ -72,9 +72,24 @@
 
     </LinearLayout>
 
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchView"
+        android:layout_below="@+id/idLLButtonsTwo"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_margin="5dp"
+        app:queryHint="Search"
+        android:background="@color/white"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv"
+        android:layout_below="@+id/searchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/idRVIngredients"
-        android:layout_below="@+id/idLLButtonsTwo"
+        android:layout_below="@+id/rv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
