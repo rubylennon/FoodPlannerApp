@@ -160,6 +160,7 @@ public class IngredientsScannerActivity extends AppCompatActivity implements Ada
         //    SEARCH CODE START
         searchRef = FirebaseDatabase.getInstance().getReference().child("Ingredients");
         recyclerView = findViewById(R.id.rv);
+        searchView = findViewById(R.id.searchView);
         //    SEARCH CODE END
 
     }
@@ -176,10 +177,10 @@ public class IngredientsScannerActivity extends AppCompatActivity implements Ada
                     if(snapshot.exists()){
                         list = new ArrayList<>();
                         for(DataSnapshot ds : snapshot.getChildren()){
-                            list.add(ds.hashCode(Ingredient.class));
+                            list.add(ds.getValue(Ingredient.class));
                         }
                         AdapterClass adapterClass = new AdapterClass(list);
-
+                        recyclerView.setAdapter(adapterClass);
                     }
                 }
 
@@ -187,9 +188,35 @@ public class IngredientsScannerActivity extends AppCompatActivity implements Ada
                 public void onCancelled(@NonNull DatabaseError error) {
 
                 }
-            })
+            });
+        }
+
+        if(searchView != null){
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String s) {
+                    search(s);
+                    return true;
+                }
+            });
         }
         //    SEARCH CODE END
+    }
+
+    private void search(String str){
+        ArrayList<Ingredient> myList = new ArrayList<>();
+        for(Ingredient object : list){
+            if(object.getIngredientDescription().toLowerCase().contains(str.toLowerCase())){
+                myList.add(object);
+            }
+        }
+        AdapterClass adapterClass = new AdapterClass(myList);
+        recyclerView.setAdapter(adapterClass);
     }
 
     private void getAllIngredients() {
