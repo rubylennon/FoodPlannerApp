@@ -161,6 +161,9 @@ public class IngredientsScannerActivity extends AppCompatActivity implements Ada
         searchRef = FirebaseDatabase.getInstance().getReference().child("Ingredients");
         recyclerView = findViewById(R.id.rv);
         searchView = findViewById(R.id.searchView);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(ingredientRVAdapter);
         //    SEARCH CODE END
 
     }
@@ -173,20 +176,21 @@ public class IngredientsScannerActivity extends AppCompatActivity implements Ada
         if(searchRef != null){
             searchRef.addValueEventListener(new ValueEventListener() {
                 @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if(snapshot.exists()){
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.exists()){
                         list = new ArrayList<>();
-                        for(DataSnapshot ds : snapshot.getChildren()){
+                        for(DataSnapshot ds : dataSnapshot.getChildren()){
                             list.add(ds.getValue(Ingredient.class));
                         }
                         AdapterClass adapterClass = new AdapterClass(list);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(IngredientsScannerActivity.this));
                         recyclerView.setAdapter(adapterClass);
                     }
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-
+                    Toast.makeText(IngredientsScannerActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -194,7 +198,7 @@ public class IngredientsScannerActivity extends AppCompatActivity implements Ada
         if(searchView != null){
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
-                public boolean onQueryTextSubmit(String query) {
+                public boolean onQueryTextSubmit(String s) {
                     return false;
                 }
 
@@ -216,6 +220,7 @@ public class IngredientsScannerActivity extends AppCompatActivity implements Ada
             }
         }
         AdapterClass adapterClass = new AdapterClass(myList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(IngredientsScannerActivity.this));
         recyclerView.setAdapter(adapterClass);
     }
 
