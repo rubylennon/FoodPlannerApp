@@ -82,8 +82,14 @@
         android:background="@color/white"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv"
+        android:id="@+id/rvTwo"
         android:layout_below="@+id/searchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv"
+        android:layout_below="@+id/rvTwo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
