@@ -36,7 +36,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -58,7 +57,6 @@ import com.google.mlkit.vision.text.TextRecognizer;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -81,13 +79,6 @@ public class IngredientsScannerActivity extends AppCompatActivity implements Ada
     private FirebaseAuth mAuth;
 
 //    SEARCH CODE START
-    DatabaseReference searchRef;
-    ArrayList<Ingredient> list;
-    RecyclerView recyclerView;
-    SearchView searchView;
-//    SEARCH CODE END
-
-//    SEARCH CODE START TWO
     DatabaseReference ingredientsDBRef;
     ArrayList<Ingredient> ingredientsList;
     RecyclerView ingredientsRV;
@@ -103,20 +94,20 @@ public class IngredientsScannerActivity extends AppCompatActivity implements Ada
         // set activity_scan_ingredients as activity layout
         setContentView(R.layout.activity_scan_ingredients);
 
-        ingredientRV = findViewById(R.id.idRVIngredients);
+        // ingredientRV = findViewById(R.id.idRVIngredients);
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("Ingredients");
         ingredientRVModalArrayList = new ArrayList<>();
         mAuth = FirebaseAuth.getInstance();
         ingredientRVAdapter = new IngredientRVAdapter(ingredientRVModalArrayList, this, this);
-        ingredientRV.setLayoutManager(new LinearLayoutManager(this));
-        ingredientRV.setAdapter(ingredientRVAdapter);
+//        ingredientRV.setLayoutManager(new LinearLayoutManager(this));
+//        ingredientRV.setAdapter(ingredientRVAdapter);
 
         // get all ingredients from
         getAllIngredients();
 
         // find layout elements by id and assign to variables
-        textview_data = findViewById(R.id.ocr_result);
+        // textview_data = findViewById(R.id.ocr_result);
         mImageView = findViewById(R.id.image_view);
         mTextButton = findViewById(R.id.detect_text);
         mCaptureButton = findViewById(R.id.capture_image);
@@ -165,15 +156,6 @@ public class IngredientsScannerActivity extends AppCompatActivity implements Ada
             ActivityCompat.requestPermissions(this, permissionsCamera, requestCamera);
         }
 
-//        //    SEARCH CODE START
-//        searchRef = FirebaseDatabase.getInstance().getReference().child("Ingredients");
-//        recyclerView = findViewById(R.id.rv);
-//        searchView = findViewById(R.id.searchView);
-//        // set to empty layout to stop ingredients loading on page load
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//        recyclerView.setAdapter(ingredientRVAdapter);
-//        //    SEARCH CODE END
-
         //    SEARCH CODE START TWO
         // set firebase database reference to 'Ingredients' data
         ingredientsDBRef = FirebaseDatabase.getInstance().getReference().child("Ingredients");
@@ -190,46 +172,7 @@ public class IngredientsScannerActivity extends AppCompatActivity implements Ada
 
         super.onStart();
 
-        //    SEARCH CODE START
-//        if(searchRef != null){
-//            searchRef.addValueEventListener(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                    if(dataSnapshot.exists()){
-//                        list = new ArrayList<>();
-//                        for(DataSnapshot ds : dataSnapshot.getChildren()){
-//                            list.add(ds.getValue(Ingredient.class));
-//                        }
-//                        AdapterClass adapterClass = new AdapterClass(list);
-//                        recyclerView.setLayoutManager(new LinearLayoutManager(IngredientsScannerActivity.this));
-//                        recyclerView.setAdapter(adapterClass);
-//                    }
-//                }
-//
-//                @Override
-//                public void onCancelled(@NonNull DatabaseError error) {
-//                    Toast.makeText(IngredientsScannerActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-//                }
-//            });
-//        }
-//
-//        if(searchView != null){
-//            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//                @Override
-//                public boolean onQueryTextSubmit(String s) {
-//                    return false;
-//                }
-//
-//                @Override
-//                public boolean onQueryTextChange(String s) {
-//                    search(s);
-//                    return true;
-//                }
-//            });
-//        }
-        //    SEARCH CODE END
-
-        //    SEARCH CODE START TWO
+        // SEARCH CODE START
         if(ingredientsDBRef != null){
             ingredientsDBRef.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -251,55 +194,12 @@ public class IngredientsScannerActivity extends AppCompatActivity implements Ada
                 }
             });
         }
-
-        if(searchView != null){
-            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String s) {
-                    return false;
-                }
-
-                @Override
-                public boolean onQueryTextChange(String s) {
-                    searchTwo(s);
-                    return true;
-                }
-            });
-        }
-        //    SEARCH CODE END
-    }
-
-//    private void search(String str){
-//        ArrayList<Ingredient> myList = new ArrayList<>();
-//        for(Ingredient object : list){
-//            if(object.getIngredientDescription().toLowerCase().contains(str.toLowerCase())){
-//                myList.add(object);
-//            }
-//        }
-//        AdapterClass adapterClass = new AdapterClass(myList);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(IngredientsScannerActivity.this));
-//        recyclerView.setAdapter(adapterClass);
-//    }
-
-    private void searchTwo(String str){
-//        ArrayList<Ingredient> myIngredientsList = new ArrayList<>();
-//        for(Ingredient object : ingredientsList){
-//            if(object.getIngredientDescription().toLowerCase().contains(str.toLowerCase())){
-//                myIngredientsList.add(object);
-//            }
-//        }
-//        AdapterClass adapterClass = new AdapterClass(myIngredientsList);
-//        ingredientsRV.setLayoutManager(new LinearLayoutManager(IngredientsScannerActivity.this));
-//        ingredientsRV.setAdapter(adapterClass);
+        // SEARCH CODE END
     }
 
     private void searchThree(ArrayList<String> scannedIngredientsList){
         ArrayList<Ingredient> allIngredientsList = new ArrayList<>();
-//        for(Ingredient object : ingredientsList){
-//            if(object.getIngredientDescription().toLowerCase().contains(str){
-//                myIngredientsList.add(object);
-//            }
-//        }
+        ArrayList<Ingredient> matchingIngredientsList = new ArrayList<>();
 
         // add all ingredients from database to arraylist
         for(Ingredient object : ingredientsList){
@@ -308,24 +208,31 @@ public class IngredientsScannerActivity extends AppCompatActivity implements Ada
 
         // print all ingredients in database
         for(Ingredient object : allIngredientsList){
-            Log.d("INGREDIENT allIngredientsList Item", object.getIngredientName());
+            Log.d("allIngredientsList Item", object.getIngredientName());
         }
 
+        // print scanned ingredients from processed image
         for(String object : scannedIngredientsList){
-            Log.d("INGREDIENT scannedIngredientsList Item", object);
+            Log.d("scannedIngredientsList Item", object);
         }
 
-        allIngredientsList.retainAll(scannedIngredientsList);
-
-        if (allIngredientsList.isEmpty()){
-            Log.d("RETAINED LIST EMPTY","RETAINED LIST EMPTY");
-        } else {
-            for(Ingredient object : allIngredientsList){
-                Log.d("INGREDIENT Retained ArrayList Item", String.valueOf(object));
+        // compare ingredients list and if they match add ingredient
+        for(Ingredient object : allIngredientsList){
+            if(scannedIngredientsList.toString().toLowerCase().contains(object.getIngredientName().toLowerCase())){
+                matchingIngredientsList.add(object);
             }
         }
 
-        IngredientScannerRVAdapter ingredientScannerRVAdapter = new IngredientScannerRVAdapter(allIngredientsList);
+        // print all matching ingredients
+        if (matchingIngredientsList.isEmpty()) {
+            Log.d("matchingIngredientsList: ", "LIST EMPTY");
+        }else{
+            for(Ingredient object : matchingIngredientsList){
+                Log.d("matchingIngredientsList Item", object.getIngredientName());
+            }
+        }
+
+        IngredientScannerRVAdapter ingredientScannerRVAdapter = new IngredientScannerRVAdapter(matchingIngredientsList);
         ingredientsRV.setLayoutManager(new LinearLayoutManager(IngredientsScannerActivity.this));
         ingredientsRV.setAdapter(ingredientScannerRVAdapter);
     }
@@ -408,7 +315,7 @@ public class IngredientsScannerActivity extends AppCompatActivity implements Ada
         }
 
         // update the result_text textView to display the OCR result
-        textview_data.setText(result_text);
+        // textview_data.setText(result_text);
 
         // update the stored OCR result text by formatting as below
         // remove new lines
@@ -422,12 +329,14 @@ public class IngredientsScannerActivity extends AppCompatActivity implements Ada
 
         String ingredients_text;
 
-        if (result_text.contains(".")){
-            // remove all text before full stop (ingredients list)
-            ingredients_text = result_text.substring(0, result_text.indexOf('.'));
-        } else {
-            ingredients_text = result_text;
-        }
+//        if (result_text.contains(".")){
+//            // remove all text before full stop (ingredients list)
+//            ingredients_text = result_text.substring(0, result_text.indexOf('.'));
+//        } else {
+//            ingredients_text = result_text;
+//        }
+
+        ingredients_text = result_text;
 
         Log.d("INGREDIENTS", ingredients_text);
 
