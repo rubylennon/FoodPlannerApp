@@ -27,4 +27,28 @@ public class Ingredient {
     public void setIngredientDescription(String ingredientDescription) {
         this.ingredientDescription = ingredientDescription;
     }
+
+//    @Override
+//    public int hashCode() {
+//        return new HashCodeBuilder(17, 31). // two randomly chosen prime numbers
+//        // if deriving: appendSuper(super.hashCode()).
+//        append(ingredientName).
+//        append(ingredientDescription).
+//        toHashCode();
+//    }
+//
+//    @Override
+//    public boolean equals(Object obj) {
+//        if (!(obj instanceof Ingredient))
+//            return false;
+//        if (obj == this)
+//            return true;
+//
+//        Ingredient rhs = (Ingredient) obj;
+//        return new EqualsBuilder().
+//        // if deriving: appendSuper(super.equals(obj)).
+//        append(ingredientName, rhs.ingredientName).
+//        append(ingredientDescription, rhs.ingredientDescription).
+//        isEquals();
+//    }
 }

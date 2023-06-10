@@ -7,11 +7,11 @@ package com.example.firebasecrudapplication;
  * Description - OCR Ingredients List Activity of Java Android App 'FoodPlannerApp'
  */
 
-// @REF: select image from gallery and show it in ImageView - https://www.youtube.com/watch?v=i3-WL9Xv4hA
-// @REF: Google MLKit Samples - https://github.com/googlesamples/mlkit/tree/master/android/vision-quickstart
-// @REF: How to Capture Image And Display in ImageView in android Studio - https://www.youtube.com/watch?v=d7Nia9vKUDM
-// @REF: Search Bar + RecyclerView+Firebase Realtime Database easy Steps - https://www.youtube.com/watch?v=PmqYd-AdmC0
-// @REF: User Authentication and CRUD Operation with Firebase Realtime Database in Android | GeeksforGeeks - https://www.youtube.com/watch?v=-Gvpf8tXpbc
+// @REF 1: select image from gallery and show it in ImageView - https://www.youtube.com/watch?v=i3-WL9Xv4hA
+// @REF 2: Google MLKit Samples - https://github.com/googlesamples/mlkit/tree/master/android/vision-quickstart
+// @REF 3: How to Capture Image And Display in ImageView in android Studio - https://www.youtube.com/watch?v=d7Nia9vKUDM
+// @REF 4: Search Bar + RecyclerView+Firebase Realtime Database easy Steps - https://www.youtube.com/watch?v=PmqYd-AdmC0
+// @REF 5: User Authentication and CRUD Operation with Firebase Realtime Database in Android | GeeksforGeeks - https://www.youtube.com/watch?v=-Gvpf8tXpbc
 
 import android.Manifest;
 import android.content.Context;
@@ -293,33 +293,39 @@ public class IngredientsScannerActivity extends AppCompatActivity implements Ada
 //        ingredientsRV.setAdapter(adapterClass);
     }
 
-    private void searchThree(ArrayList<String> str){
-        ArrayList<Ingredient> myIngredientsList = new ArrayList<>();
+    private void searchThree(ArrayList<String> scannedIngredientsList){
+        ArrayList<Ingredient> allIngredientsList = new ArrayList<>();
 //        for(Ingredient object : ingredientsList){
 //            if(object.getIngredientDescription().toLowerCase().contains(str){
 //                myIngredientsList.add(object);
 //            }
 //        }
 
+        // add all ingredients from database to arraylist
         for(Ingredient object : ingredientsList){
-            myIngredientsList.add(object);
+            allIngredientsList.add(object);
         }
 
-        for(Ingredient object : myIngredientsList){
-            Log.d("INGREDIENT Unretained ArrayList Item", String.valueOf(object));
+        // print all ingredients in database
+        for(Ingredient object : allIngredientsList){
+            Log.d("INGREDIENT allIngredientsList Item", object.getIngredientName());
         }
 
-        myIngredientsList.retainAll(str);
+        for(String object : scannedIngredientsList){
+            Log.d("INGREDIENT scannedIngredientsList Item", object);
+        }
 
-        if (myIngredientsList.isEmpty()){
+        allIngredientsList.retainAll(scannedIngredientsList);
+
+        if (allIngredientsList.isEmpty()){
             Log.d("RETAINED LIST EMPTY","RETAINED LIST EMPTY");
         } else {
-            for(Ingredient object : myIngredientsList){
+            for(Ingredient object : allIngredientsList){
                 Log.d("INGREDIENT Retained ArrayList Item", String.valueOf(object));
             }
         }
 
-        IngredientScannerRVAdapter ingredientScannerRVAdapter = new IngredientScannerRVAdapter(myIngredientsList);
+        IngredientScannerRVAdapter ingredientScannerRVAdapter = new IngredientScannerRVAdapter(allIngredientsList);
         ingredientsRV.setLayoutManager(new LinearLayoutManager(IngredientsScannerActivity.this));
         ingredientsRV.setAdapter(ingredientScannerRVAdapter);
     }
