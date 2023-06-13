@@ -35,6 +35,7 @@
         <activity android:name=".ViewRecipeActivity"/>
         <activity android:name=".AddRecipeActivity"/>
         <activity android:name=".EditAccountActivity"/>
+        <activity android:name=".RecipeSearchActivity"/>
         <activity android:name=".IngredientsScannerActivity"
             android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation|screenSize"/>
