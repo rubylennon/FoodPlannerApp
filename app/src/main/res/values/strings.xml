@@ -44,4 +44,7 @@
     <string name="add_recipe_button">Add Recipe Button</string>
     <string name="ingredient_description">Ingredient Description</string>
     <string name="ingredient_name">Ingredient Name</string>
+    <string name="scan_ingredients">Scan Ingredients</string>
+    <string name="select_image">Select Image</string>
+    <string name="capture_image">Capture Image</string>
 </resources>

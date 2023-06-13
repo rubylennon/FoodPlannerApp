@@ -12,22 +12,20 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/SvIngredientNameTwo"
+            android:id="@+id/SvIngredientName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="sample"
             android:textSize="25sp"
             android:textStyle="bold"
-            android:padding="10dp"
-            android:background="@color/green_shade_3"/>
+            android:padding="10dp"/>
 
         <TextView
-            android:id="@+id/SvIngredientDescriptionTwo"
+            android:id="@+id/SvIngredientDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="sample"
-            android:padding="10dp"
-            android:background="@color/green_shade_3"/>
+            android:padding="10dp"/>
 
     </LinearLayout>
 
