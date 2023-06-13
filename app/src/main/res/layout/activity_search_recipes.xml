@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/idRLSearchRecipes"
+    android:background="@color/blue_shade_1"
+    tools:context=".IngredientsScannerActivity"
+    android:layout_centerHorizontal="true" >
+
+    <ImageView
+        android:id="@+id/image_view"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:srcCompat="@drawable/logo" />
+
+<!--    <TextView-->
+<!--        android:id="@+id/ocr_result"-->
+<!--        android:layout_below="@+id/image_view"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="50dp"-->
+<!--        android:text="@string/textview" />-->
+
+    <LinearLayout
+        android:id="@+id/idLLButtonsOne"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/image_view"
+        android:paddingLeft="4.0dip"
+        android:paddingTop="5.0dip"
+        android:paddingRight="4.0dip"
+        android:paddingBottom="1.0dip">
+
+        <Button
+            android:id="@+id/capture_image"
+            android:layout_width="0.0dip"
+            android:layout_height="55dp"
+            android:layout_margin="5dp"
+            android:text="Capture Image"
+            android:layout_weight="1.0" />
+
+        <Button
+            android:id="@+id/select_image"
+            android:layout_width="0.0dip"
+            android:layout_height="55dp"
+            android:layout_margin="5dp"
+            android:text="Select Image"
+            android:layout_weight="1.0"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/idLLButtonsTwo"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/idLLButtonsOne"
+        android:paddingLeft="4.0dip"
+        android:paddingTop="5.0dip"
+        android:paddingRight="4.0dip"
+        android:paddingBottom="1.0dip">
+
+        <Button
+            android:id="@+id/detect_text"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_margin="5dp"
+            android:text="Scan Ingredients"
+            android:layout_weight="1.0" />
+
+    </LinearLayout>
+
+<!--    <androidx.appcompat.widget.SearchView-->
+<!--        android:id="@+id/searchView"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="?attr/actionBarSize"-->
+<!--        android:layout_below="@+id/idLLButtonsTwo"-->
+<!--        android:layout_marginStart="5dp"-->
+<!--        android:layout_marginTop="5dp"-->
+<!--        android:layout_marginEnd="5dp"-->
+<!--        android:layout_marginBottom="5dp"-->
+<!--        android:background="@color/white"-->
+<!--        app:queryHint="Search" />-->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/ingredientsRV"
+        android:layout_below="@+id/idLLButtonsTwo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/rv"-->
+<!--        android:layout_below="@+id/rvTwo"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content" />-->
+
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/idRVIngredients"-->
+<!--        android:layout_below="@+id/rv"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content" />-->
+
+</RelativeLayout>
