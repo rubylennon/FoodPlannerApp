@@ -3,34 +3,34 @@ package com.example.firebasecrudapplication;
 public class Recipe {
 
     private String recipeName;
-    private String recipeCookingTime;
-    private String recipeServings;
-    private String recipeSuitedFor;
-    private String recipeImg;
     private String recipeLink;
+    private String recipeSuitedFor;
+    private String recipeServings;
     private String recipeDescription;
-    private String recipeMethod;
     private String recipeIngredients;
+    private String recipeCookingTime;
+    private String recipeImg;
+    private String recipeMethod;
     private Boolean recipePublic;
-    private String recipeID;
     private String userID;
+    private String recipeID;
 
     public Recipe() {
     }
 
-    public Recipe(String recipeName, String recipeCookingTime, String recipeServings, String recipeSuitedFor, String recipeImg, String recipeLink, String recipeDescription, String recipeMethod, String recipeIngredients, Boolean recipePublic, String recipeID, String userID) {
+    public Recipe(String recipeName, String recipeLink, String recipeSuitedFor, String recipeServings, String recipeDescription, String recipeIngredients, String recipeCookingTime, String recipeImg, String recipeMethod, Boolean recipePublic, String userID, String recipeID) {
         this.recipeName = recipeName;
-        this.recipeCookingTime = recipeCookingTime;
-        this.recipeServings = recipeServings;
-        this.recipeSuitedFor = recipeSuitedFor;
-        this.recipeImg = recipeImg;
         this.recipeLink = recipeLink;
+        this.recipeSuitedFor = recipeSuitedFor;
+        this.recipeServings = recipeServings;
         this.recipeDescription = recipeDescription;
-        this.recipeMethod = recipeMethod;
         this.recipeIngredients = recipeIngredients;
+        this.recipeCookingTime = recipeCookingTime;
+        this.recipeImg = recipeImg;
+        this.recipeMethod = recipeMethod;
         this.recipePublic = recipePublic;
-        this.recipeID = recipeID;
         this.userID = userID;
+        this.recipeID = recipeID;
     }
 
     public String getRecipeName() {
@@ -41,20 +41,12 @@ public class Recipe {
         this.recipeName = recipeName;
     }
 
-    public String getRecipeCookingTime() {
-        return recipeCookingTime;
+    public String getRecipeLink() {
+        return recipeLink;
     }
 
-    public void setRecipeCookingTime(String recipeCookingTime) {
-        this.recipeCookingTime = recipeCookingTime;
-    }
-
-    public String getRecipeServings() {
-        return recipeServings;
-    }
-
-    public void setRecipeServings(String recipeServings) {
-        this.recipeServings = recipeServings;
+    public void setRecipeLink(String recipeLink) {
+        this.recipeLink = recipeLink;
     }
 
     public String getRecipeSuitedFor() {
@@ -65,20 +57,12 @@ public class Recipe {
         this.recipeSuitedFor = recipeSuitedFor;
     }
 
-    public String getRecipeImg() {
-        return recipeImg;
+    public String getRecipeServings() {
+        return recipeServings;
     }
 
-    public void setRecipeImg(String recipeImg) {
-        this.recipeImg = recipeImg;
-    }
-
-    public String getRecipeLink() {
-        return recipeLink;
-    }
-
-    public void setRecipeLink(String recipeLink) {
-        this.recipeLink = recipeLink;
+    public void setRecipeServings(String recipeServings) {
+        this.recipeServings = recipeServings;
     }
 
     public String getRecipeDescription() {
@@ -89,20 +73,36 @@ public class Recipe {
         this.recipeDescription = recipeDescription;
     }
 
-    public String getRecipeMethod() {
-        return recipeMethod;
-    }
-
-    public void setRecipeMethod(String recipeMethod) {
-        this.recipeMethod = recipeMethod;
-    }
-
     public String getRecipeIngredients() {
         return recipeIngredients;
     }
 
     public void setRecipeIngredients(String recipeIngredients) {
         this.recipeIngredients = recipeIngredients;
+    }
+
+    public String getRecipeCookingTime() {
+        return recipeCookingTime;
+    }
+
+    public void setRecipeCookingTime(String recipeCookingTime) {
+        this.recipeCookingTime = recipeCookingTime;
+    }
+
+    public String getRecipeImg() {
+        return recipeImg;
+    }
+
+    public void setRecipeImg(String recipeImg) {
+        this.recipeImg = recipeImg;
+    }
+
+    public String getRecipeMethod() {
+        return recipeMethod;
+    }
+
+    public void setRecipeMethod(String recipeMethod) {
+        this.recipeMethod = recipeMethod;
     }
 
     public Boolean getRecipePublic() {
@@ -113,19 +113,19 @@ public class Recipe {
         this.recipePublic = recipePublic;
     }
 
-    public String getRecipeID() {
-        return recipeID;
-    }
-
-    public void setRecipeID(String recipeID) {
-        this.recipeID = recipeID;
-    }
-
     public String getUserID() {
         return userID;
     }
 
     public void setUserID(String userID) {
         this.userID = userID;
+    }
+
+    public String getRecipeID() {
+        return recipeID;
+    }
+
+    public void setRecipeID(String recipeID) {
+        this.recipeID = recipeID;
     }
 }

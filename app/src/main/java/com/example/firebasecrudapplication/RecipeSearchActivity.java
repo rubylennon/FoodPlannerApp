@@ -18,6 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,7 +29,6 @@ import java.util.ArrayList;
 
 public class RecipeSearchActivity extends AppCompatActivity {
 
-    private ProgressBar loadingPB;
     private DatabaseReference recipesDBRef;
     private ArrayList<Recipe> recipesList;
 
@@ -42,11 +42,11 @@ public class RecipeSearchActivity extends AppCompatActivity {
         // set activity_scan_ingredients as activity layout
         setContentView(R.layout.activity_recipe_search);
 
-        // set firebase database reference to 'Ingredients' data
-        recipesDBRef = FirebaseDatabase.getInstance().getReference("Recipes");
+        // set firebase database reference to 'Recipes' data
+        recipesDBRef = FirebaseDatabase.getInstance().getReference().child("Recipes");
 
         // find layout elements by id and assign to variables
-        loadingPB = findViewById(R.id.idPBLoading);
+        ProgressBar loadingPB = findViewById(R.id.idPBLoading);
 
         // hide loading progress bar
         loadingPB.setVisibility(View.GONE);
@@ -57,9 +57,10 @@ public class RecipeSearchActivity extends AppCompatActivity {
 
         super.onStart();
 
-        // if the ingredients database reference is not null
+        // if the recipe database reference is not null
         if(recipesDBRef != null){
-            // create ingredients db reference value events listener
+            Log.d("recipesDBRef", "not null");
+            // create recipe db reference value events listener
             recipesDBRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -68,6 +69,7 @@ public class RecipeSearchActivity extends AppCompatActivity {
                         // store db recipes to arraylist
                         for(DataSnapshot ds : dataSnapshot.getChildren()){
                             recipesList.add(ds.getValue(Recipe.class));
+                            Log.d("snapshot object", ds.getValue().toString());
                         }
                     }
                 }
@@ -79,11 +81,47 @@ public class RecipeSearchActivity extends AppCompatActivity {
             });
         }
 
-        // print all recipes retrieved from database
-        for(Recipe object : recipesList){
-            Log.d("RECIPE", object.toString());
-        }
-
     }
+
+//    public ArrayList<Recipe> listRecipes(){
+//
+//        recipesDBRef.addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//                fetchData(dataSnapshot);
+//            }
+//
+//            @Override
+//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//                fetchData(dataSnapshot);
+//
+//            }
+//
+//            @Override
+//            public void onChildRemoved(DataSnapshot dataSnapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+//
+//        return listDays;
+//    }
+//
+//    private void fetchData(DataSnapshot dataSnapshot){
+//        for(DataSnapshot postSnapShot:dataSnapshot.getChildren()){
+//            Day day= postSnapShot.getValue(Day.class);
+//            listDays.add(day);
+//
+//        }
+//    }
 
 }
