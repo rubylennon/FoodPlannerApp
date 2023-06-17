@@ -1,12 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/idRLSearchRecipes"
+    android:id="@+id/idRLRecipeSearchActivity"
     android:background="@color/blue_shade_1"
-    tools:context=".RecipeSearchActivity"
-    android:layout_centerHorizontal="true" >
+    tools:context=".RecipeSearchActivity">
+
+    <TextView
+        android:id="@+id/TvTest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:text="Text : "/>
+
+    <Button
+        android:id="@+id/BtnFilter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/TvTest"
+        android:text="Filter"/>
+
+    <Button
+        android:id="@+id/BtnFilter2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/BtnFilter"
+        android:text="Filter2"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/idRVRecipes"
+        android:layout_below="@+id/BtnFilter2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/idRVIngredients"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/idRVRecipes"
+        android:layout_height="match_parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_input_add"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:backgroundTint="@android:color/holo_purple"
+        android:tint="@color/white"
+        android:layout_margin="20dp"/>
+
+    <ProgressBar
+        android:id="@+id/idPBLoading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminate="true"
+        android:indeterminateDrawable="@drawable/progress_back" />
 
 </RelativeLayout>

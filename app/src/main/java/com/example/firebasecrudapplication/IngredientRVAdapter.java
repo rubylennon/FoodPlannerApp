@@ -1,80 +1,47 @@
 package com.example.firebasecrudapplication;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 
-public class IngredientRVAdapter extends RecyclerView.Adapter<IngredientRVAdapter.ViewHolder> {
-    int lastPos = -1;
-    private ArrayList<IngredientRVModal> ingredientRVModalArrayList;
-    private Context context;
-    private IngredientClickInterface ingredientClickInterface;
+public class IngredientRVAdapter extends RecyclerView.Adapter<IngredientRVAdapter.MyViewHolder> {
 
-    public IngredientRVAdapter(ArrayList<IngredientRVModal> ingredientRVModalArrayList, Context context, IngredientClickInterface ingredientClickInterface) {
-        this.ingredientRVModalArrayList = ingredientRVModalArrayList;
-        this.context = context;
-        this.ingredientClickInterface = ingredientClickInterface;
+    ArrayList<Ingredient> list;
+    public IngredientRVAdapter(ArrayList<Ingredient> list){
+        this.list = list;
     }
 
     @NonNull
     @Override
-    public IngredientRVAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.ingredient_rv_item,parent, false);
-        return new ViewHolder(view);
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.ingredient_card_holder,viewGroup,false);
+        return new MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull IngredientRVAdapter.ViewHolder holder, int position) {
-        IngredientRVModal ingredientRVModal = ingredientRVModalArrayList.get(position);
-        holder.ingredientNameTV.setText("Name: " + ingredientRVModal.getIngredientName());
-        holder.ingredientDescriptionTV.setText("Description: " + ingredientRVModal.getIngredientDescription());
-        setAnimation(holder.itemView, position);
-
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ingredientClickInterface.onIngredientClick(position);
-            }
-        });
-    }
-
-    private void setAnimation(View itemView, int position){
-        if(position > lastPos){
-            Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left);
-            itemView.setAnimation(animation);
-            lastPos = position;
-        }
+    public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
+        myViewHolder.name.setText(list.get(i).getIngredientName());
+        myViewHolder.description.setText(list.get(i).getIngredientDescription());
     }
 
     @Override
     public int getItemCount() {
-        return ingredientRVModalArrayList.size();
+        return list.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class MyViewHolder extends RecyclerView.ViewHolder {
+        TextView name, description;
 
-        private TextView ingredientNameTV, ingredientDescriptionTV;
-
-        public ViewHolder(@NonNull View itemView) {
+        public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            ingredientNameTV = itemView.findViewById(R.id.idTVIngredientName);
-            ingredientDescriptionTV = itemView.findViewById(R.id.idTVIngredientDescription);
+            name = itemView.findViewById(R.id.SvIngredientNameTwo);
+            description = itemView.findViewById(R.id.SvIngredientDescriptionTwo);
         }
-    }
-
-    public interface IngredientClickInterface{
-        void onIngredientClick(int position);
     }
 }

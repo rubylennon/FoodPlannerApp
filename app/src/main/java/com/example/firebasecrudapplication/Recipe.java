@@ -18,7 +18,11 @@ public class Recipe {
     public Recipe() {
     }
 
-    public Recipe(String recipeName, String recipeLink, String recipeSuitedFor, String recipeServings, String recipeDescription, String recipeIngredients, String recipeCookingTime, String recipeImg, String recipeMethod, Boolean recipePublic, String userID, String recipeID) {
+    public Recipe(String recipeName, String recipeLink, String recipeSuitedFor,
+                  String recipeServings, String recipeDescription,
+                  String recipeIngredients, String recipeCookingTime,
+                  String recipeImg, String recipeMethod, Boolean recipePublic,
+                  String userID, String recipeID) {
         this.recipeName = recipeName;
         this.recipeLink = recipeLink;
         this.recipeSuitedFor = recipeSuitedFor;
