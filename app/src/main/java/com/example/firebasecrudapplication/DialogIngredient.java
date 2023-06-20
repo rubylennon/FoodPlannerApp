@@ -34,7 +34,7 @@ public class DialogIngredient extends DialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.custom_dialog_2, container, false);
         recyclerView = v.findViewById(R.id.recyclerView);
-        btn_submit = v.findViewById(R.id.btn_submit);
+        btn_submit = v.findViewById(R.id.submit2);
 
         return v;
     }

@@ -10,14 +10,14 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
-        android:layout_above="@id/btn_submit"
+        android:layout_above="@id/submit2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:listitem="@layout/ingredient_list_item"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     <Button
-        android:id="@+id/btn_submit"
+        android:id="@+id/submit2"
         android:background="@color/purple_700"
         android:text="@string/submit"
         android:layout_width="match_parent"
