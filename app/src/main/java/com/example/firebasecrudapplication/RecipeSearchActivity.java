@@ -42,11 +42,14 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVAdapter.RecipeClickInterface {
     private ProgressBar loadingPB;
     // RECIPE VARIABLES START
     private ArrayList<RecipeRVModal> recipesList;
+    private ArrayList<RecipeRVModal> recipesListTest;
     private DatabaseReference databaseReferenceRecipes;
     private RelativeLayout bottomSheetRL;
     private RecipeRVAdapter recipeRVAdapter;
@@ -59,11 +62,6 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
     private RecyclerView ingredientsRV;
 
     // INGREDIENTS VARIABLES END
-
-//    private TextView tvTest;
-//    private AlertDialog dialog;
-//    private AlertDialog dialog2;
-//    private TestIngredientListAdapter testIngredientListAdapter;
 
     @SuppressLint({"MissingInflatedId", "SetTextI18n"})
     @Override
@@ -103,81 +101,14 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
         ingredientsDBRef = FirebaseDatabase.getInstance().getReference().child("Ingredients");
         ingredientsRV = findViewById(R.id.idRVIngredients);
 
-        // ingredient RV adapter config
-//        ingredientRVAdapter = new IngredientRVAdapter(ingredientsList);
-//        ingredientsRV.setLayoutManager(new LinearLayoutManager(this));
-//        ingredientsRV.setAdapter(ingredientRVAdapter);
-
+        // ingredients alert dialog button
         Button mFilterButton = findViewById(R.id.BtnFilter);
 
-        // retrieve and display recipes
-        // getAllIngredients();
-
-        // INGREDIENTS CODE END
-
-//        // FILTER BUTTON 1 START
-//
-//        tvTest = findViewById(R.id.TvTest);
-//        Button filter = findViewById(R.id.BtnFilter);
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setTitle("Enter Text");
-//
-//        //Inflate the custom_dialog view
-//        View view = getLayoutInflater().inflate(R.layout.custom_dialog, null);
-//        EditText eTest = view.findViewById(R.id.testInput);
-//        Button submit = view.findViewById(R.id.submit);
-//        submit.setOnClickListener(v -> {
-//            tvTest.setText("Name : " + eTest.getText().toString());
-//            dialog.dismiss();
-//        });
-//
-//        // set this view to dialog
-//        builder.setView(view);
-//
-//        // create dialog now
-//        dialog = builder.create();
-//
-//        filter.setOnClickListener(v -> dialog.show());
-//
-//        // FILTER BUTTON 1 END
-//
-//        // FILTER BUTTON 2 START
-//
-//        Button filter2 = findViewById(R.id.BtnFilter2);
-//        AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
-//        builder2.setTitle("Filter Recipe");
-//
-//        //Inflate the custom_dialog view
-//        View view2 = getLayoutInflater().inflate(R.layout.custom_dialog_2, null);
-//        Button submit2 = view2.findViewById(R.id.submit2);
-//        CheckBox testIngredientsCB = view2.findViewById(R.id.checkbox);
-//
-//        submit2.setOnClickListener(v -> {
-//            Log.d("checkbox", String.valueOf(testIngredientsCB));
-//            dialog2.dismiss();
-//        });
-//
-//        // set this view to dialog
-//        builder2.setView(view2);
-//
-//        // create dialog now
-//        dialog2 = builder2.create();
-//
-//        filter2.setOnClickListener(v -> dialog2.show());
-//
-//        RecyclerView testIngredientsRV = view2.findViewById(R.id.recyclerView);
-//
-//        testIngredientListAdapter = new TestIngredientListAdapter(ingredientsArrayList);
-//        testIngredientsRV.setLayoutManager(new LinearLayoutManager(this));
-//        testIngredientsRV.setAdapter(testIngredientListAdapter);
-//
-//        // FILTER BUTTON 2 END
+         // FILTER BUTTON 2 END
 
         // show filter alert dialog window
         mFilterButton.setOnClickListener(v -> {
-            showDialog();
-
-            storeRecipesInArrayList();
+            storeIngredientsInArrayList();
         });
 
     }
@@ -208,17 +139,41 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
             });
         }
         // SEARCH CODE END
+
+        // if the ingredients database reference is not null
+        if(databaseReferenceRecipes != null){
+            // create ingredients db reference value events listener
+            databaseReferenceRecipes.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.exists()){
+                        recipesListTest = new ArrayList<>();
+                        // store db ingredients to arraylist
+                        for(DataSnapshot ds : dataSnapshot.getChildren()){
+                            recipesListTest.add(ds.getValue(RecipeRVModal.class));
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(RecipeSearchActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        // SEARCH CODE END
     }
 
-    private void storeRecipesInArrayList(){
+    private void storeIngredientsInArrayList(){
         // add all ingredients from database to arraylist
 
         // add all ingredients from database to arraylist
         ArrayList<Ingredient> allIngredientsList = new ArrayList<>(ingredientsList);
 
-        for(Ingredient object : allIngredientsList){
-            Log.d("OBJECT", object.getIngredientName());
-        }
+        // print all ingredients list
+//        for(Ingredient object : allIngredientsList){
+//            Log.d("allIngredientsList", object.getIngredientName());
+//        }
 
         // update the ingredients recyclerview with matching ingredients
         RecipeSearchRVAdapter recipeSearchRVAdapter = new RecipeSearchRVAdapter(allIngredientsList);
@@ -227,6 +182,9 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
 
         // hide loading progress bar
         loadingPB.setVisibility(View.GONE);
+
+        // pass all ingredients list to show dialog method
+        showDialog(allIngredientsList);
     }
 
     private void getAllRecipes() {
@@ -271,31 +229,51 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
 
     }
 
-    private void showDialog(){
-        final CharSequence[] items = {" A "," B "," C "," D "};
+    private void showDialog(ArrayList<Ingredient> allIngredientsList){
 
-//        final ArrayList items2 = new ArrayList();
-//
-//        items2.add("test");
-//        items2.add("test2");
-//
-//        // String[] array = ingredientsList.toArray(new String[0]);
-
-        final ArrayList selectedItems=new ArrayList();
-//
-//        int ingredientListSize = ingredientsList.size();
-//
-//        String[] arr = new String[ingredientListSize];
-//        for(int i=0 ; i< ingredientsList.size();i++){
-//            arr[i] = ingredientsList.get(i).getIngredientName();
-//            Log.d("test arr item", arr[i]);
-//            Log.d("test ingredientsArrayList item", ingredientsList.get(i).getIngredientName());
-//            //getProductName or any suitable method
+        // print allIngredientsList as input to showDialog
+//        for(Ingredient object : allIngredientsList){
+//            Log.d("allIngredientsList 2", object.getIngredientName());
 //        }
 
-        AlertDialog dialog3 = new AlertDialog.Builder(this)
-        .setTitle("Select One")
-        .setMultiChoiceItems(items, null, new DialogInterface.OnMultiChoiceClickListener() {
+        // create string arraylist to store all ingredients names
+        ArrayList<String> ingredientsStringArrayList = new ArrayList<>();
+
+        // store all ingredients objects to string arraylist
+        for(Ingredient object : allIngredientsList){
+            ingredientsStringArrayList.add(object.getIngredientName());
+        }
+
+        // print stored ingredients in string arraylist
+//        for(String object : ingredientsStringArrayList){
+//            Log.d("ingredientsStringArrayList", object);
+//        }
+
+        // store string ArrayList of string to object array
+        Object[] objectsIngredientsArray = ingredientsStringArrayList.toArray();
+
+        // Printing array of objects
+//        for (Object obj : objects) {
+//            Log.d("objects", obj.toString());
+//        }
+
+        // convert array of object to string array
+        String[] stringIngredientsArray = Arrays.stream(objectsIngredientsArray)
+                .map(Object::toString)
+                .toArray(String[]::new);
+
+        // print array of strings
+//        for (String obj : stringArray) {
+//            Log.d("stringArray", obj);
+//        }
+
+        // create arraylist to store selected ingredients in alert dialog
+        final ArrayList selectedItems = new ArrayList();
+
+        // construct and configure alert dialog
+        AlertDialog alertDialog = new AlertDialog.Builder(this)
+        .setTitle("Select Ingredients")
+        .setMultiChoiceItems(stringIngredientsArray, null, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int indexSelected, boolean isChecked) {
                 if (isChecked) {
@@ -308,7 +286,20 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
             @Override
             public void onClick(DialogInterface dialog, int id) {
                 //  Your code when user clicked on OK
+
+                // print selected items array
                 Log.d("selectedCheckbox", selectedItems.toString());
+
+                // set the loading progress bar to visible
+                loadingPB.setVisibility(View.VISIBLE);
+
+                // run filterRecipes method and pass selected ingredients (indexes)
+                filterRecipes(selectedItems);
+
+                // print selected ingredients
+//                for (Object obj : selectedItems) {
+//                    Log.d("selectedItems", obj.toString());
+//                }
             }
         }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
@@ -316,31 +307,85 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
                 //todo
             }
         }).create();
-    dialog3.show();
+
+        // show the alert dialog
+        alertDialog.show();
 
     }
 
-    private void searchIngredients(ArrayList<String> scannedIngredientsList){
-        // create arraylist for storing matching ingredients (scanned & db stored ingredients)
-        ArrayList<Ingredient> matchingIngredientsList = new ArrayList<>();
+//    private void searchIngredients(ArrayList<String> scannedIngredientsList){
+//        // create arraylist for storing matching ingredients (scanned & db stored ingredients)
+//        ArrayList<Ingredient> matchingIngredientsList = new ArrayList<>();
+//
+//        // add all ingredients from database to arraylist
+//        ArrayList<Ingredient> allIngredientsList = new ArrayList<>(ingredientsList);
+//
+//        // compare ingredients list and if they match add ingredient to matching arraylist
+//        for(Ingredient object : allIngredientsList){
+//            if(scannedIngredientsList.toString().toLowerCase().contains(object.getIngredientName().toLowerCase())){
+//                matchingIngredientsList.add(object);
+//            }
+//        }
+//
+//        // update the ingredients recyclerview with matching ingredients
+//        IngredientScannerRVAdapter ingredientScannerRVAdapter = new IngredientScannerRVAdapter(matchingIngredientsList);
+//        ingredientsRV.setLayoutManager(new LinearLayoutManager(RecipeSearchActivity.this));
+//        ingredientsRV.setAdapter(ingredientScannerRVAdapter);
+//
+//        // hide loading progress bar
+//        loadingPB.setVisibility(View.GONE);
+//    }
 
-        // add all ingredients from database to arraylist
-        ArrayList<Ingredient> allIngredientsList = new ArrayList<>(ingredientsList);
+    private void filterRecipes(ArrayList<Object> selectedItems){
 
-        // compare ingredients list and if they match add ingredient to matching arraylist
-        for(Ingredient object : allIngredientsList){
-            if(scannedIngredientsList.toString().toLowerCase().contains(object.getIngredientName().toLowerCase())){
-                matchingIngredientsList.add(object);
+        ArrayList<String> filteredIngredients = new ArrayList<>();
+
+        for(Object object : selectedItems){
+            Log.d("selectedItems 2", object.toString());
+        }
+
+        for(Object object : selectedItems){
+            int index = Integer.parseInt(object.toString());
+            String ingredientName = ingredientsList.get(index).getIngredientName();
+            filteredIngredients.add(ingredientName);
+        }
+
+        for(String object : filteredIngredients){
+            Log.d("filteredIngredients", object);
+        }
+
+        // arraylist to store recipes with matching
+        ArrayList<RecipeRVModal> matchingRecipesList = new ArrayList<>();
+
+        // loop through the recipes and if they contain any of the selected ingredients then store them to arraylist
+        for(RecipeRVModal recipe : recipesList){
+            for(String ingredient : filteredIngredients){
+                if(recipe.getRecipeIngredients().toLowerCase().contains(ingredient.toLowerCase())){
+                    matchingRecipesList.add(recipe);
+                    break;
+                }
             }
         }
 
-        // update the ingredients recyclerview with matching ingredients
-        IngredientScannerRVAdapter ingredientScannerRVAdapter = new IngredientScannerRVAdapter(matchingIngredientsList);
-        ingredientsRV.setLayoutManager(new LinearLayoutManager(RecipeSearchActivity.this));
-        ingredientsRV.setAdapter(ingredientScannerRVAdapter);
+        for(RecipeRVModal object : matchingRecipesList){
+            Log.d("matchingRecipesList", object.getRecipeName());
+        }
+
+        Log.d("matchingRecipesList Size", String.valueOf(matchingRecipesList.size()));
+
+        // print all recipes ingredients
+        for(RecipeRVModal rL : recipesList){
+            Log.d("recipesList", rL.getRecipeIngredients());
+        }
 
         // hide loading progress bar
         loadingPB.setVisibility(View.GONE);
+
+        // recipe RV adapter config
+        RecyclerView recipeRV = findViewById(R.id.idRVRecipes);
+        recipeRVAdapter = new RecipeRVAdapter(matchingRecipesList, this, this);
+        recipeRV.setLayoutManager(new LinearLayoutManager(this));
+        recipeRV.setAdapter(recipeRVAdapter);
     }
 
     private void getAllIngredients() {
