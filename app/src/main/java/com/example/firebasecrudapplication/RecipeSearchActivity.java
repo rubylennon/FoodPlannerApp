@@ -10,9 +10,7 @@
 package com.example.firebasecrudapplication;
 
 // imports
-
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,13 +41,11 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 
 public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVAdapter.RecipeClickInterface {
     private ProgressBar loadingPB;
     // RECIPE VARIABLES START
     private ArrayList<RecipeRVModal> recipesList;
-    private ArrayList<RecipeRVModal> recipesListTest;
     private DatabaseReference databaseReferenceRecipes;
     private RelativeLayout bottomSheetRL;
     private RecipeRVAdapter recipeRVAdapter;
@@ -58,9 +54,6 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
     // INGREDIENTS VARIABLES START
     private ArrayList<Ingredient> ingredientsList;
     private DatabaseReference ingredientsDBRef;
-    private IngredientRVAdapter ingredientRVAdapter;
-    private RecyclerView ingredientsRV;
-
     // INGREDIENTS VARIABLES END
 
     @SuppressLint({"MissingInflatedId", "SetTextI18n"})
@@ -96,20 +89,14 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
 
         // RECIPES CODE END
 
-        // INGREDIENTS CODE START
         // declare variables
         ingredientsDBRef = FirebaseDatabase.getInstance().getReference().child("Ingredients");
-        ingredientsRV = findViewById(R.id.idRVIngredients);
 
-        // ingredients alert dialog button
+        // ingredients filter alert dialog button
         Button mFilterButton = findViewById(R.id.BtnFilter);
 
-         // FILTER BUTTON 2 END
-
         // show filter alert dialog window
-        mFilterButton.setOnClickListener(v -> {
-            storeIngredientsInArrayList();
-        });
+        mFilterButton.setOnClickListener(v -> searchByIngredients());
 
     }
 
@@ -139,46 +126,13 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
             });
         }
         // SEARCH CODE END
-
-        // if the ingredients database reference is not null
-        if(databaseReferenceRecipes != null){
-            // create ingredients db reference value events listener
-            databaseReferenceRecipes.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if(dataSnapshot.exists()){
-                        recipesListTest = new ArrayList<>();
-                        // store db ingredients to arraylist
-                        for(DataSnapshot ds : dataSnapshot.getChildren()){
-                            recipesListTest.add(ds.getValue(RecipeRVModal.class));
-                        }
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(RecipeSearchActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-        // SEARCH CODE END
     }
 
-    private void storeIngredientsInArrayList(){
+    private void searchByIngredients(){
         // add all ingredients from database to arraylist
 
         // add all ingredients from database to arraylist
         ArrayList<Ingredient> allIngredientsList = new ArrayList<>(ingredientsList);
-
-        // print all ingredients list
-//        for(Ingredient object : allIngredientsList){
-//            Log.d("allIngredientsList", object.getIngredientName());
-//        }
-
-        // update the ingredients recyclerview with matching ingredients
-//        RecipeSearchRVAdapter recipeSearchRVAdapter = new RecipeSearchRVAdapter(allIngredientsList);
-//        ingredientsRV.setLayoutManager(new LinearLayoutManager(RecipeSearchActivity.this));
-//        ingredientsRV.setAdapter(recipeSearchRVAdapter);
 
         // hide loading progress bar
         loadingPB.setVisibility(View.GONE);
@@ -196,7 +150,6 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 loadingPB.setVisibility(View.GONE);
                 recipesList.add(snapshot.getValue(RecipeRVModal.class));
-
                 recipeRVAdapter.notifyDataSetChanged();
             }
 
@@ -231,11 +184,6 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
 
     private void showDialog(ArrayList<Ingredient> allIngredientsList){
 
-        // print allIngredientsList as input to showDialog
-//        for(Ingredient object : allIngredientsList){
-//            Log.d("allIngredientsList 2", object.getIngredientName());
-//        }
-
         // create string arraylist to store all ingredients names
         ArrayList<String> ingredientsStringArrayList = new ArrayList<>();
 
@@ -244,97 +192,46 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
             ingredientsStringArrayList.add(object.getIngredientName());
         }
 
-        // print stored ingredients in string arraylist
-//        for(String object : ingredientsStringArrayList){
-//            Log.d("ingredientsStringArrayList", object);
-//        }
-
         // store string ArrayList of string to object array
         Object[] objectsIngredientsArray = ingredientsStringArrayList.toArray();
-
-        // Printing array of objects
-//        for (Object obj : objects) {
-//            Log.d("objects", obj.toString());
-//        }
 
         // convert array of object to string array
         String[] stringIngredientsArray = Arrays.stream(objectsIngredientsArray)
                 .map(Object::toString)
                 .toArray(String[]::new);
 
-        // print array of strings
-//        for (String obj : stringArray) {
-//            Log.d("stringArray", obj);
-//        }
-
         // create arraylist to store selected ingredients in alert dialog
-        final ArrayList selectedItems = new ArrayList();
+        final ArrayList<Object> selectedItems = new ArrayList<>();
 
         // construct and configure alert dialog
         AlertDialog alertDialog = new AlertDialog.Builder(this)
         .setTitle("Select Ingredients")
-        .setMultiChoiceItems(stringIngredientsArray, null, new DialogInterface.OnMultiChoiceClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int indexSelected, boolean isChecked) {
-                if (isChecked) {
-                    selectedItems.add(indexSelected);
-                } else if (selectedItems.contains(indexSelected)) {
-                    selectedItems.remove(Integer.valueOf(indexSelected));
-                }
+        .setMultiChoiceItems(stringIngredientsArray, null, (dialog, indexSelected, isChecked) -> {
+            if (isChecked) {
+                selectedItems.add(indexSelected);
+            } else if (selectedItems.contains(indexSelected)) {
+                selectedItems.remove(Integer.valueOf(indexSelected));
             }
-        }).setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int id) {
-                //  Your code when user clicked on OK
+        }).setPositiveButton("OK", (dialog, id) -> {
+            //  Your code when user clicked on OK
 
-                // print selected items array
-                Log.d("selectedCheckbox", selectedItems.toString());
+            // print selected items array
+            Log.d("selectedCheckbox", selectedItems.toString());
 
-                // set the loading progress bar to visible
-                loadingPB.setVisibility(View.VISIBLE);
+            // set the loading progress bar to visible
+            loadingPB.setVisibility(View.VISIBLE);
 
-                // run filterRecipes method and pass selected ingredients (indexes)
-                filterRecipes(selectedItems);
+            // run filterRecipes method and pass selected ingredients (indexes)
+            filterRecipes(selectedItems);
 
-                // print selected ingredients
-//                for (Object obj : selectedItems) {
-//                    Log.d("selectedItems", obj.toString());
-//                }
-            }
-        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int id) {
-                //todo
-            }
+        }).setNegativeButton("Cancel", (dialog, id) -> {
+            //todo
         }).create();
 
         // show the alert dialog
         alertDialog.show();
 
     }
-
-//    private void searchIngredients(ArrayList<String> scannedIngredientsList){
-//        // create arraylist for storing matching ingredients (scanned & db stored ingredients)
-//        ArrayList<Ingredient> matchingIngredientsList = new ArrayList<>();
-//
-//        // add all ingredients from database to arraylist
-//        ArrayList<Ingredient> allIngredientsList = new ArrayList<>(ingredientsList);
-//
-//        // compare ingredients list and if they match add ingredient to matching arraylist
-//        for(Ingredient object : allIngredientsList){
-//            if(scannedIngredientsList.toString().toLowerCase().contains(object.getIngredientName().toLowerCase())){
-//                matchingIngredientsList.add(object);
-//            }
-//        }
-//
-//        // update the ingredients recyclerview with matching ingredients
-//        IngredientScannerRVAdapter ingredientScannerRVAdapter = new IngredientScannerRVAdapter(matchingIngredientsList);
-//        ingredientsRV.setLayoutManager(new LinearLayoutManager(RecipeSearchActivity.this));
-//        ingredientsRV.setAdapter(ingredientScannerRVAdapter);
-//
-//        // hide loading progress bar
-//        loadingPB.setVisibility(View.GONE);
-//    }
 
     private void filterRecipes(ArrayList<Object> selectedItems){
 
@@ -386,47 +283,6 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
         recipeRVAdapter = new RecipeRVAdapter(matchingRecipesList, this, this);
         recipeRV.setLayoutManager(new LinearLayoutManager(this));
         recipeRV.setAdapter(recipeRVAdapter);
-    }
-
-    private void getAllIngredients() {
-
-        ingredientsList.clear();
-        ingredientsDBRef.addChildEventListener(new ChildEventListener() {
-            @SuppressLint("NotifyDataSetChanged")
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                loadingPB.setVisibility(View.GONE);
-                ingredientsList.add(snapshot.getValue(Ingredient.class));
-                ingredientRVAdapter.notifyDataSetChanged();
-            }
-
-            @SuppressLint("NotifyDataSetChanged")
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                loadingPB.setVisibility(View.GONE);
-                ingredientRVAdapter.notifyDataSetChanged();
-            }
-
-            @SuppressLint("NotifyDataSetChanged")
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-                loadingPB.setVisibility(View.GONE);
-                ingredientRVAdapter.notifyDataSetChanged();
-            }
-
-            @SuppressLint("NotifyDataSetChanged")
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                loadingPB.setVisibility(View.GONE);
-                ingredientRVAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
     }
 
     @Override
