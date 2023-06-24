@@ -49,4 +49,32 @@
     <string name="capture_image">Capture Image</string>
     <string name="submit">Submit</string>
     <string name="filter_by_ingredients">Filter By Ingredients</string>
+    <string name="select_cuisine">Select Cuisine</string>
+    <string-array name="cuisine_array">
+        <item>Chinese</item>
+        <item>Thai</item>
+        <item>French</item>
+        <item>Mexican</item>
+        <item>Caribbean</item>
+        <item>Shandong</item>
+        <item>Indian</item>
+        <item>Indonesian</item>
+        <item>American</item>
+        <item>Italian</item>
+        <item>Japanese</item>
+        <item>European</item>
+        <item>Mediterranean</item>
+        <item>Cantonese</item>
+        <item>Other</item>
+    </string-array>
+    <string-array name="dietary_requirements">
+        <item>Lactose intolerance</item>
+        <item>Gluten intolerance or sensitivity</item>
+        <item>Vegetarianism</item>
+        <item>Veganism</item>
+        <item>Kosher</item>
+        <item>Nut allergies</item>
+        <item>Halal</item>
+        <item>Pescetarianism</item>
+    </string-array>
 </resources>

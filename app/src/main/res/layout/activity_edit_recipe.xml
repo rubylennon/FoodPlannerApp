@@ -215,12 +215,13 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <Switch
+                android:id="@+id/idPublicSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
-                android:id="@+id/idPublicSwitch"
+                android:minHeight="48dp"
                 android:text="@string/make_recipe_public"
                 tools:ignore="UseSwitchCompatOrMaterialXml" />
 

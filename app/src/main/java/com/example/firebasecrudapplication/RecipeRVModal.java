@@ -14,6 +14,7 @@ public class RecipeRVModal implements Parcelable {
     private String recipeCookingTime;
     private String recipeServings;
     private String recipeSuitedFor;
+    private String recipeCuisine;
     private String recipeImg;
     private String recipeLink;
     private String recipeDescription;
@@ -27,11 +28,12 @@ public class RecipeRVModal implements Parcelable {
 
     }
 
-    public RecipeRVModal(String recipeName, String recipeCookingTime, String recipeServings, String recipeSuitedFor, String recipeImg, String recipeLink, String recipeDescription, String recipeMethod, String recipeIngredients, Boolean recipePublic, String recipeID, String userID) {
+    public RecipeRVModal(String recipeName, String recipeCookingTime, String recipeServings, String recipeSuitedFor, String recipeCuisine, String recipeImg, String recipeLink, String recipeDescription, String recipeMethod, String recipeIngredients, Boolean recipePublic, String recipeID, String userID) {
         this.recipeName = recipeName;
         this.recipeCookingTime = recipeCookingTime;
         this.recipeServings = recipeServings;
         this.recipeSuitedFor = recipeSuitedFor;
+        this.recipeCuisine = recipeCuisine;
         this.recipeImg = recipeImg;
         this.recipeLink = recipeLink;
         this.recipeDescription = recipeDescription;
@@ -47,6 +49,7 @@ public class RecipeRVModal implements Parcelable {
         recipeCookingTime = in.readString();
         recipeServings = in.readString();
         recipeSuitedFor = in.readString();
+        recipeCuisine = in.readString();
         recipeImg = in.readString();
         recipeLink = in.readString();
         recipeDescription = in.readString();
@@ -101,6 +104,14 @@ public class RecipeRVModal implements Parcelable {
 
     public void setRecipeSuitedFor(String recipeSuitedFor) {
         this.recipeSuitedFor = recipeSuitedFor;
+    }
+
+    public String getRecipeCuisine() {
+        return recipeCuisine;
+    }
+
+    public void setRecipeCuisine(String recipeCuisine) {
+        this.recipeCuisine = recipeCuisine;
     }
 
     public String getRecipeImg() {
@@ -178,6 +189,7 @@ public class RecipeRVModal implements Parcelable {
         dest.writeString(recipeCookingTime);
         dest.writeString(recipeServings);
         dest.writeString(recipeSuitedFor);
+        dest.writeString(recipeCuisine);
         dest.writeString(recipeImg);
         dest.writeString(recipeLink);
         dest.writeString(recipeDescription);

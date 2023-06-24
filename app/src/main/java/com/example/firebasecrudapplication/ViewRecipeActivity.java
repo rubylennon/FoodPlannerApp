@@ -28,6 +28,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
             recipeCookingTimeEdt,
             recipeServingsEdt,
             recipeSuitedForEdt,
+            recipeCuisineEdt,
             recipeDescEdt,
             recipeMethodEdt,
             recipeIngredientsEdt;
@@ -57,6 +58,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
         recipeCookingTimeEdt = findViewById(R.id.idEdtRecipeCookingTime);
         recipeServingsEdt = findViewById(R.id.idEdtRecipeServings);
         recipeSuitedForEdt = findViewById(R.id.idEdtRecipeSuitedFor);
+        recipeCuisineEdt = findViewById(R.id.idEdtRecipeCuisine);
         recipeDescEdt = findViewById(R.id.idEdtRecipeDesc);
         recipeMethodEdt = findViewById(R.id.idEdtRecipeMethod);
         recipeIngredientsEdt = findViewById(R.id.idEdtRecipeIngredients);
@@ -71,6 +73,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
             recipeCookingTimeEdt.setText(recipeRVModal.getRecipeCookingTime());
             recipeServingsEdt.setText(recipeRVModal.getRecipeServings());
             recipeSuitedForEdt.setText(recipeRVModal.getRecipeSuitedFor());
+            recipeCuisineEdt.setText(recipeRVModal.getRecipeCuisine());
             recipeDescEdt.setText(recipeRVModal.getRecipeDescription());
             recipeMethodEdt.setText(recipeRVModal.getRecipeMethod());
             recipeIngredientsEdt.setText(recipeRVModal.getRecipeIngredients());
@@ -83,6 +86,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
         recipeCookingTimeEdt.setFocusable(false);
         recipeServingsEdt.setFocusable(false);
         recipeSuitedForEdt.setFocusable(false);
+        recipeCuisineEdt.setFocusable(false);
         recipeDescEdt.setFocusable(false);
         recipeMethodEdt.setFocusable(false);
         recipeIngredientsEdt.setFocusable(false);
@@ -92,6 +96,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
         recipeCookingTimeEdt.setEnabled(false);
         recipeServingsEdt.setEnabled(false);
         recipeSuitedForEdt.setEnabled(false);
+        recipeCuisineEdt.setEnabled(false);
         recipeDescEdt.setEnabled(false);
         recipeMethodEdt.setEnabled(false);
         recipeIngredientsEdt.setEnabled(false);
@@ -101,6 +106,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
         recipeCookingTimeEdt.setCursorVisible(false);
         recipeServingsEdt.setCursorVisible(false);
         recipeSuitedForEdt.setCursorVisible(false);
+        recipeCuisineEdt.setCursorVisible(false);
         recipeDescEdt.setCursorVisible(false);
         recipeMethodEdt.setCursorVisible(false);
         recipeIngredientsEdt.setCursorVisible(false);
@@ -108,16 +114,14 @@ public class ViewRecipeActivity extends AppCompatActivity {
         // set switch button to non clickable
         recipePublicEdt.setClickable(false);
 
+        // assign database reference to Recipes firebase realtime database reference
         databaseReference = firebaseDatabase.getReference("Recipes").child(recipeID);
 
         // view recipe source page in browser using recipe link
-        viewSourceRecipe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(recipeRVModal.getRecipeLink()));
-                startActivity(i);
-            }
+        viewSourceRecipe.setOnClickListener(v -> {
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(recipeRVModal.getRecipeLink()));
+            startActivity(i);
         });
     }
 }

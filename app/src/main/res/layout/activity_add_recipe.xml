@@ -54,6 +54,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:importantForAutofill="no"
+                    android:maxWidth="488dp"
                     android:inputType="number"
                     android:textColor="@color/blue_shade_2"
                     android:textColorHint="@color/blue_shade_2"
@@ -93,6 +94,7 @@
                 android:padding="5dp"
                 android:textColorHint="@color/blue_shade_2"
                 app:hintTextColor="@color/blue_shade_2" >
+
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/idEdtRecipeSuitedFor"
                     android:layout_width="match_parent"
@@ -100,9 +102,54 @@
                     android:importantForAutofill="no"
                     android:inputType="text"
                     android:textColor="@color/blue_shade_2"
-                    android:textColorHint="@color/blue_shade_2"
+                    android:textColorHint="#01579B"
+                    android:maxWidth="488dp"
                     android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>
+
+<!--            <TextView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_marginStart="20dp"-->
+<!--                android:layout_marginTop="20dp"-->
+<!--                android:text="@string/select_cuisine"/>-->
+
+<!--            <Spinner-->
+<!--                android:id="@+id/cuisine_spinner"-->
+<!--                style="@style/Widget.AppCompat.DropDownItem.Spinner"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="20dp"-->
+<!--                android:layout_marginTop="20dp"-->
+<!--                android:layout_marginEnd="20dp"-->
+<!--                android:contentDescription="Select Cuisine"-->
+<!--                android:minHeight="48dp" />-->
+
+            <TextView
+                android:id="@+id/selectCuisineTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:padding="12dp"
+                android:layout_centerInParent="true"
+                android:background="@android:drawable/editbox_background"
+                android:drawableRight="@android:drawable/arrow_down_float"
+                android:drawablePadding="16dp"
+                android:hint="Select Cuisine" />
+
+            <TextView
+                android:id="@+id/selectSuitabilityTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:padding="12dp"
+                android:layout_centerInParent="true"
+                android:background="@android:drawable/editbox_background"
+                android:drawableRight="@android:drawable/arrow_down_float"
+                android:drawablePadding="16dp"
+                android:hint="Select Suitable For" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -120,6 +167,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:importantForAutofill="no"
+                    android:maxWidth="488dp"
                     android:inputType="text"
                     android:textColor="@color/blue_shade_2"
                     android:textColorHint="@color/blue_shade_2"
@@ -143,6 +191,7 @@
                     android:layout_height="wrap_content"
                     android:importantForAutofill="no"
                     android:inputType="text"
+                    android:maxWidth="488dp"
                     android:textColor="@color/blue_shade_2"
                     android:textColorHint="@color/blue_shade_2"
                     android:textSize="14sp" />
@@ -220,6 +269,8 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
+                android:minHeight="48dp"
+                android:maxWidth="320dp"
                 android:id="@+id/idPublicSwitch"
                 android:text="@string/make_recipe_public"
                 tools:ignore="UseSwitchCompatOrMaterialXml" />
