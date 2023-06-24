@@ -176,9 +176,9 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
 //        }
 
         // update the ingredients recyclerview with matching ingredients
-        RecipeSearchRVAdapter recipeSearchRVAdapter = new RecipeSearchRVAdapter(allIngredientsList);
-        ingredientsRV.setLayoutManager(new LinearLayoutManager(RecipeSearchActivity.this));
-        ingredientsRV.setAdapter(recipeSearchRVAdapter);
+//        RecipeSearchRVAdapter recipeSearchRVAdapter = new RecipeSearchRVAdapter(allIngredientsList);
+//        ingredientsRV.setLayoutManager(new LinearLayoutManager(RecipeSearchActivity.this));
+//        ingredientsRV.setAdapter(recipeSearchRVAdapter);
 
         // hide loading progress bar
         loadingPB.setVisibility(View.GONE);
