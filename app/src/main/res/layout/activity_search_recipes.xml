@@ -8,24 +8,53 @@
     android:background="@color/blue_shade_1"
     tools:context=".RecipeSearchActivity">
 
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchView"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@color/white"
+        app:queryHint="Search" />
+
     <Button
-        android:id="@+id/BtnFilter"
+        android:id="@+id/BtnIngredientsFilter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Search By Ingredients"/>
+        android:layout_below="@+id/searchView"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:minWidth="320dp"
+        android:layout_centerHorizontal="true"
+        android:text="@string/search_by_ingredients" />
+
+    <Button
+        android:id="@+id/BtnCuisineFilter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/BtnIngredientsFilter"
+        android:minWidth="320dp"
+        android:layout_centerHorizontal="true"
+        android:text="@string/search_by_cuisine"/>
+
+    <Button
+        android:id="@+id/BtnSuitabilityFilter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/BtnCuisineFilter"
+        android:minWidth="320dp"
+        android:layout_centerHorizontal="true"
+        android:text="@string/search_by_dietary_suitability"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/idRVRecipes"
-        android:layout_below="@+id/BtnFilter"
+        android:layout_below="@+id/BtnSuitabilityFilter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/idRVIngredients"
-        android:layout_width="match_parent"
-        android:layout_below="@+id/idRVRecipes"
-        android:layout_height="match_parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     <ProgressBar
         android:id="@+id/idPBLoading"
