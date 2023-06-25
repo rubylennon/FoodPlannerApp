@@ -35,7 +35,6 @@ public class AddRecipeActivity extends AppCompatActivity {
     private TextInputEditText recipeNameEdt,
             recipeCookingTimeEdt,
             recipeServingsEdt,
-            recipeSuitedForEdt,
             recipeImgEdt,
             recipeLinkEdt,
             recipeDescEdt,
@@ -71,7 +70,6 @@ public class AddRecipeActivity extends AppCompatActivity {
         recipeNameEdt = findViewById(R.id.idEdtRecipeName);
         recipeCookingTimeEdt = findViewById(R.id.idEdtRecipeCookingTime);
         recipeServingsEdt = findViewById(R.id.idEdtRecipeServings);
-        recipeSuitedForEdt = findViewById(R.id.idEdtRecipeSuitedFor);
         recipeCuisineEdt = findViewById(R.id.selectCuisineTV);
         recipeSuitabilityEdt = findViewById(R.id.selectSuitabilityTV);
         recipeImgEdt = findViewById(R.id.idEdtRecipeImageLink);
@@ -86,6 +84,7 @@ public class AddRecipeActivity extends AppCompatActivity {
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("Recipes");
 
+        // SELECT CUISINE DIALOG START
         // add items from resource cuisine array to local cuisine array
         cuisineArray = getResources().getStringArray(R.array.cuisine_array);
 
@@ -155,7 +154,9 @@ public class AddRecipeActivity extends AppCompatActivity {
             // show dialog
             builder.show();
         });
+        // SELECT CUISINE DIALOG END
 
+        // SELECT SUITABILITY DIALOG START
         // add items from resource cuisine array to local cuisine array
         suitabilityArray = getResources().getStringArray(R.array.dietary_requirements);
 
@@ -225,6 +226,7 @@ public class AddRecipeActivity extends AppCompatActivity {
             // show dialog
             builder2.show();
         });
+        // SELECT SUITABILITY DIALOG END
 
         // add recipe button click event action
         addRecipeBtn.setOnClickListener(v -> {

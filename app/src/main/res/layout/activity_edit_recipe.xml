@@ -82,27 +82,29 @@
                     android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
+            <TextView
+                android:id="@+id/selectSuitabilityTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:hint="@string/enter_recipe_suited_for"
-                style="@style/TextInputLayout"
-                android:padding="5dp"
-                android:textColorHint="@color/blue_shade_2"
-                app:hintTextColor="@color/blue_shade_2" >
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/idEdtRecipeSuitedFor"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:importantForAutofill="no"
-                    android:inputType="text"
-                    android:textColor="@color/blue_shade_2"
-                    android:textColorHint="@color/blue_shade_2"
-                    android:textSize="14sp" />
-            </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:padding="12dp"
+                android:background="@android:drawable/editbox_background"
+                android:drawableRight="@android:drawable/arrow_down_float"
+                android:drawablePadding="16dp"
+                android:hint="Select Suitable For" />
+
+            <TextView
+                android:id="@+id/selectCuisineTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:padding="12dp"
+                android:background="@android:drawable/editbox_background"
+                android:drawableRight="@android:drawable/arrow_down_float"
+                android:drawablePadding="16dp"
+                android:hint="Select Cuisine" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
