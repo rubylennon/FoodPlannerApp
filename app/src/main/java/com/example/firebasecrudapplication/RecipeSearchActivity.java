@@ -62,6 +62,10 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
     private String[] cuisineArray;
     private String[] suitabilityArray;
     private SearchView searchView;
+    private ImageView noMatchingSearchResultsIcon;
+    private TextView noMatchingSearchTextOne,
+            noMatchingSearchTextTwo;
+
 
     @SuppressLint({"MissingInflatedId", "SetTextI18n"})
     @Override
@@ -73,10 +77,16 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
         setTitle("Recipe Search");
 
         searchView = findViewById(R.id.searchView);
+        noMatchingSearchResultsIcon = findViewById(R.id.noSearchResultsIV);
+        noMatchingSearchTextOne = findViewById(R.id.no_matching_results);
+        noMatchingSearchTextTwo = findViewById(R.id.no_matching_results_help);
+
+        isMatchingResults();
 
         // SHARE CODE START
         // declare variables
         loadingPB = findViewById(R.id.idPBLoading);
+
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
 
         // SHARE CODE END
@@ -168,18 +178,26 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
                 }
             });
 
-            searchView.setOnCloseListener(new SearchView.OnCloseListener() {
-                @Override
-                public boolean onClose() {
-                    searchView.setQuery("", false);
-                    searchView.clearFocus();
-                    resetRecipesList();
-                    return false;
-                }
+            searchView.setOnCloseListener(() -> {
+                searchView.setQuery("", false);
+                searchView.clearFocus();
+                resetRecipesList();
+                return false;
             });
 
-
         }
+    }
+
+    private void isMatchingResults(){
+        noMatchingSearchResultsIcon.setVisibility(View.GONE);
+        noMatchingSearchTextOne.setVisibility(View.GONE);
+        noMatchingSearchTextTwo.setVisibility(View.GONE);
+    }
+
+    private void noMatchingResults(){
+        noMatchingSearchResultsIcon.setVisibility(View.VISIBLE);
+        noMatchingSearchTextOne.setVisibility(View.VISIBLE);
+        noMatchingSearchTextTwo.setVisibility(View.VISIBLE);
     }
 
     private void searchByIngredients(){
@@ -277,7 +295,7 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
             loadingPB.setVisibility(View.VISIBLE);
 
             // run filterRecipes method and pass selected ingredients (indexes)
-            filterRecipes(selectedItems);
+            filterRecipesByIngredients(selectedItems);
 
         }).setNegativeButton("Cancel", (dialog, id) -> {
             //todo
@@ -358,7 +376,7 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
 
     }
 
-    private void filterRecipes(ArrayList<Object> selectedItems){
+    private void filterRecipesByIngredients(ArrayList<Object> selectedItems){
 
         ArrayList<String> filteredIngredients = new ArrayList<>();
 
@@ -403,6 +421,12 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
         // hide loading progress bar
         loadingPB.setVisibility(View.GONE);
 
+        if(matchingRecipesList.size() == 0){
+            noMatchingResults();
+        }else{
+            isMatchingResults();
+        }
+
         // recipe RV adapter config
         RecyclerView recipeRV = findViewById(R.id.idRVRecipes);
         recipeRVAdapter = new RecipeRVAdapter(matchingRecipesList, this, this);
@@ -445,6 +469,12 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
         // print all recipes ingredients
         for(RecipeRVModal rL : recipesList){
             Log.d("recipesList", rL.getRecipeName());
+        }
+
+        if(matchingRecipesList.size() == 0){
+            noMatchingResults();
+        }else{
+            isMatchingResults();
         }
 
         // hide loading progress bar
@@ -494,6 +524,12 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
             Log.d("recipesList", rL.getRecipeName());
         }
 
+        if(matchingRecipesList.size() == 0){
+            noMatchingResults();
+        }else{
+            isMatchingResults();
+        }
+
         // hide loading progress bar
         loadingPB.setVisibility(View.GONE);
 
@@ -513,6 +549,13 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
                     matchingRecipes.add(recipe);
                 }
             }
+
+            if(matchingRecipes.size() == 0){
+                noMatchingResults();
+            }else{
+                isMatchingResults();
+            }
+
             RecyclerView recipeRV = findViewById(R.id.idRVRecipes);
             recipeRVAdapter = new RecipeRVAdapter(matchingRecipes, this, this);
             recipeRV.setLayoutManager(new LinearLayoutManager(this));

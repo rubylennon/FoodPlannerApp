@@ -54,6 +54,10 @@
     <string name="search_by_cuisine">Search By Cuisine</string>
     <string name="search_by_dietary_suitability">Search By Dietary Suitability</string>
     <string name="selected_image_to_be_scanned">Selected image to be scanned</string>
+    <string name="matching_recipes">Matching Recipes</string>
+    <string name="search_icon_with_x">Search icon with X</string>
+    <string name="no_matching_recipes">No matching recipes</string>
+    <string name="try_adjusting_your_search">Try adjusting your search</string>
     <string-array name="cuisine_array">
         <item>Chinese</item>
         <item>Thai</item>

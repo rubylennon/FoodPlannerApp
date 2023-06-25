@@ -50,11 +50,50 @@
         android:layout_centerHorizontal="true"
         android:text="@string/search_by_dietary_suitability"/>
 
+<!--    <TextView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="@string/matching_recipes"-->
+<!--        android:textStyle="bold"-->
+<!--        android:id="@+id/recipesTV"-->
+<!--        android:padding="5dp"-->
+<!--        android:textSize="20sp"-->
+<!--        android:layout_below="@+id/BtnSuitabilityFilter" />-->
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/idRVRecipes"
         android:layout_below="@+id/BtnSuitabilityFilter"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/noSearchResultsIV"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/no_matching_search_results"
+        android:layout_below="@+id/BtnSuitabilityFilter"
+        android:contentDescription="@string/search_icon_with_x" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/no_matching_recipes"
+        android:id="@+id/no_matching_results"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:layout_below="@+id/noSearchResultsIV"/>
+
+    <TextView
+        android:id="@+id/no_matching_results_help"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/no_matching_results"
+        android:gravity="center"
+        android:text="@string/try_adjusting_your_search"
+        android:textColor="#455A64"
+        android:textSize="11sp" />
 
     <ProgressBar
         android:id="@+id/idPBLoading"
