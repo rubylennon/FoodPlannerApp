@@ -58,6 +58,8 @@
     <string name="search_icon_with_x">Search icon with X</string>
     <string name="no_matching_recipes">No matching recipes</string>
     <string name="try_adjusting_your_search">Try adjusting your search</string>
+    <string name="ingredient">Ingredient</string>
+    <string name="delete">Delete</string>
     <string-array name="cuisine_array">
         <item>Chinese</item>
         <item>Thai</item>

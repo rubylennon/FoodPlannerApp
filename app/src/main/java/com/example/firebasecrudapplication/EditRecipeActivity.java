@@ -1,5 +1,8 @@
 package com.example.firebasecrudapplication;
 
+//@Ref 1 - https://developer.android.com/develop/ui/views/components/spinner
+//@Ref 2 - https://www.geeksforgeeks.org/how-to-implement-multiselect-dropdown-in-android/
+
 //imports
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -26,6 +29,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
 // edit recipe class
@@ -42,14 +46,9 @@ public class EditRecipeActivity extends AppCompatActivity {
     // switch button
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     private Switch recipePublicEdt;
-    // update and delete buttons
-    private Button updateRecipeBtn,
-            deleteRecipeBtn;
     private ProgressBar loadingPB;
-    private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
     private String recipeID;
-    private RecipeRVModal recipeRVModal;
     private TextView recipeSuitabilityEdt;
     private TextView recipeCuisineEdt;
 
@@ -59,9 +58,8 @@ public class EditRecipeActivity extends AppCompatActivity {
     private boolean[] selectedSuitability;
     private final ArrayList<Integer> suitabilityList = new ArrayList<>();
     private String[] suitabilityArray;
-    private String previouslySelectedCuisine;
     private String[] previouslySelectedCuisineArray;
-    private int[] previouslySelectedCuisineArrayInt;
+    private String[] previouslySelectedSuitabilityArray;
 
     // on create method
     @Override
@@ -74,7 +72,7 @@ public class EditRecipeActivity extends AppCompatActivity {
         setTitle("Edit Recipe");
 
         // initialise variables
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         recipeNameEdt = findViewById(R.id.idEdtRecipeName);
         recipeCookingTimeEdt = findViewById(R.id.idEdtRecipeCookingTime);
         recipeServingsEdt = findViewById(R.id.idEdtRecipeServings);
@@ -86,10 +84,11 @@ public class EditRecipeActivity extends AppCompatActivity {
         recipeMethodEdt = findViewById(R.id.idEdtRecipeMethod);
         recipeIngredientsEdt = findViewById(R.id.idEdtRecipeIngredients);
         recipePublicEdt = findViewById(R.id.idPublicSwitch);
-        updateRecipeBtn = findViewById(R.id.idBtnUpdateRecipe);
-        deleteRecipeBtn = findViewById(R.id.idBtnDeleteRecipe);
+        // update and delete buttons
+        Button updateRecipeBtn = findViewById(R.id.idBtnUpdateRecipe);
+        Button deleteRecipeBtn = findViewById(R.id.idBtnDeleteRecipe);
         loadingPB = findViewById(R.id.idPBLoading);
-        recipeRVModal = getIntent().getParcelableExtra("recipe");
+        RecipeRVModal recipeRVModal = getIntent().getParcelableExtra("recipe");
 
         // if a recipe is returned from the database
         if (recipeRVModal != null){
@@ -97,8 +96,10 @@ public class EditRecipeActivity extends AppCompatActivity {
             recipeCookingTimeEdt.setText(recipeRVModal.getRecipeCookingTime());
             recipeServingsEdt.setText(recipeRVModal.getRecipeServings());
             recipeSuitabilityEdt.setText(recipeRVModal.getRecipeSuitedFor());
+            String previouslySelectedSuitability = recipeRVModal.getRecipeSuitedFor();
+            previouslySelectedSuitabilityArray = previouslySelectedSuitability.split(",");
             recipeCuisineEdt.setText(recipeRVModal.getRecipeCuisine());
-            previouslySelectedCuisine = recipeRVModal.getRecipeCuisine();
+            String previouslySelectedCuisine = recipeRVModal.getRecipeCuisine();
             previouslySelectedCuisineArray = previouslySelectedCuisine.split(",");
             recipeImgEdt.setText(recipeRVModal.getRecipeImg());
             recipeLinkEdt.setText(recipeRVModal.getRecipeLink());
@@ -111,6 +112,7 @@ public class EditRecipeActivity extends AppCompatActivity {
 
         databaseReference = firebaseDatabase.getReference("Recipes").child(recipeID);
 
+        // SELECT CUISINE DIALOG START
         // add items from resource cuisine array to local cuisine array
         cuisineArray = getResources().getStringArray(R.array.cuisine_array);
 
@@ -125,10 +127,9 @@ public class EditRecipeActivity extends AppCompatActivity {
             for(String cuisine : previouslySelectedCuisineArray){
                 cuisine = cuisine.trim();
                 int index = Arrays.asList(cuisineArray).indexOf(cuisine);
-                Log.d("matching Index", String.valueOf(index));
                 selectedCuisine[index] = true;
             }
-        };
+        }
 
         recipeCuisineEdt.setOnClickListener(view -> {
 
@@ -147,7 +148,6 @@ public class EditRecipeActivity extends AppCompatActivity {
                     for(String cuisine : previouslySelectedCuisineArray){
                         cuisine = cuisine.trim();
                         int index = Arrays.asList(cuisineArray).indexOf(cuisine);
-                        Log.d("matching Index TWO", String.valueOf(index));
                         cuisineList.add(index);
                     }
                 }
@@ -157,7 +157,6 @@ public class EditRecipeActivity extends AppCompatActivity {
                     // when checkbox selected
                     // Add position  in lang list
                     cuisineList.add(i);
-                    Log.d("index i", String.valueOf(i));
                     // Sort array list
                     Collections.sort(cuisineList);
                     newSelectionInitiated.set(true);
@@ -176,7 +175,6 @@ public class EditRecipeActivity extends AppCompatActivity {
                     for(String cuisine : previouslySelectedCuisineArray){
                         cuisine = cuisine.trim();
                         int index = Arrays.asList(cuisineArray).indexOf(cuisine);
-                        Log.d("matching Index TWO", String.valueOf(index));
                         cuisineList.add(index);
                     }
                 }
@@ -223,60 +221,160 @@ public class EditRecipeActivity extends AppCompatActivity {
         });
         // SELECT CUISINE DIALOG END
 
-        updateRecipeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadingPB.setVisibility(View.VISIBLE);
-                String recipeName = recipeNameEdt.getText().toString();
-                String recipeCookingTime = recipeCookingTimeEdt.getText().toString();
-                String recipeServings = recipeServingsEdt.getText().toString();
-                String recipeSuitedFor = recipeSuitabilityEdt.getText().toString();
-                String recipeCuisine = recipeCuisineEdt.getText().toString();
-                String recipeImg = recipeImgEdt.getText().toString();
-                String recipeLink = recipeLinkEdt.getText().toString();
-                String recipeDesc = recipeDescEdt.getText().toString();
-                String recipeMethod = recipeMethodEdt.getText().toString();
-                String recipeIngredients = recipeIngredientsEdt.getText().toString();
-                Boolean recipePublic = recipePublicEdt.isChecked();
+        // SELECT SUITABILITY DIALOG START
+        // add items from resource cuisine array to local cuisine array
+        suitabilityArray = getResources().getStringArray(R.array.dietary_requirements);
 
-                Map<String,Object> map = new HashMap<>();
-                map.put("recipeName",recipeName);
-                map.put("recipeCookingTime",recipeCookingTime);
-                map.put("recipeServings",recipeServings);
-                map.put("recipeSuitedFor",recipeSuitedFor);
-                map.put("recipeCuisine",recipeCuisine);
-                map.put("recipeImg",recipeImg);
-                map.put("recipeLink",recipeLink);
-                map.put("recipeDescription",recipeDesc);
-                map.put("recipeMethod",recipeMethod);
-                map.put("recipeIngredients",recipeIngredients);
-                map.put("recipePublic",recipePublic);
-                map.put("recipeID",recipeID);
+        // initialize selected language array
+        selectedSuitability = new boolean[suitabilityArray.length];
 
-                databaseReference.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        loadingPB.setVisibility(View.GONE);
-                        databaseReference.updateChildren(map);
-                        Toast.makeText(EditRecipeActivity.this, "Recipe Updated", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(EditRecipeActivity.this, MainActivity.class));
-                    }
+        AtomicReference<Boolean> suitabilitySelectionUpdated = new AtomicReference<>(false);
+        AtomicReference<Boolean> newSuitabilitySelectionInitiated = new AtomicReference<>(false);
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(EditRecipeActivity.this, "Failed to update recipe", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
+        if(!suitabilitySelectionUpdated.get()){
+            for(String suitability : previouslySelectedSuitabilityArray){
+                suitability = suitability.trim();
+                int index = Arrays.asList(suitabilityArray).indexOf(suitability);
+                selectedSuitability[index] = true;
             }
+        }
+
+        recipeSuitabilityEdt.setOnClickListener(view -> {
+
+            // Initialize alert dialog
+            AlertDialog.Builder builder2 = new AlertDialog.Builder(EditRecipeActivity.this);
+
+            // set title
+            builder2.setTitle("Select Suitability");
+
+            // set dialog non cancelable
+            builder2.setCancelable(false);
+
+            builder2.setMultiChoiceItems(suitabilityArray, selectedSuitability, (dialogInterface, i, b) -> {
+                if(!suitabilitySelectionUpdated.get()){
+                    // add previously selected cuisine to cuisine selection list
+                    for(String suitability : previouslySelectedSuitabilityArray){
+                        suitability = suitability.trim();
+                        int index = Arrays.asList(suitabilityArray).indexOf(suitability);
+                        suitabilityList.add(index);
+                    }
+                }
+
+                // check condition
+                if (b) {
+                    // when checkbox selected
+                    // Add position  in lang list
+                    suitabilityList.add(i);
+                    // Sort array list
+                    Collections.sort(suitabilityList);
+                    newSuitabilitySelectionInitiated.set(true);
+
+                } else {
+                    // when checkbox unselected
+                    // Remove position from langList
+                    suitabilityList.remove(Integer.valueOf(i));
+                    newSuitabilitySelectionInitiated.set(true);
+                }
+            });
+
+            builder2.setPositiveButton("OK", (dialogInterface, i) -> {
+                if(!suitabilitySelectionUpdated.get() && !newSuitabilitySelectionInitiated.get()){
+                    // add previously selected cuisine to cuisine selection list
+                    for(String suitability : previouslySelectedSuitabilityArray){
+                        suitability = suitability.trim();
+                        int index = Arrays.asList(suitabilityArray).indexOf(suitability);
+                        suitabilityList.add(index);
+                    }
+                }
+
+                // Initialize string builder
+                StringBuilder stringBuilder2 = new StringBuilder();
+                // use for loop
+                for (int j = 0; j < suitabilityList.size(); j++) {
+                    // concat array value
+                    stringBuilder2.append(suitabilityArray[suitabilityList.get(j)]);
+                    // check condition
+                    if (j != suitabilityList.size() - 1) {
+                        // When j value  not equal
+                        // to lang list size - 1
+                        // add comma
+                        stringBuilder2.append(", ");
+                    }
+                }
+
+                // set text on textView
+                recipeSuitabilityEdt.setText(stringBuilder2.toString());
+
+                // set selection updated to True
+                suitabilitySelectionUpdated.set(true);
+            });
+
+            builder2.setNegativeButton("Cancel", (dialogInterface, i) -> {
+                // dismiss dialog
+                dialogInterface.dismiss();
+            });
+            builder2.setNeutralButton("Clear All", (dialogInterface, i) -> {
+                // use for loop
+                for (int j = 0; j < selectedSuitability.length; j++) {
+                    // remove all selection
+                    selectedSuitability[j] = false;
+                    // clear language list
+                    suitabilityList.clear();
+                    // clear text view value
+                    recipeSuitabilityEdt.setText("");
+                }
+            });
+            // show dialog
+            builder2.show();
+        });
+        // SELECT SUITABILITY DIALOG END
+
+        updateRecipeBtn.setOnClickListener(v -> {
+            loadingPB.setVisibility(View.VISIBLE);
+            String recipeName = Objects.requireNonNull(recipeNameEdt.getText()).toString();
+            String recipeCookingTime = Objects.requireNonNull(recipeCookingTimeEdt.getText()).toString();
+            String recipeServings = Objects.requireNonNull(recipeServingsEdt.getText()).toString();
+            String recipeSuitedFor = recipeSuitabilityEdt.getText().toString();
+            String recipeCuisine = recipeCuisineEdt.getText().toString();
+            String recipeImg = Objects.requireNonNull(recipeImgEdt.getText()).toString();
+            String recipeLink = Objects.requireNonNull(recipeLinkEdt.getText()).toString();
+            String recipeDesc = Objects.requireNonNull(recipeDescEdt.getText()).toString();
+            String recipeMethod = Objects.requireNonNull(recipeMethodEdt.getText()).toString();
+            String recipeIngredients = Objects.requireNonNull(recipeIngredientsEdt.getText()).toString();
+            Boolean recipePublic = recipePublicEdt.isChecked();
+
+            Map<String,Object> map = new HashMap<>();
+            map.put("recipeName",recipeName);
+            map.put("recipeCookingTime",recipeCookingTime);
+            map.put("recipeServings",recipeServings);
+            map.put("recipeSuitedFor",recipeSuitedFor);
+            map.put("recipeCuisine",recipeCuisine);
+            map.put("recipeImg",recipeImg);
+            map.put("recipeLink",recipeLink);
+            map.put("recipeDescription",recipeDesc);
+            map.put("recipeMethod",recipeMethod);
+            map.put("recipeIngredients",recipeIngredients);
+            map.put("recipePublic",recipePublic);
+            map.put("recipeID",recipeID);
+
+            databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    loadingPB.setVisibility(View.GONE);
+                    databaseReference.updateChildren(map);
+                    Toast.makeText(EditRecipeActivity.this, "Recipe Updated", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(EditRecipeActivity.this, MainActivity.class));
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(EditRecipeActivity.this, "Failed to update recipe", Toast.LENGTH_SHORT).show();
+                }
+            });
+
         });
 
-        deleteRecipeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                deleteRecipe();
-            }
-        });
+        deleteRecipeBtn.setOnClickListener(v -> deleteRecipe());
     }
 
     private void deleteRecipe(){

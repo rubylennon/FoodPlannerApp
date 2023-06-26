@@ -21,7 +21,7 @@
             android:id="@+id/tv_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Ingredient"
+            android:text="@string/ingredient"
             android:layout_weight="1"/>
 
         <CheckBox
