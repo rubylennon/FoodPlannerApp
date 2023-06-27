@@ -227,6 +227,28 @@
                 android:text="@string/make_recipe_public"
                 tools:ignore="UseSwitchCompatOrMaterialXml" />
 
+            <Button
+                android:id="@+id/add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Add Ingredient"
+                android:drawableRight="@android:drawable/ic_input_add"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="none">
+                <LinearLayout
+                    android:id="@+id/container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                </LinearLayout>
+            </ScrollView>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

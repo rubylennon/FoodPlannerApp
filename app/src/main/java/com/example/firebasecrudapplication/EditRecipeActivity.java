@@ -4,19 +4,24 @@ package com.example.firebasecrudapplication;
 //@Ref 2 - https://www.geeksforgeeks.org/how-to-implement-multiselect-dropdown-in-android/
 
 //imports
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,14 +40,13 @@ import java.util.concurrent.atomic.AtomicReference;
 // edit recipe class
 public class EditRecipeActivity extends AppCompatActivity {
     // text input variables
-    private TextInputEditText recipeNameEdt,
-            recipeCookingTimeEdt,
-            recipeServingsEdt,
-            recipeImgEdt,
-            recipeLinkEdt,
-            recipeDescEdt,
-            recipeMethodEdt,
-            recipeIngredientsEdt;
+    private TextInputEditText recipeNameEdt;
+    private TextInputEditText recipeCookingTimeEdt;
+    private TextInputEditText recipeServingsEdt;
+    private TextInputEditText recipeImgEdt;
+    private TextInputEditText recipeLinkEdt;
+    private TextInputEditText recipeDescEdt;
+    private TextInputEditText recipeMethodEdt;
     // switch button
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     private Switch recipePublicEdt;
@@ -51,7 +55,6 @@ public class EditRecipeActivity extends AppCompatActivity {
     private String recipeID;
     private TextView recipeSuitabilityEdt;
     private TextView recipeCuisineEdt;
-
     private boolean[] selectedCuisine;
     private final ArrayList<Integer> cuisineList = new ArrayList<>();
     private String[] cuisineArray;
@@ -60,6 +63,12 @@ public class EditRecipeActivity extends AppCompatActivity {
     private String[] suitabilityArray;
     private String[] previouslySelectedCuisineArray;
     private String[] previouslySelectedSuitabilityArray;
+
+    private AlertDialog dialog;
+    private LinearLayout layout;
+    private final ArrayList<String> ingredientList = new ArrayList<>();
+    private String ingredientsSelectionString;
+    AtomicReference<Boolean> editPageInitialLoad = new AtomicReference<>(true);
 
     // on create method
     @Override
@@ -82,8 +91,14 @@ public class EditRecipeActivity extends AppCompatActivity {
         recipeLinkEdt = findViewById(R.id.idEdtRecipeLink);
         recipeDescEdt = findViewById(R.id.idEdtRecipeDesc);
         recipeMethodEdt = findViewById(R.id.idEdtRecipeMethod);
-        recipeIngredientsEdt = findViewById(R.id.idEdtRecipeIngredients);
+        TextInputEditText recipeIngredientsEdt = findViewById(R.id.idEdtRecipeIngredients);
         recipePublicEdt = findViewById(R.id.idPublicSwitch);
+
+        Button addIngredient = findViewById(R.id.add);
+        layout = findViewById(R.id.container);
+        buildDialogAddIngredient();
+        addIngredient.setOnClickListener(v -> dialog.show());
+
         // update and delete buttons
         Button updateRecipeBtn = findViewById(R.id.idBtnUpdateRecipe);
         Button deleteRecipeBtn = findViewById(R.id.idBtnDeleteRecipe);
@@ -106,6 +121,15 @@ public class EditRecipeActivity extends AppCompatActivity {
             recipeDescEdt.setText(recipeRVModal.getRecipeDescription());
             recipeMethodEdt.setText(recipeRVModal.getRecipeMethod());
             recipeIngredientsEdt.setText(recipeRVModal.getRecipeIngredients());
+            String previouslySelectedIngredients = recipeRVModal.getRecipeIngredients();
+            String[] previouslySelectedIngredientsArray = previouslySelectedIngredients.split(",");
+
+            for(String ingredient : previouslySelectedIngredientsArray){
+                addCard(ingredient);
+            }
+
+            editPageInitialLoad.set(false);
+
             recipePublicEdt.setChecked(recipeRVModal.getRecipePublic().equals(true));
             recipeID = recipeRVModal.getRecipeID();
         }
@@ -330,48 +354,90 @@ public class EditRecipeActivity extends AppCompatActivity {
         // SELECT SUITABILITY DIALOG END
 
         updateRecipeBtn.setOnClickListener(v -> {
-            loadingPB.setVisibility(View.VISIBLE);
-            String recipeName = Objects.requireNonNull(recipeNameEdt.getText()).toString();
-            String recipeCookingTime = Objects.requireNonNull(recipeCookingTimeEdt.getText()).toString();
-            String recipeServings = Objects.requireNonNull(recipeServingsEdt.getText()).toString();
-            String recipeSuitedFor = recipeSuitabilityEdt.getText().toString();
-            String recipeCuisine = recipeCuisineEdt.getText().toString();
-            String recipeImg = Objects.requireNonNull(recipeImgEdt.getText()).toString();
-            String recipeLink = Objects.requireNonNull(recipeLinkEdt.getText()).toString();
-            String recipeDesc = Objects.requireNonNull(recipeDescEdt.getText()).toString();
-            String recipeMethod = Objects.requireNonNull(recipeMethodEdt.getText()).toString();
-            String recipeIngredients = Objects.requireNonNull(recipeIngredientsEdt.getText()).toString();
-            Boolean recipePublic = recipePublicEdt.isChecked();
+            // if statements to validate that all required fields are populated before adding recipe
+            if(Objects.requireNonNull(recipeNameEdt.getText()).toString().equals("")){
+                Toast.makeText(EditRecipeActivity.this, "Please add a Recipe Name", Toast.LENGTH_SHORT).show();
+            }else if(Objects.requireNonNull(recipeCookingTimeEdt.getText()).toString().equals("")){
+                Toast.makeText(EditRecipeActivity.this, "Please add a Cooking Time", Toast.LENGTH_SHORT).show();
+            }else if(Objects.requireNonNull(recipeServingsEdt.getText()).toString().equals("")){
+                Toast.makeText(EditRecipeActivity.this, "Please add Recipe Total Servings", Toast.LENGTH_SHORT).show();
+            }else if(recipeSuitabilityEdt.getText().toString().equals("")){
+                Toast.makeText(EditRecipeActivity.this, "Please Recipe Suitability", Toast.LENGTH_SHORT).show();
+            }else if(recipeCuisineEdt.getText().toString().equals("")){
+                Toast.makeText(EditRecipeActivity.this, "Please add Recipe Cuisine", Toast.LENGTH_SHORT).show();
+            }else if(Objects.requireNonNull(recipeImgEdt.getText()).toString().equals("")){
+                Toast.makeText(EditRecipeActivity.this, "Please add Recipe Image Link", Toast.LENGTH_SHORT).show();
+            }else if(Objects.requireNonNull(recipeLinkEdt.getText()).toString().equals("")){
+                Toast.makeText(EditRecipeActivity.this, "Please add Recipe Link", Toast.LENGTH_SHORT).show();
+            }else if(Objects.requireNonNull(recipeDescEdt.getText()).toString().equals("")){
+                Toast.makeText(EditRecipeActivity.this, "Please Recipe Description", Toast.LENGTH_SHORT).show();
+            }else if(Objects.requireNonNull(recipeMethodEdt.getText()).toString().equals("")){
+                Toast.makeText(EditRecipeActivity.this, "Please add Recipe Method", Toast.LENGTH_SHORT).show();
+            }else if(ingredientList.isEmpty()){
+                Toast.makeText(EditRecipeActivity.this, "Please add Recipe Ingredients", Toast.LENGTH_SHORT).show();
+            }else {
+                loadingPB.setVisibility(View.VISIBLE);
 
-            Map<String,Object> map = new HashMap<>();
-            map.put("recipeName",recipeName);
-            map.put("recipeCookingTime",recipeCookingTime);
-            map.put("recipeServings",recipeServings);
-            map.put("recipeSuitedFor",recipeSuitedFor);
-            map.put("recipeCuisine",recipeCuisine);
-            map.put("recipeImg",recipeImg);
-            map.put("recipeLink",recipeLink);
-            map.put("recipeDescription",recipeDesc);
-            map.put("recipeMethod",recipeMethod);
-            map.put("recipeIngredients",recipeIngredients);
-            map.put("recipePublic",recipePublic);
-            map.put("recipeID",recipeID);
-
-            databaseReference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    loadingPB.setVisibility(View.GONE);
-                    databaseReference.updateChildren(map);
-                    Toast.makeText(EditRecipeActivity.this, "Recipe Updated", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(EditRecipeActivity.this, MainActivity.class));
+                // build a string with selected ingredients
+                StringBuilder stringBuilder3 = new StringBuilder();
+                // use for loop
+                for (int j = 0; j < ingredientList.size(); j++) {
+                    // concat array value
+                    stringBuilder3.append(ingredientList.get(j));
+                    // check condition
+                    if (j != ingredientList.size() - 1) {
+                        // When j value  not equal
+                        // to lang list size - 1
+                        // add comma
+                        stringBuilder3.append(", ");
+                    }
                 }
+                ingredientsSelectionString = stringBuilder3.toString();
+                Log.d("stringBuilder3.toString()", stringBuilder3.toString());
+                Log.d("ingredientsSelectionString", ingredientsSelectionString);
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(EditRecipeActivity.this, "Failed to update recipe", Toast.LENGTH_SHORT).show();
-                }
-            });
 
+                String recipeName = Objects.requireNonNull(recipeNameEdt.getText()).toString();
+                String recipeCookingTime = Objects.requireNonNull(recipeCookingTimeEdt.getText()).toString();
+                String recipeServings = Objects.requireNonNull(recipeServingsEdt.getText()).toString();
+                String recipeSuitedFor = recipeSuitabilityEdt.getText().toString();
+                String recipeCuisine = recipeCuisineEdt.getText().toString();
+                String recipeImg = Objects.requireNonNull(recipeImgEdt.getText()).toString();
+                String recipeLink = Objects.requireNonNull(recipeLinkEdt.getText()).toString();
+                String recipeDesc = Objects.requireNonNull(recipeDescEdt.getText()).toString();
+                String recipeMethod = Objects.requireNonNull(recipeMethodEdt.getText()).toString();
+                String recipeIngredients = Objects.requireNonNull(ingredientsSelectionString);
+                Boolean recipePublic = recipePublicEdt.isChecked();
+
+                Map<String,Object> map = new HashMap<>();
+                map.put("recipeName",recipeName);
+                map.put("recipeCookingTime",recipeCookingTime);
+                map.put("recipeServings",recipeServings);
+                map.put("recipeSuitedFor",recipeSuitedFor);
+                map.put("recipeCuisine",recipeCuisine);
+                map.put("recipeImg",recipeImg);
+                map.put("recipeLink",recipeLink);
+                map.put("recipeDescription",recipeDesc);
+                map.put("recipeMethod",recipeMethod);
+                map.put("recipeIngredients",recipeIngredients);
+                map.put("recipePublic",recipePublic);
+                map.put("recipeID",recipeID);
+
+                databaseReference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        loadingPB.setVisibility(View.GONE);
+                        databaseReference.updateChildren(map);
+                        Toast.makeText(EditRecipeActivity.this, "Recipe Updated", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(EditRecipeActivity.this, MainActivity.class));
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(EditRecipeActivity.this, "Failed to update recipe", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
         });
 
         deleteRecipeBtn.setOnClickListener(v -> deleteRecipe());
@@ -381,6 +447,49 @@ public class EditRecipeActivity extends AppCompatActivity {
         databaseReference.removeValue();
         Toast.makeText(this, "Recipe Deleted", Toast.LENGTH_SHORT).show();
         startActivity(new Intent(EditRecipeActivity.this, MainActivity.class));
+    }
 
+    private void buildDialogAddIngredient() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = getLayoutInflater().inflate(R.layout.dialog, null);
+
+        final EditText name = view.findViewById(R.id.nameEdit);
+
+        builder.setView(view);
+        builder.setTitle("Enter Ingredient")
+                .setPositiveButton("OK", (dialog, which) -> {
+                    addCard(name.getText().toString());
+                    ingredientList.add(name.getText().toString());
+                    Log.d("ingredientList", String.valueOf(ingredientList));
+                    name.setText("");
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> name.setText(""));
+
+        dialog = builder.create();
+    }
+
+    private void addCard(String name) {
+        @SuppressLint("InflateParams") final View view = getLayoutInflater().inflate(R.layout.ingredient_card_rounded, null);
+
+        Log.d("addCard ingredientList", String.valueOf(ingredientList));
+
+        // if the edit page is being loaded for the first time then add all previously added ingredients to selected list
+        if(editPageInitialLoad.get()){
+            ingredientList.add(name);
+        }
+
+        TextView nameView = view.findViewById(R.id.name);
+        Button delete = view.findViewById(R.id.delete);
+
+        nameView.setText(name);
+
+        // delete ingredient button action
+        delete.setOnClickListener(v -> {
+            ingredientList.remove(name);
+            Log.d("ingredientList", String.valueOf(ingredientList));
+            layout.removeView(view);
+        });
+
+        layout.addView(view);
     }
 }
