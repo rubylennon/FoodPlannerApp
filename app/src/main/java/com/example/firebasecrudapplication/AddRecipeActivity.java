@@ -5,7 +5,6 @@ package com.example.firebasecrudapplication;
 //@Ref 3 - https://codevedanam.blogspot.com/2021/04/dynamic-views-in-android.html
 
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,26 +31,23 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Objects;
 
 public class AddRecipeActivity extends AppCompatActivity {
     // variables
-    private TextInputEditText recipeNameEdt,
-            recipeCookingTimeEdt,
-            recipeServingsEdt,
-            recipeImgEdt,
-            recipeLinkEdt,
-            recipeDescEdt,
-            recipeMethodEdt,
-            recipeIngredientsEdt;
+    private TextInputEditText recipeNameEdt;
+    private TextInputEditText recipeCookingTimeEdt;
+    private TextInputEditText recipeServingsEdt;
+    private TextInputEditText recipeImgEdt;
+    private TextInputEditText recipeLinkEdt;
+    private TextInputEditText recipeDescEdt;
+    private TextInputEditText recipeMethodEdt;
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     private Switch recipePublicEdt;
-    private Button addRecipeBtn;
     private ProgressBar loadingPB;
-    private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
     private String recipeID;
     private String userID;
-    private FirebaseAuth mAuth;
     private TextView recipeCuisineEdt;
     private boolean[] selectedCuisine;
     private final ArrayList<Integer> cuisineList = new ArrayList<>();
@@ -60,15 +56,10 @@ public class AddRecipeActivity extends AppCompatActivity {
     private boolean[] selectedSuitability;
     private final ArrayList<Integer> suitabilityList = new ArrayList<>();
     private String[] suitabilityArray;
-
-
-    Button addIngredient;
-    AlertDialog dialog;
-    LinearLayout layout;
+    private AlertDialog dialog;
+    private LinearLayout layout;
     private final ArrayList<String> ingredientList = new ArrayList<>();
     private String ingredientsSelectionString;
-    private Button testButton;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,28 +79,17 @@ public class AddRecipeActivity extends AppCompatActivity {
         recipeLinkEdt = findViewById(R.id.idEdtRecipeLink);
         recipeDescEdt = findViewById(R.id.idEdtRecipeDesc);
         recipeMethodEdt = findViewById(R.id.idEdtRecipeMethod);
-        recipeIngredientsEdt = findViewById(R.id.idEdtRecipeIngredients);
         recipePublicEdt = findViewById(R.id.idPublicSwitch);
-        addRecipeBtn = findViewById(R.id.idBtnAddRecipe);
-        userID = mAuth.getInstance().getCurrentUser().getUid();
+        Button addRecipeBtn = findViewById(R.id.idBtnAddRecipe);
+        userID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         loadingPB = findViewById(R.id.idPBLoading);
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("Recipes");
-
-        addIngredient = findViewById(R.id.add);
+        Button addIngredient = findViewById(R.id.add);
         layout = findViewById(R.id.container);
-        buildDialogAddIngredient();
-        addIngredient.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.show();
-            }
-        });
-        testButton = findViewById(R.id.TestButton);
 
-        testButton.setOnClickListener(v -> {
-            buildIngredientsString();
-        });
+        buildDialogAddIngredient();
+        addIngredient.setOnClickListener(v -> dialog.show());
 
         // SELECT CUISINE DIALOG START
         // add items from resource cuisine array to local cuisine array
@@ -257,40 +237,82 @@ public class AddRecipeActivity extends AppCompatActivity {
 
         // add recipe button click event action
         addRecipeBtn.setOnClickListener(v -> {
-            buildIngredientsString();
-            // get user input text from fields
-            loadingPB.setVisibility(View.VISIBLE);
-            String recipeName = recipeNameEdt.getText().toString();
-            String recipeCookingTime = recipeCookingTimeEdt.getText().toString();
-            String recipeServings = recipeServingsEdt.getText().toString();
-            String recipeSuitedFor = recipeSuitabilityEdt.getText().toString();
-            String recipeCuisine = recipeCuisineEdt.getText().toString();
 
-            String recipeImg = recipeImgEdt.getText().toString();
-            String recipeLink = recipeLinkEdt.getText().toString();
-            String recipeDesc = recipeDescEdt.getText().toString();
-            String recipeMethod = recipeMethodEdt.getText().toString();
-            String recipeIngredients = recipeIngredientsEdt.getText().toString();
-            Boolean recipePublic = recipePublicEdt.isChecked();
-            recipeID = recipeName;
-            RecipeRVModal recipeRVModal = new RecipeRVModal(recipeName,recipeCookingTime,recipeServings,recipeSuitedFor,recipeCuisine,recipeImg,recipeLink,recipeDesc,recipeMethod,recipeIngredients,recipePublic,recipeID,userID);
+            // if statements to validate that all required fields are populated before adding recipe
+            if(Objects.requireNonNull(recipeNameEdt.getText()).toString().equals("")){
+                Toast.makeText(AddRecipeActivity.this, "Please add a Recipe Name", Toast.LENGTH_SHORT).show();
+            }else if(Objects.requireNonNull(recipeCookingTimeEdt.getText()).toString().equals("")){
+                Toast.makeText(AddRecipeActivity.this, "Please add a Cooking Time", Toast.LENGTH_SHORT).show();
+            }else if(Objects.requireNonNull(recipeServingsEdt.getText()).toString().equals("")){
+                Toast.makeText(AddRecipeActivity.this, "Please add Recipe Total Servings", Toast.LENGTH_SHORT).show();
+            }else if(recipeSuitabilityEdt.getText().toString().equals("")){
+                Toast.makeText(AddRecipeActivity.this, "Please Recipe Suitability", Toast.LENGTH_SHORT).show();
+            }else if(recipeCuisineEdt.getText().toString().equals("")){
+                Toast.makeText(AddRecipeActivity.this, "Please add Recipe Cuisine", Toast.LENGTH_SHORT).show();
+            }else if(Objects.requireNonNull(recipeImgEdt.getText()).toString().equals("")){
+                Toast.makeText(AddRecipeActivity.this, "Please add Recipe Image Link", Toast.LENGTH_SHORT).show();
+            }else if(Objects.requireNonNull(recipeLinkEdt.getText()).toString().equals("")){
+                Toast.makeText(AddRecipeActivity.this, "Please add Recipe Link", Toast.LENGTH_SHORT).show();
+            }else if(Objects.requireNonNull(recipeDescEdt.getText()).toString().equals("")){
+                Toast.makeText(AddRecipeActivity.this, "Please Recipe Description", Toast.LENGTH_SHORT).show();
+            }else if(Objects.requireNonNull(recipeMethodEdt.getText()).toString().equals("")){
+                Toast.makeText(AddRecipeActivity.this, "Please add Recipe Method", Toast.LENGTH_SHORT).show();
+            }else if(ingredientList.isEmpty()){
+                Toast.makeText(AddRecipeActivity.this, "Please add Recipe Ingredients", Toast.LENGTH_SHORT).show();
+            }else {
 
-            databaseReference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    loadingPB.setVisibility(View.GONE);
-                    databaseReference.child(recipeID).setValue(recipeRVModal);
-                    Toast.makeText(AddRecipeActivity.this, "Recipe Added", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(AddRecipeActivity.this, MainActivity.class));
+                // build a string with selected ingredients
+                StringBuilder stringBuilder3 = new StringBuilder();
+                // use for loop
+                for (int j = 0; j < ingredientList.size(); j++) {
+                    // concat array value
+                    stringBuilder3.append(ingredientList.get(j));
+                    // check condition
+                    if (j != ingredientList.size() - 1) {
+                        // When j value  not equal
+                        // to lang list size - 1
+                        // add comma
+                        stringBuilder3.append(", ");
+                    }
                 }
+                ingredientsSelectionString = stringBuilder3.toString();
+                Log.d("stringBuilder3.toString()", stringBuilder3.toString());
+                Log.d("ingredientsSelectionString", ingredientsSelectionString);
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(AddRecipeActivity.this, "Error is " + error.toString(), Toast.LENGTH_SHORT).show();
-                }
-            });
+                loadingPB.setVisibility(View.VISIBLE);
+
+                // get user input text from fields
+                String recipeName = recipeNameEdt.getText().toString();
+                String recipeCookingTime = recipeCookingTimeEdt.getText().toString();
+                String recipeServings = recipeServingsEdt.getText().toString();
+                String recipeSuitedFor = recipeSuitabilityEdt.getText().toString();
+                String recipeCuisine = recipeCuisineEdt.getText().toString();
+                String recipeImg = recipeImgEdt.getText().toString();
+                String recipeLink = recipeLinkEdt.getText().toString();
+                String recipeDesc = recipeDescEdt.getText().toString();
+                String recipeMethod = recipeMethodEdt.getText().toString();
+                String recipeIngredients = ingredientsSelectionString;
+                Boolean recipePublic = recipePublicEdt.isChecked();
+                recipeID = recipeName;
+                RecipeRVModal recipeRVModal = new RecipeRVModal(recipeName,recipeCookingTime,recipeServings,recipeSuitedFor,recipeCuisine,recipeImg,recipeLink,recipeDesc,recipeMethod,recipeIngredients,recipePublic,recipeID,userID);
+
+                // add the new recipe to the database
+                databaseReference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        loadingPB.setVisibility(View.GONE);
+                        databaseReference.child(recipeID).setValue(recipeRVModal);
+                        Toast.makeText(AddRecipeActivity.this, "Recipe Added", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(AddRecipeActivity.this, MainActivity.class));
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(AddRecipeActivity.this, "Error is " + error, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
         });
-
     }
 
     private void buildDialogAddIngredient() {
@@ -301,67 +323,32 @@ public class AddRecipeActivity extends AppCompatActivity {
 
         builder.setView(view);
         builder.setTitle("Enter Ingredient")
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        addCard(name.getText().toString());
-                        ingredientList.add(name.getText().toString());
-                        Log.d("ingredientList", String.valueOf(ingredientList));
-                    }
+                .setPositiveButton("OK", (dialog, which) -> {
+                    addCard(name.getText().toString());
+                    ingredientList.add(name.getText().toString());
+                    Log.d("ingredientList", String.valueOf(ingredientList));
+                    name.setText("");
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                });
+                .setNegativeButton("Cancel", (dialog, which) -> name.setText(""));
 
         dialog = builder.create();
     }
 
     private void addCard(String name) {
-        final View view = getLayoutInflater().inflate(R.layout.ingredient_card_rounded, null);
+        @SuppressLint("InflateParams") final View view = getLayoutInflater().inflate(R.layout.ingredient_card_rounded, null);
 
         TextView nameView = view.findViewById(R.id.name);
         Button delete = view.findViewById(R.id.delete);
 
         nameView.setText(name);
 
-        delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ingredientList.remove(name);
-                Log.d("ingredientList", String.valueOf(ingredientList));
-                layout.removeView(view);
-            }
+        // delete ingredient button action
+        delete.setOnClickListener(v -> {
+            ingredientList.remove(name);
+            Log.d("ingredientList", String.valueOf(ingredientList));
+            layout.removeView(view);
         });
 
         layout.addView(view);
-    }
-
-    private void buildIngredientsString(){
-        // Initialize string builder
-        StringBuilder stringBuilder3 = new StringBuilder();
-        // use for loop
-        for (int j = 0; j < ingredientList.size(); j++) {
-            // concat array value
-            stringBuilder3.append(ingredientList.get(j));
-            // check condition
-            if (j != ingredientList.size() - 1) {
-                // When j value  not equal
-                // to lang list size - 1
-                // add comma
-                stringBuilder3.append(", ");
-            }
-        }
-
-        // set text on textView
-        // recipeIngredientsEdt.setText(stringBuilder3.toString());
-
-        ingredientsSelectionString = stringBuilder3.toString();
-
-        Log.d("stringBuilder3.toString()", stringBuilder3.toString());
-        Log.d("ingredientsSelectionString", ingredientsSelectionString);
-
     }
 }
