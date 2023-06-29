@@ -50,6 +50,7 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
     private ProgressBar loadingPB;
     // RECIPE VARIABLES START
     private ArrayList<RecipeRVModal> recipesList;
+//    private ArrayList<RecipeRVModal> updatedRecipesList;
     private DatabaseReference databaseReferenceRecipes;
     private RelativeLayout bottomSheetRL;
     private RecipeRVAdapter recipeRVAdapter;
@@ -134,6 +135,12 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
 
         // show filter alert dialog window
         mFilterSuitabilityButton.setOnClickListener(v -> searchBySuitability());
+
+        // clear search button
+        Button clearSearch = findViewById(R.id.clearSearch);
+
+        // clear search button on click listener
+        clearSearch.setOnClickListener(v -> resetRecipesList());
 
     }
 
@@ -278,28 +285,28 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
 
         // construct and configure alert dialog
         AlertDialog alertDialog = new AlertDialog.Builder(this)
-        .setTitle("Select Ingredients")
-        .setMultiChoiceItems(stringIngredientsArray, null, (dialog, indexSelected, isChecked) -> {
-            if (isChecked) {
-                selectedItems.add(indexSelected);
-            } else if (selectedItems.contains(indexSelected)) {
-                selectedItems.remove(Integer.valueOf(indexSelected));
-            }
-        }).setPositiveButton("OK", (dialog, id) -> {
-            //  Your code when user clicked on OK
+                .setTitle("Search Recipes By Ingredients")
+                .setMultiChoiceItems(stringIngredientsArray, null, (dialog, indexSelected, isChecked) -> {
+                    if (isChecked) {
+                        selectedItems.add(indexSelected);
+                    } else if (selectedItems.contains(indexSelected)) {
+                        selectedItems.remove(Integer.valueOf(indexSelected));
+                    }
+                }).setPositiveButton("Search", (dialog, id) -> {
+                    //  Your code when user clicked on OK
 
-            // print selected items array
-            Log.d("selectedCheckbox", selectedItems.toString());
+                    // print selected items array
+                    Log.d("selectedCheckbox", selectedItems.toString());
 
-            // set the loading progress bar to visible
-            loadingPB.setVisibility(View.VISIBLE);
+                    // set the loading progress bar to visible
+                    loadingPB.setVisibility(View.VISIBLE);
 
-            // run filterRecipes method and pass selected ingredients (indexes)
-            filterRecipesByIngredients(selectedItems);
+                    // run filterRecipes method and pass selected ingredients (indexes)
+                    filterRecipesByIngredients(selectedItems);
 
-        }).setNegativeButton("Cancel", (dialog, id) -> {
-            //todo
-        }).create();
+                }).setNegativeButton("Cancel", (dialog, id) -> {
+                    //todo
+                }).create();
 
         // show the alert dialog
         alertDialog.show();
@@ -313,14 +320,14 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
 
         // construct and configure alert dialog
         AlertDialog alertDialogCuisine = new AlertDialog.Builder(this)
-                .setTitle("Select Cuisines")
+                .setTitle("Search Recipes By Cuisine")
                 .setMultiChoiceItems(cuisineArray, null, (dialog, indexSelected, isChecked) -> {
                     if (isChecked) {
                         selectedCuisine.add(indexSelected);
                     } else if (selectedCuisine.contains(indexSelected)) {
                         selectedCuisine.remove(Integer.valueOf(indexSelected));
                     }
-                }).setPositiveButton("OK", (dialog, id) -> {
+                }).setPositiveButton("Search", (dialog, id) -> {
                     //  Your code when user clicked on OK
 
                     // print selected items array
@@ -348,14 +355,14 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
 
         // construct and configure alert dialog
         AlertDialog alertDialogSuitability = new AlertDialog.Builder(this)
-                .setTitle("Select Suitability")
+                .setTitle("Search Recipes By Suitability")
                 .setMultiChoiceItems(suitabilityArray, null, (dialog, indexSelected, isChecked) -> {
                     if (isChecked) {
                         selectedSuitability.add(indexSelected);
                     } else if (selectedSuitability.contains(indexSelected)) {
                         selectedSuitability.remove(Integer.valueOf(indexSelected));
                     }
-                }).setPositiveButton("OK", (dialog, id) -> {
+                }).setPositiveButton("Search", (dialog, id) -> {
                     //  Your code when user clicked on OK
 
                     // print selected items array
@@ -569,6 +576,14 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
         recipeRVAdapter = new RecipeRVAdapter(recipesList, this, this);
         recipeRV.setLayoutManager(new LinearLayoutManager(this));
         recipeRV.setAdapter(recipeRVAdapter);
+
+        Toast.makeText(RecipeSearchActivity.this, "Search Cleared", Toast.LENGTH_SHORT).show();
+
+        if(!recipesList.isEmpty()){
+            isMatchingResults();
+        }else{
+            noMatchingResults();
+        }
     }
 
     @Override

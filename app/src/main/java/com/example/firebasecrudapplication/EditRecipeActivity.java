@@ -2,6 +2,7 @@ package com.example.firebasecrudapplication;
 
 //@Ref 1 - https://developer.android.com/develop/ui/views/components/spinner
 //@Ref 2 - https://www.geeksforgeeks.org/how-to-implement-multiselect-dropdown-in-android/
+//@Ref 3 - https://codevedanam.blogspot.com/2021/04/dynamic-views-in-android.html
 
 //imports
 
@@ -91,7 +92,6 @@ public class EditRecipeActivity extends AppCompatActivity {
         recipeLinkEdt = findViewById(R.id.idEdtRecipeLink);
         recipeDescEdt = findViewById(R.id.idEdtRecipeDesc);
         recipeMethodEdt = findViewById(R.id.idEdtRecipeMethod);
-        TextInputEditText recipeIngredientsEdt = findViewById(R.id.idEdtRecipeIngredients);
         recipePublicEdt = findViewById(R.id.idPublicSwitch);
 
         Button addIngredient = findViewById(R.id.add);
@@ -120,20 +120,22 @@ public class EditRecipeActivity extends AppCompatActivity {
             recipeLinkEdt.setText(recipeRVModal.getRecipeLink());
             recipeDescEdt.setText(recipeRVModal.getRecipeDescription());
             recipeMethodEdt.setText(recipeRVModal.getRecipeMethod());
-            recipeIngredientsEdt.setText(recipeRVModal.getRecipeIngredients());
             String previouslySelectedIngredients = recipeRVModal.getRecipeIngredients();
             String[] previouslySelectedIngredientsArray = previouslySelectedIngredients.split(",");
 
+            // add previously added ingredients to view
             for(String ingredient : previouslySelectedIngredientsArray){
                 addCard(ingredient);
             }
 
+            // after adding previously added ingredients to view set editPageInitialLoad to false
             editPageInitialLoad.set(false);
 
             recipePublicEdt.setChecked(recipeRVModal.getRecipePublic().equals(true));
             recipeID = recipeRVModal.getRecipeID();
         }
 
+        // update the firebase database reference to the Recipes object
         databaseReference = firebaseDatabase.getReference("Recipes").child(recipeID);
 
         // SELECT CUISINE DIALOG START

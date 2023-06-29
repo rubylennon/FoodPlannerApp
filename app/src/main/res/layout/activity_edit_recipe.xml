@@ -194,28 +194,6 @@
                     android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:hint="@string/enter_recipe_ingredients"
-                style="@style/TextInputLayout"
-                android:padding="5dp"
-                android:textColorHint="@color/blue_shade_2"
-                app:hintTextColor="@color/blue_shade_2" >
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/idEdtRecipeIngredients"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:importantForAutofill="no"
-                    android:inputType="textMultiLine|textImeMultiLine"
-                    android:textColor="@color/blue_shade_2"
-                    android:textColorHint="@color/blue_shade_2"
-                    android:textSize="14sp" />
-            </com.google.android.material.textfield.TextInputLayout>
-
             <Switch
                 android:id="@+id/idPublicSwitch"
                 android:layout_width="match_parent"

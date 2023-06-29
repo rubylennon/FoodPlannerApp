@@ -60,6 +60,10 @@
     <string name="try_adjusting_your_search">Try adjusting your search</string>
     <string name="ingredient">Ingredient</string>
     <string name="delete">Delete</string>
+    <string name="ingredients_search">Ingredients Search</string>
+    <string name="cuisine_search">Cuisine Search</string>
+    <string name="clear_search">Clear Search</string>
+    <string name="suitability_search">Suitability Search</string>
     <string-array name="cuisine_array">
         <item>Chinese</item>
         <item>Thai</item>
@@ -86,5 +90,6 @@
         <item>Nut allergies</item>
         <item>Halal</item>
         <item>Pescetarianism</item>
+        <item>Other</item>
     </string-array>
 </resources>
