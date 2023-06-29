@@ -45,12 +45,17 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 
 public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVAdapter.RecipeClickInterface {
     private ProgressBar loadingPB;
     // RECIPE VARIABLES START
-    private ArrayList<RecipeRVModal> recipesList;
-//    private ArrayList<RecipeRVModal> updatedRecipesList;
+    private ArrayList<RecipeRVModal> originalRecipesList;
+    private ArrayList<RecipeRVModal> cuisineFilteredRecipesList;
+    private ArrayList<RecipeRVModal> ingredientsFilteredRecipesList;
+    private ArrayList<RecipeRVModal> suitabilityFilteredRecipesList;
+    private ArrayList<RecipeRVModal> nameFilteredRecipesList;
+    private String lastSearch;
     private DatabaseReference databaseReferenceRecipes;
     private RelativeLayout bottomSheetRL;
     private RecipeRVAdapter recipeRVAdapter;
@@ -96,11 +101,15 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
         // declare variables
         RecyclerView recipeRV = findViewById(R.id.idRVRecipes);
         databaseReferenceRecipes = firebaseDatabase.getReference("Recipes");
-        recipesList = new ArrayList<>();
+        originalRecipesList = new ArrayList<>();
+        cuisineFilteredRecipesList = new ArrayList<>();
+        ingredientsFilteredRecipesList = new ArrayList<>();
+        suitabilityFilteredRecipesList = new ArrayList<>();
+        nameFilteredRecipesList = new ArrayList<>();
         bottomSheetRL = findViewById(R.id.idRLBSheet);
 
         // recipe RV adapter config
-        recipeRVAdapter = new RecipeRVAdapter(recipesList, this, this);
+        recipeRVAdapter = new RecipeRVAdapter(originalRecipesList, this, this);
         recipeRV.setLayoutManager(new LinearLayoutManager(this));
         recipeRV.setAdapter(recipeRVAdapter);
 
@@ -180,7 +189,7 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
 
                 @Override
                 public boolean onQueryTextChange(String newText) {
-                    search(newText);
+                    searchByName(newText);
                     return true;
                 }
             });
@@ -223,13 +232,13 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
 
     private void getAllRecipes() {
 
-        recipesList.clear();
+        originalRecipesList.clear();
         databaseReferenceRecipes.addChildEventListener(new ChildEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 loadingPB.setVisibility(View.GONE);
-                recipesList.add(snapshot.getValue(RecipeRVModal.class));
+                originalRecipesList.add(snapshot.getValue(RecipeRVModal.class));
                 recipeRVAdapter.notifyDataSetChanged();
             }
 
@@ -405,7 +414,7 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
         ArrayList<RecipeRVModal> matchingRecipesList = new ArrayList<>();
 
         // loop through the recipes and if they contain any of the selected ingredients then store them to arraylist
-        for(RecipeRVModal recipe : recipesList){
+        for(RecipeRVModal recipe : originalRecipesList){
             for(String ingredient : filteredIngredients){
                 if(recipe.getRecipeIngredients().toLowerCase().contains(ingredient.toLowerCase())){
                     matchingRecipesList.add(recipe);
@@ -414,6 +423,15 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
             }
         }
 
+        // clear the cuisine filtered list
+        ingredientsFilteredRecipesList.clear();
+
+        // add all ingredients from matching list to filtered list
+        ingredientsFilteredRecipesList.addAll(matchingRecipesList);
+
+        // update the last search value
+        lastSearch = "ingredients";
+
         for(RecipeRVModal object : matchingRecipesList){
             Log.d("matchingRecipesList", object.getRecipeName());
         }
@@ -421,7 +439,7 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
         Log.d("matchingRecipesList Size", String.valueOf(matchingRecipesList.size()));
 
         // print all recipes ingredients
-        for(RecipeRVModal rL : recipesList){
+        for(RecipeRVModal rL : originalRecipesList){
             Log.d("recipesList", rL.getRecipeIngredients());
         }
 
@@ -458,7 +476,7 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
         ArrayList<RecipeRVModal> matchingRecipesList = new ArrayList<>();
 
         // loop through the recipes and if they contain any of the selected ingredients then store them to arraylist
-        for(RecipeRVModal recipe : recipesList){
+        for(RecipeRVModal recipe : originalRecipesList){
             for(String cuisine : filteredCuisine){
                 if(recipe.getRecipeCuisine().toLowerCase().contains(cuisine.toLowerCase())){
                     matchingRecipesList.add(recipe);
@@ -467,14 +485,19 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
             }
         }
 
-        for(RecipeRVModal object : matchingRecipesList){
-            Log.d("matchingRecipesList", object.getRecipeName());
-        }
+        // clear the cuisine filtered list
+        cuisineFilteredRecipesList.clear();
+
+        // add all ingredients from matching list to filtered list
+        cuisineFilteredRecipesList.addAll(matchingRecipesList);
+
+        // update the last search value
+        lastSearch = "cuisine";
 
         Log.d("matchingRecipesList Size", String.valueOf(matchingRecipesList.size()));
 
         // print all recipes ingredients
-        for(RecipeRVModal rL : recipesList){
+        for(RecipeRVModal rL : originalRecipesList){
             Log.d("recipesList", rL.getRecipeName());
         }
 
@@ -511,7 +534,7 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
         ArrayList<RecipeRVModal> matchingRecipesList = new ArrayList<>();
 
         // loop through the recipes and if they contain any of the selected ingredients then store them to arraylist
-        for(RecipeRVModal recipe : recipesList){
+        for(RecipeRVModal recipe : originalRecipesList){
             for(String suitability : filteredSuitability){
                 if(recipe.getRecipeSuitedFor().toLowerCase().contains(suitability.toLowerCase())){
                     matchingRecipesList.add(recipe);
@@ -520,6 +543,15 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
             }
         }
 
+        // clear the cuisine filtered list
+        suitabilityFilteredRecipesList.clear();
+
+        // add all ingredients from matching list to filtered list
+        suitabilityFilteredRecipesList.addAll(matchingRecipesList);
+
+        // update the last search value
+        lastSearch = "suitability";
+
         for(RecipeRVModal object : matchingRecipesList){
             Log.d("matchingRecipesList", object.getRecipeName());
         }
@@ -527,7 +559,7 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
         Log.d("matchingRecipesList Size", String.valueOf(matchingRecipesList.size()));
 
         // print all recipes ingredients
-        for(RecipeRVModal rL : recipesList){
+        for(RecipeRVModal rL : originalRecipesList){
             Log.d("recipesList", rL.getRecipeName());
         }
 
@@ -547,24 +579,33 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
         recipeRV.setAdapter(recipeRVAdapter);
     }
 
-    private void search(String str) {
-        ArrayList<RecipeRVModal> matchingRecipes = new ArrayList<>();
+    private void searchByName(String str) {
+        ArrayList<RecipeRVModal> matchingRecipesList = new ArrayList<>();
 
         if (!str.equals("")){
-            for (RecipeRVModal recipe : recipesList){
+            for (RecipeRVModal recipe : originalRecipesList){
                 if(recipe.getRecipeName().toLowerCase().contains(str.toLowerCase())){
-                    matchingRecipes.add(recipe);
+                    matchingRecipesList.add(recipe);
                 }
             }
 
-            if(matchingRecipes.size() == 0){
+            if(matchingRecipesList.size() == 0){
                 noMatchingResults();
             }else{
                 isMatchingResults();
             }
 
+            // clear the cuisine filtered list
+            nameFilteredRecipesList.clear();
+
+            // add all ingredients from matching list to filtered list
+            nameFilteredRecipesList.addAll(matchingRecipesList);
+
+            // update the last search value
+            lastSearch = "name";
+
             RecyclerView recipeRV = findViewById(R.id.idRVRecipes);
-            recipeRVAdapter = new RecipeRVAdapter(matchingRecipes, this, this);
+            recipeRVAdapter = new RecipeRVAdapter(matchingRecipesList, this, this);
             recipeRV.setLayoutManager(new LinearLayoutManager(this));
             recipeRV.setAdapter(recipeRVAdapter);
         }
@@ -573,22 +614,42 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
 
     private void resetRecipesList(){
         RecyclerView recipeRV = findViewById(R.id.idRVRecipes);
-        recipeRVAdapter = new RecipeRVAdapter(recipesList, this, this);
+        recipeRVAdapter = new RecipeRVAdapter(originalRecipesList, this, this);
         recipeRV.setLayoutManager(new LinearLayoutManager(this));
         recipeRV.setAdapter(recipeRVAdapter);
 
+        // show toast notification to show that search is cleared
         Toast.makeText(RecipeSearchActivity.this, "Search Cleared", Toast.LENGTH_SHORT).show();
 
-        if(!recipesList.isEmpty()){
+        // if recipes list is empty then show no results icon and text else hide icon and text
+        if(!originalRecipesList.isEmpty()){
             isMatchingResults();
         }else{
             noMatchingResults();
         }
+
+        // clear last search value
+        lastSearch = "";
     }
 
     @Override
     public void onRecipeClick(int position) {
-        displayBottomSheet(recipesList.get(position));
+
+        switch (lastSearch) {
+
+        }
+
+        if(Objects.equals(lastSearch, "cuisine")){
+            displayBottomSheet(cuisineFilteredRecipesList.get(position));
+        } else if(Objects.equals(lastSearch, "suitability")){
+            displayBottomSheet(suitabilityFilteredRecipesList.get(position));
+        } else if(Objects.equals(lastSearch, "ingredients")){
+            displayBottomSheet(ingredientsFilteredRecipesList.get(position));
+        } else if(Objects.equals(lastSearch, "name")){
+            displayBottomSheet(nameFilteredRecipesList.get(position));
+        } else{
+            displayBottomSheet(originalRecipesList.get(position));
+        }
     }
 
     @SuppressLint("SetTextI18n")
