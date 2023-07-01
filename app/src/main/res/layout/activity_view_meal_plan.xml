@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blue_shade_1"
-    tools:context=".ViewRecipeActivity" >
+    tools:context=".ViewMealPlanActivity" >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -232,17 +232,6 @@
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:background="@drawable/custom_button_back" />
-
-                <Button
-                    android:id="@+id/idBtnAddToMealPlan"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:layout_weight="1"
-                    android:text="Add Recipe to Meal Plan"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:background="@drawable/custom_button_purple"/>
 
             </LinearLayout>
         </LinearLayout>
