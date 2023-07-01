@@ -4,21 +4,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 
-public class AdapterClass extends RecyclerView.Adapter<AdapterClass.MyViewHolder> {
+public class RecipeSearchRVAdapter extends RecyclerView.Adapter<RecipeSearchRVAdapter.MyViewHolder> {
 
     ArrayList<Ingredient> list;
-    public AdapterClass (ArrayList<Ingredient> list){
+    public RecipeSearchRVAdapter(ArrayList<Ingredient> list){
         this.list = list;
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.card_holder,viewGroup,false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.ingredient_card_holder,viewGroup,false);
         return new MyViewHolder(view);
     }
 
@@ -38,8 +40,8 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.MyViewHolder
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            name = itemView.findViewById(R.id.SvIngredientName);
-            description = itemView.findViewById(R.id.SvIngredientDescription);
+            name = itemView.findViewById(R.id.SvIngredientNameTwo);
+            description = itemView.findViewById(R.id.SvIngredientDescriptionTwo);
         }
     }
 }

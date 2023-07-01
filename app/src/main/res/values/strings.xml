@@ -47,4 +47,49 @@
     <string name="scan_ingredients">Scan Ingredients</string>
     <string name="select_image">Select Image</string>
     <string name="capture_image">Capture Image</string>
+    <string name="submit">Submit</string>
+    <string name="filter_by_ingredients">Filter By Ingredients</string>
+    <string name="select_cuisine">Select Cuisine</string>
+    <string name="search_by_ingredients">Search By Ingredients</string>
+    <string name="search_by_cuisine">Search By Cuisine</string>
+    <string name="search_by_dietary_suitability">Search By Dietary Suitability</string>
+    <string name="selected_image_to_be_scanned">Selected image to be scanned</string>
+    <string name="matching_recipes">Matching Recipes</string>
+    <string name="search_icon_with_x">Search icon with X</string>
+    <string name="no_matching_recipes">No matching recipes</string>
+    <string name="try_adjusting_your_search">Try adjusting your search</string>
+    <string name="ingredient">Ingredient</string>
+    <string name="delete">Delete</string>
+    <string name="ingredients_search">Ingredients Search</string>
+    <string name="cuisine_search">Cuisine Search</string>
+    <string name="clear_search">Clear Search</string>
+    <string name="suitability_search">Suitability Search</string>
+    <string-array name="cuisine_array">
+        <item>Chinese</item>
+        <item>Thai</item>
+        <item>French</item>
+        <item>Mexican</item>
+        <item>Caribbean</item>
+        <item>Shandong</item>
+        <item>Indian</item>
+        <item>Indonesian</item>
+        <item>American</item>
+        <item>Italian</item>
+        <item>Japanese</item>
+        <item>European</item>
+        <item>Mediterranean</item>
+        <item>Cantonese</item>
+        <item>Other</item>
+    </string-array>
+    <string-array name="dietary_requirements">
+        <item>Lactose intolerance</item>
+        <item>Gluten intolerance or sensitivity</item>
+        <item>Vegetarianism</item>
+        <item>Veganism</item>
+        <item>Kosher</item>
+        <item>Nut allergies</item>
+        <item>Halal</item>
+        <item>Pescetarianism</item>
+        <item>Other</item>
+    </string-array>
 </resources>

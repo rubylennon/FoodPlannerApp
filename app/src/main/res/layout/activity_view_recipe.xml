@@ -110,6 +110,29 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:inputType="none"
+                android:hint="Cuisine"
+                style="@style/TextInputLayout"
+                android:padding="5dp"
+                android:textColorHint="@color/blue_shade_2"
+                app:hintTextColor="@color/blue_shade_2" >
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/idEdtRecipeCuisine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:importantForAutofill="no"
+                    android:inputType="none"
+                    android:textColor="@color/blue_shade_2"
+                    android:textColorHint="@color/blue_shade_2"
+                    android:textSize="14sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
@@ -178,12 +201,13 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <Switch
+                android:id="@+id/idPublicSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
-                android:id="@+id/idPublicSwitch"
+                android:minHeight="48dp"
                 android:text="@string/recipe_public"
                 tools:ignore="UseSwitchCompatOrMaterialXml" />
 

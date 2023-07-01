@@ -20,7 +20,7 @@ public class IngredientScannerRVAdapter extends RecyclerView.Adapter<IngredientS
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.card_holder_test,viewGroup,false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.ingredient_card_holder,viewGroup,false);
         return new MyViewHolder(view);
     }
 

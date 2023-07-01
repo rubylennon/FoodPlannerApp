@@ -13,7 +13,8 @@
         android:id="@+id/image_view"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        app:srcCompat="@drawable/logo" />
+        app:srcCompat="@drawable/logo"
+        android:contentDescription="@string/selected_image_to_be_scanned" />
 
     <ProgressBar
         android:id="@+id/idPBLoading"
