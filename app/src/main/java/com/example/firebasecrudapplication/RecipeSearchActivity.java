@@ -31,6 +31,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -45,7 +46,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Objects;
 
 public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVAdapter.RecipeClickInterface {
     private ProgressBar loadingPB;
@@ -55,7 +55,7 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
     private ArrayList<RecipeRVModal> ingredientsFilteredRecipesList;
     private ArrayList<RecipeRVModal> suitabilityFilteredRecipesList;
     private ArrayList<RecipeRVModal> nameFilteredRecipesList;
-    private String lastSearch;
+    private String currentSearch = "";
     private DatabaseReference databaseReferenceRecipes;
     private RelativeLayout bottomSheetRL;
     private RecipeRVAdapter recipeRVAdapter;
@@ -71,7 +71,8 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
     private ImageView noMatchingSearchResultsIcon;
     private TextView noMatchingSearchTextOne,
             noMatchingSearchTextTwo;
-
+    private TextView appliedSearchInfoTV;
+    private CardView appliedSearchInfoCV;
 
     @SuppressLint({"MissingInflatedId", "SetTextI18n"})
     @Override
@@ -86,6 +87,12 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
         noMatchingSearchResultsIcon = findViewById(R.id.noSearchResultsIV);
         noMatchingSearchTextOne = findViewById(R.id.no_matching_results);
         noMatchingSearchTextTwo = findViewById(R.id.no_matching_results_help);
+        appliedSearchInfoTV = findViewById(R.id.appliedSearchInfoTV);
+        appliedSearchInfoCV = findViewById(R.id.appliedSearchInfoCV);
+
+        // hide current search info help text
+        appliedSearchInfoTV.setVisibility(View.GONE);
+        appliedSearchInfoCV.setVisibility(View.GONE);
 
         isMatchingResults();
 
@@ -184,11 +191,15 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
+                    appliedSearchInfoTV.setVisibility(View.GONE);
+                    appliedSearchInfoCV.setVisibility(View.GONE);
                     return false;
                 }
 
                 @Override
                 public boolean onQueryTextChange(String newText) {
+                    appliedSearchInfoTV.setVisibility(View.GONE);
+                    appliedSearchInfoCV.setVisibility(View.GONE);
                     searchByName(newText);
                     return true;
                 }
@@ -293,7 +304,7 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
         final ArrayList<Object> selectedItems = new ArrayList<>();
 
         // construct and configure alert dialog
-        AlertDialog alertDialog = new AlertDialog.Builder(this)
+        @SuppressLint("SetTextI18n") AlertDialog alertDialog = new AlertDialog.Builder(this)
                 .setTitle("Search Recipes By Ingredients")
                 .setMultiChoiceItems(stringIngredientsArray, null, (dialog, indexSelected, isChecked) -> {
                     if (isChecked) {
@@ -392,6 +403,7 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
 
     }
 
+    @SuppressLint("SetTextI18n")
     private void filterRecipesByIngredients(ArrayList<Object> selectedItems){
 
         ArrayList<String> filteredIngredients = new ArrayList<>();
@@ -409,6 +421,11 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
         for(String object : filteredIngredients){
             Log.d("filteredIngredients", object);
         }
+
+        // show applied search filters text
+        appliedSearchInfoTV.setVisibility(View.VISIBLE);
+        appliedSearchInfoCV.setVisibility(View.VISIBLE);
+        appliedSearchInfoTV.setText("Applied Ingredients Search Filters:\n" + filteredIngredients);
 
         // arraylist to store recipes with matching
         ArrayList<RecipeRVModal> matchingRecipesList = new ArrayList<>();
@@ -430,7 +447,7 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
         ingredientsFilteredRecipesList.addAll(matchingRecipesList);
 
         // update the last search value
-        lastSearch = "ingredients";
+        currentSearch = "ingredients";
 
         for(RecipeRVModal object : matchingRecipesList){
             Log.d("matchingRecipesList", object.getRecipeName());
@@ -459,6 +476,7 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
         recipeRV.setAdapter(recipeRVAdapter);
     }
 
+    @SuppressLint("SetTextI18n")
     private void filterRecipesByCuisine(ArrayList<Object> selectedItems){
         ArrayList<String> filteredCuisine = new ArrayList<>();
 
@@ -471,6 +489,11 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
         for(String object : filteredCuisine){
             Log.d("filteredCuisine", object);
         }
+
+        // show applied search filters text
+        appliedSearchInfoTV.setVisibility(View.VISIBLE);
+        appliedSearchInfoCV.setVisibility(View.VISIBLE);
+        appliedSearchInfoTV.setText("Applied Cuisine Search Filters:\n" + filteredCuisine);
 
         // arraylist to store recipes with matching
         ArrayList<RecipeRVModal> matchingRecipesList = new ArrayList<>();
@@ -492,7 +515,7 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
         cuisineFilteredRecipesList.addAll(matchingRecipesList);
 
         // update the last search value
-        lastSearch = "cuisine";
+        currentSearch = "cuisine";
 
         Log.d("matchingRecipesList Size", String.valueOf(matchingRecipesList.size()));
 
@@ -517,6 +540,7 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
         recipeRV.setAdapter(recipeRVAdapter);
     }
 
+    @SuppressLint("SetTextI18n")
     private void filterRecipesBySuitability(ArrayList<Object> selectedItems){
         ArrayList<String> filteredSuitability = new ArrayList<>();
 
@@ -529,6 +553,11 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
         for(String object : filteredSuitability){
             Log.d("filteredSuitability", object);
         }
+
+        // show applied search filters text
+        appliedSearchInfoTV.setVisibility(View.VISIBLE);
+        appliedSearchInfoCV.setVisibility(View.VISIBLE);
+        appliedSearchInfoTV.setText("Applied Suitability Search Filters:\n" + filteredSuitability);
 
         // arraylist to store recipes with matching
         ArrayList<RecipeRVModal> matchingRecipesList = new ArrayList<>();
@@ -550,7 +579,7 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
         suitabilityFilteredRecipesList.addAll(matchingRecipesList);
 
         // update the last search value
-        lastSearch = "suitability";
+        currentSearch = "suitability";
 
         for(RecipeRVModal object : matchingRecipesList){
             Log.d("matchingRecipesList", object.getRecipeName());
@@ -602,7 +631,7 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
             nameFilteredRecipesList.addAll(matchingRecipesList);
 
             // update the last search value
-            lastSearch = "name";
+            currentSearch = "name";
 
             RecyclerView recipeRV = findViewById(R.id.idRVRecipes);
             recipeRVAdapter = new RecipeRVAdapter(matchingRecipesList, this, this);
@@ -613,6 +642,14 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
     }
 
     private void resetRecipesList(){
+        // clear applied search text
+        appliedSearchInfoTV.setVisibility(View.GONE);
+        appliedSearchInfoCV.setVisibility(View.GONE);
+
+        // clear search bar query
+        searchView.setQuery("", false);
+
+        // reset the recipe recycler view
         RecyclerView recipeRV = findViewById(R.id.idRVRecipes);
         recipeRVAdapter = new RecipeRVAdapter(originalRecipesList, this, this);
         recipeRV.setLayoutManager(new LinearLayoutManager(this));
@@ -629,26 +666,29 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
         }
 
         // clear last search value
-        lastSearch = "";
+        currentSearch = "";
     }
 
     @Override
     public void onRecipeClick(int position) {
 
-        switch (lastSearch) {
-
-        }
-
-        if(Objects.equals(lastSearch, "cuisine")){
-            displayBottomSheet(cuisineFilteredRecipesList.get(position));
-        } else if(Objects.equals(lastSearch, "suitability")){
-            displayBottomSheet(suitabilityFilteredRecipesList.get(position));
-        } else if(Objects.equals(lastSearch, "ingredients")){
-            displayBottomSheet(ingredientsFilteredRecipesList.get(position));
-        } else if(Objects.equals(lastSearch, "name")){
-            displayBottomSheet(nameFilteredRecipesList.get(position));
-        } else{
-            displayBottomSheet(originalRecipesList.get(position));
+        // based on filtered recipe list set recipe click position
+        switch (currentSearch) {
+            case "cuisine":
+                displayBottomSheet(cuisineFilteredRecipesList.get(position));
+                break;
+            case "suitability":
+                displayBottomSheet(suitabilityFilteredRecipesList.get(position));
+                break;
+            case "ingredients":
+                displayBottomSheet(ingredientsFilteredRecipesList.get(position));
+                break;
+            case "name":
+                displayBottomSheet(nameFilteredRecipesList.get(position));
+                break;
+            case "":
+                displayBottomSheet(originalRecipesList.get(position));
+                break;
         }
     }
 
