@@ -178,9 +178,16 @@ public class ViewRecipeActivity extends AppCompatActivity implements DatePickerD
         Boolean recipePublic = recipePublicEdt.isChecked();
         mealPlanID = databaseReferenceMealPlan.push().getKey();
 
+        String[] ingredientsArray = recipeIngredients.split(",");
+
         MealPlanRVModal mealPlanRVModal = new MealPlanRVModal(currentDateString,mealPlanID,recipeName,recipeCookingTime,recipeServings,recipeSuitedFor,recipeCuisine,recipeImg,recipeLink,recipeDesc,recipeMethod,recipeIngredients,recipePublic,recipeID,userID);
         assert mealPlanID != null;
         databaseReferenceMealPlan.child(mealPlanID).setValue(mealPlanRVModal);
+
+        // store ingredients to ingredients child object
+        for(String ingredient : ingredientsArray){
+            databaseReferenceMealPlan.child(mealPlanID).child("ingredients").child(ingredient).setValue(false);
+        }
 
         Toast.makeText(ViewRecipeActivity.this, "Recipe Added to Meal Plan", Toast.LENGTH_SHORT).show();
 

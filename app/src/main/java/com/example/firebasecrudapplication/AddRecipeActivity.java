@@ -8,6 +8,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -60,6 +62,7 @@ public class AddRecipeActivity extends AppCompatActivity {
     private LinearLayout layout;
     private final ArrayList<String> ingredientList = new ArrayList<>();
     private String ingredientsSelectionString;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +73,7 @@ public class AddRecipeActivity extends AppCompatActivity {
         setTitle("Add Recipe");
 
         // initialise variables
+        mAuth = FirebaseAuth.getInstance();
         recipeNameEdt = findViewById(R.id.idEdtRecipeName);
         recipeCookingTimeEdt = findViewById(R.id.idEdtRecipeCookingTime);
         recipeServingsEdt = findViewById(R.id.idEdtRecipeServings);
@@ -352,4 +356,42 @@ public class AddRecipeActivity extends AppCompatActivity {
 
         layout.addView(view);
     }
+
+    // options menu code start
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.settings_main,menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(@NonNull MenuItem item){
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.idEditAccount:
+                Intent i = new Intent(AddRecipeActivity.this, EditAccountActivity.class);
+                startActivity(i);
+                return true;
+            case R.id.idScan:
+                Intent i2 = new Intent(AddRecipeActivity.this, IngredientsScannerActivity.class);
+                startActivity(i2);
+                return true;
+            case R.id.idSearch:
+                Intent i3 = new Intent(AddRecipeActivity.this, RecipeSearchActivity.class);
+                startActivity(i3);
+                return true;
+            case R.id.idMealPlan:
+                Intent i4 = new Intent(AddRecipeActivity.this, MealPlanActivity.class);
+                startActivity(i4);
+                return true;
+            case R.id.idLogout:
+                Toast.makeText(this, "User Logged Out", Toast.LENGTH_SHORT).show();
+                mAuth.signOut();
+                Intent i5 = new Intent(AddRecipeActivity.this, LoginActivity.class);
+                startActivity(i5);
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+    // options menu code end
 }

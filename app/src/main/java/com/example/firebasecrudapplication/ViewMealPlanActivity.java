@@ -2,6 +2,7 @@ package com.example.firebasecrudapplication;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Switch;
@@ -27,9 +28,12 @@ public class ViewMealPlanActivity extends AppCompatActivity {
     private ProgressBar loadingPB;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
+    private DatabaseReference databaseReferenceIngredients;
     private String recipeID;
     private String mealPlanID;
     private MealPlanRVModal mealPlanRVModal;
+    private MealPlanIngredient mealPlanIngredient;
+    private String[] ingredientsArray;
 
     public ViewMealPlanActivity() {
     }
@@ -67,6 +71,7 @@ public class ViewMealPlanActivity extends AppCompatActivity {
             recipeDescEdt.setText(mealPlanRVModal.getRecipeDescription());
             recipeMethodEdt.setText(mealPlanRVModal.getRecipeMethod());
             recipeIngredientsEdt.setText(mealPlanRVModal.getRecipeIngredients());
+            ingredientsArray = mealPlanRVModal.getRecipeIngredients().split(",");
             recipePublicEdt.setChecked(mealPlanRVModal.getRecipePublic().equals(true));
             recipeID = mealPlanRVModal.getRecipeID();
             mealPlanID = mealPlanRVModal.getMealPlanID();
@@ -107,6 +112,9 @@ public class ViewMealPlanActivity extends AppCompatActivity {
 
         // assign database reference to Recipes firebase realtime database reference
         databaseReference = firebaseDatabase.getReference("Meal Plans").child(mealPlanID);
+
+        // assign database reference to Recipes firebase realtime database reference
+        databaseReferenceIngredients = firebaseDatabase.getReference("Meal Plans").child(mealPlanID).child("ingredients").child("flour");
 
         // view recipe source page in browser using recipe link
 //        viewSourceRecipe.setOnClickListener(v -> {

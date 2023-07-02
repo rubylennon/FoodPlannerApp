@@ -1,5 +1,6 @@
 package com.example.firebasecrudapplication;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,9 +37,9 @@ public class RecipeRVAdapter extends RecyclerView.Adapter<RecipeRVAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecipeRVAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecipeRVAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         RecipeRVModal recipeRVModal = recipeRVModalArrayList.get(position);
-        holder.recipeNameTV.setText("Description: " + recipeRVModal.getRecipeName());
+        holder.recipeNameTV.setText(recipeRVModal.getRecipeName());
         holder.recipeCookingTimeTV.setText("Cooking Time: " + recipeRVModal.getRecipeCookingTime());
         Picasso.get().load(recipeRVModal.getRecipeImg()).into(holder.recipeTV);
         setAnimation(holder.itemView, position);
