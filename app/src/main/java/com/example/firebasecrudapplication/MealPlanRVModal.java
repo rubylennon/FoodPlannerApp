@@ -208,8 +208,8 @@ public class MealPlanRVModal implements Parcelable {
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeString(mealPlanID);
         dest.writeString(date);
+        dest.writeString(mealPlanID);
         dest.writeString(recipeName);
         dest.writeString(recipeCookingTime);
         dest.writeString(recipeServings);

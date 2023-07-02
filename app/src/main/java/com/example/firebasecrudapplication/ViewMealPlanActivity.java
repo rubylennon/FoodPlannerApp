@@ -32,7 +32,6 @@ public class ViewMealPlanActivity extends AppCompatActivity {
     private String recipeID;
     private String mealPlanID;
     private MealPlanRVModal mealPlanRVModal;
-    private MealPlanIngredient mealPlanIngredient;
     private String[] ingredientsArray;
 
     public ViewMealPlanActivity() {
@@ -114,7 +113,8 @@ public class ViewMealPlanActivity extends AppCompatActivity {
         databaseReference = firebaseDatabase.getReference("Meal Plans").child(mealPlanID);
 
         // assign database reference to Recipes firebase realtime database reference
-        databaseReferenceIngredients = firebaseDatabase.getReference("Meal Plans").child(mealPlanID).child("ingredients").child("flour");
+        databaseReferenceIngredients = firebaseDatabase.getReference("Meal Plans");
+        databaseReferenceIngredients.child(mealPlanID).child("ingredients").child("Tomato").setValue(true);
 
         // view recipe source page in browser using recipe link
 //        viewSourceRecipe.setOnClickListener(v -> {
