@@ -293,7 +293,8 @@ public class AddRecipeActivity extends AppCompatActivity {
                 String recipeMethod = recipeMethodEdt.getText().toString();
                 String recipeIngredients = ingredientsSelectionString;
                 Boolean recipePublic = recipePublicEdt.isChecked();
-                recipeID = recipeName;
+                recipeID = databaseReference.push().getKey();
+
                 RecipeRVModal recipeRVModal = new RecipeRVModal(recipeName,recipeCookingTime,recipeServings,recipeSuitedFor,recipeCuisine,recipeImg,recipeLink,recipeDesc,recipeMethod,recipeIngredients,recipePublic,recipeID,userID);
 
                 // add the new recipe to the database

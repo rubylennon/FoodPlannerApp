@@ -38,17 +38,12 @@ public class MealPlanRVAdapter extends RecyclerView.Adapter<MealPlanRVAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull MealPlanRVAdapter.ViewHolder holder, int position) {
         MealPlanRVModal mealPlanRVModal = mealPlanRVModalArrayList.get(position);
-        holder.recipeNameTV.setText("Description: " + mealPlanRVModal.getRecipeName());
-        holder.recipeCookingTimeTV.setText("Cooking Time: " + mealPlanRVModal.getRecipeCookingTime());
+        holder.recipeNameTV.setText(mealPlanRVModal.getRecipeName());
+        holder.mealPlanDate.setText(mealPlanRVModal.getDate());
         Picasso.get().load(mealPlanRVModal.getRecipeImg()).into(holder.recipeTV);
         setAnimation(holder.itemView, position);
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mealPlanClickInterface.onMealPlanClick(position);
-            }
-        });
+        holder.itemView.setOnClickListener(v -> mealPlanClickInterface.onMealPlanClick(position));
     }
 
     private void setAnimation(View itemView, int position){
@@ -66,13 +61,13 @@ public class MealPlanRVAdapter extends RecyclerView.Adapter<MealPlanRVAdapter.Vi
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView recipeNameTV, recipeServesTV,recipeCookingTimeTV;
+        private TextView recipeNameTV,mealPlanDate;
         private ImageView recipeTV;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             recipeNameTV = itemView.findViewById(R.id.idTVRecipeName);
-            recipeCookingTimeTV = itemView.findViewById(R.id.idTVCookingTime);
+            mealPlanDate = itemView.findViewById(R.id.idTVDate);
             recipeTV = itemView.findViewById(R.id.idTVRecipe);
         }
     }

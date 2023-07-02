@@ -28,7 +28,7 @@
             android:layout_marginTop="3dp"
             android:layout_marginEnd="3dp"
             android:layout_marginBottom="3dp"
-            android:layout_toLeftOf="@id/idTVCookingTime"
+            android:layout_toLeftOf="@id/idTVDate"
             android:padding="4dp"
             android:singleLine="true"
             android:text="Recipe Name"
@@ -37,7 +37,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/idTVCookingTime"
+            android:id="@+id/idTVDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/idTVRecipe"
@@ -49,7 +49,7 @@
             android:layout_marginBottom="3dp"
             android:padding="4dp"
             android:singleLine="true"
-            android:text="Cooking Time"
+            android:text="Date"
             android:textColor="@color/blue_shade_2"
             android:textSize="15sp"
             android:textStyle="bold" />

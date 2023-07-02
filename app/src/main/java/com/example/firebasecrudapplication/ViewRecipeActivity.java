@@ -165,50 +165,26 @@ public class ViewRecipeActivity extends AppCompatActivity implements DatePickerD
         calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
         String currentDateString = DateFormat.getDateInstance(DateFormat.FULL).format(calendar.getTime());
-
-        Log.d("currentDateString", currentDateString);
-
-        String recipeName = recipeNameEdt.getText().toString();
-        Log.d("recipeName", recipeName);
-        String recipeCookingTime = recipeCookingTimeEdt.getText().toString();
-        Log.d("recipeCookingTime", recipeCookingTime);
-        String recipeServings = recipeServingsEdt.getText().toString();
-        Log.d("recipeServings", recipeServings);
-        String recipeSuitedFor = recipeSuitedForEdt.getText().toString();
-        Log.d("recipeSuitedFor", recipeSuitedFor);
-        String recipeCuisine = recipeCuisineEdt.getText().toString();
-        Log.d("recipeCuisine", recipeCuisine);
+        String recipeName = Objects.requireNonNull(recipeNameEdt.getText()).toString();
+        String recipeCookingTime = Objects.requireNonNull(recipeCookingTimeEdt.getText()).toString();
+        String recipeServings = Objects.requireNonNull(recipeServingsEdt.getText()).toString();
+        String recipeSuitedFor = Objects.requireNonNull(recipeSuitedForEdt.getText()).toString();
+        String recipeCuisine = Objects.requireNonNull(recipeCuisineEdt.getText()).toString();
         String recipeImg = recipeImgEdt;
-        Log.d("recipeImg", recipeImg);
         String recipeLink = recipeLinkEdt;
-        Log.d("recipeLink", recipeLink);
-        String recipeDesc = recipeDescEdt.getText().toString();
-        Log.d("recipeDesc", recipeDesc);
-        String recipeMethod = recipeMethodEdt.getText().toString();
-        Log.d("recipeMethod", recipeMethod);
-        String recipeIngredients = recipeIngredientsEdt.getText().toString();
-        Log.d("recipeIngredients", recipeIngredients);
+        String recipeDesc = Objects.requireNonNull(recipeDescEdt.getText()).toString();
+        String recipeMethod = Objects.requireNonNull(recipeMethodEdt.getText()).toString();
+        String recipeIngredients = Objects.requireNonNull(recipeIngredientsEdt.getText()).toString();
         Boolean recipePublic = recipePublicEdt.isChecked();
-        Log.d("recipePublic", String.valueOf(recipePublic));
-        recipeID = recipeName;
-        mealPlanID = recipeName;
+        mealPlanID = databaseReferenceMealPlan.push().getKey();
+
         MealPlanRVModal mealPlanRVModal = new MealPlanRVModal(currentDateString,mealPlanID,recipeName,recipeCookingTime,recipeServings,recipeSuitedFor,recipeCuisine,recipeImg,recipeLink,recipeDesc,recipeMethod,recipeIngredients,recipePublic,recipeID,userID);
+        assert mealPlanID != null;
+        databaseReferenceMealPlan.child(mealPlanID).setValue(mealPlanRVModal);
 
-        databaseReferenceMealPlan.push().setValue(mealPlanRVModal);
+        Toast.makeText(ViewRecipeActivity.this, "Recipe Added to Meal Plan", Toast.LENGTH_SHORT).show();
 
-        // add the new recipe to the database
-        databaseReferenceMealPlan.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                loadingPB.setVisibility(View.GONE);
-                Toast.makeText(ViewRecipeActivity.this, "Recipe Added to Meal Plan", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(ViewRecipeActivity.this, MealPlanActivity.class));
-            }
+        startActivity(new Intent(ViewRecipeActivity.this, MealPlanActivity.class));
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(ViewRecipeActivity.this, "Error is " + error, Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 }

@@ -25,6 +25,7 @@ public class MealPlanRVModal implements Parcelable {
     private String userID;
     private String date;
     private String mealPlanID;
+    private String key;
 
     public MealPlanRVModal(){
 
