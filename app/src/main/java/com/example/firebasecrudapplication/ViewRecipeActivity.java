@@ -186,7 +186,9 @@ public class ViewRecipeActivity extends AppCompatActivity implements DatePickerD
 
         // store ingredients to ingredients child object
         for(String ingredient : ingredientsArray){
-            databaseReferenceMealPlan.child(mealPlanID).child("ingredients").child(ingredient.trim()).setValue(false);
+            MealPlanIngredient mealPlanIngredient = new MealPlanIngredient(ingredient.trim(), "false");
+            //databaseReferenceMealPlan.child(mealPlanID).child("ingredients").child(ingredient.trim()).setValue(false);
+            databaseReferenceMealPlan.child(mealPlanID).child("ingredients").push().setValue(mealPlanIngredient);
         }
 
         Toast.makeText(ViewRecipeActivity.this, "Recipe Added to Meal Plan", Toast.LENGTH_SHORT).show();

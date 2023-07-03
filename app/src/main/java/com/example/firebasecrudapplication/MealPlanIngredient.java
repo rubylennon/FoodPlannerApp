@@ -1,38 +1,28 @@
 package com.example.firebasecrudapplication;
 
-import android.os.Build;
-import android.os.Parcel;
-import android.os.Parcelable;
+import com.google.firebase.database.Exclude;
 
-import androidx.annotation.NonNull;
-
-public class MealPlanIngredient implements Parcelable {
-    // variables
+public class MealPlanIngredient {
+    @Exclude
+    public String key;
     private String ingredient;
+    private String purchased;
 
-    public MealPlanIngredient(){
-
+    public MealPlanIngredient() {
     }
 
-    public MealPlanIngredient(String ingredient) {
+    public MealPlanIngredient(String ingredient, String purchased) {
         this.ingredient = ingredient;
+        this.purchased = purchased;
     }
 
-    protected MealPlanIngredient(Parcel in) {
-        ingredient = in.readString();
+    public String getKey() {
+        return key;
     }
 
-    public static final Creator<MealPlanIngredient> CREATOR = new Creator<MealPlanIngredient>() {
-        @Override
-        public MealPlanIngredient createFromParcel(Parcel in) {
-            return new MealPlanIngredient(in);
-        }
-
-        @Override
-        public MealPlanIngredient[] newArray(int size) {
-            return new MealPlanIngredient[size];
-        }
-    };
+    public void setKey() {
+        this.key = key;
+    }
 
     public String getIngredient() {
         return ingredient;
@@ -42,13 +32,11 @@ public class MealPlanIngredient implements Parcelable {
         this.ingredient = ingredient;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public String getPurchased() {
+        return purchased;
     }
 
-    @Override
-    public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeString(ingredient);
+    public void setPurchased(String purchased) {
+        this.purchased = purchased;
     }
 }
