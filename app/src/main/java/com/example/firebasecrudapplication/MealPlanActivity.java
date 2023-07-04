@@ -1,10 +1,12 @@
 package com.example.firebasecrudapplication;
 
 //@REF 1 - https://www.geeksforgeeks.org/how-to-create-an-alert-dialog-box-in-android/
+//@REF 2: https://www.geeksforgeeks.org/java-program-to-sort-objects-in-arraylist-by-date/
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,21 +26,34 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Objects;
 
 public class MealPlanActivity extends AppCompatActivity implements MealPlanRVAdapter.MealPlanClickInterface {
     private RecyclerView recipeRV;
     private ProgressBar loadingPB;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
+    private DatabaseReference databaseReferenceFiltered;
     private DatabaseReference databaseReferenceMealPlan;
+    private Query query;
     private ArrayList<MealPlanRVModal> mealPlanRVModalArrayList;
     private RelativeLayout bottomSheetRL;
     private MealPlanRVAdapter mealPlanRVAdapter;
@@ -54,6 +69,7 @@ public class MealPlanActivity extends AppCompatActivity implements MealPlanRVAda
 
         recipeRV = findViewById(R.id.idRVRecipes);
         loadingPB = findViewById(R.id.idPBLoading);
+        String userID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("Meal Plans");
 
@@ -63,19 +79,55 @@ public class MealPlanActivity extends AppCompatActivity implements MealPlanRVAda
         recipeRV.setLayoutManager(new LinearLayoutManager(this));
         recipeRV.setAdapter(mealPlanRVAdapter);
 
+        query = databaseReference.orderByChild("userID").equalTo(userID);
+
+        getQueriedList();
+
         getAllMealPlans();
 
+
+
+    }
+
+    private void getQueriedList(){
+
+        mealPlanRVModalArrayList.clear();
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    Log.d("snapshot2", String.valueOf(dataSnapshot));
+                    mealPlanRVModalArrayList.add(dataSnapshot.getValue(MealPlanRVModal.class));
+                    mealPlanRVAdapter.notifyDataSetChanged();
+                    //sortDates();
+
+                    for (DataSnapshot issue : dataSnapshot.getChildren()) {
+                        // do with your result
+                        Log.d("issue", String.valueOf(issue));
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void getAllMealPlans() {
 
         mealPlanRVModalArrayList.clear();
+
         databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Log.d("snapshot1", String.valueOf(snapshot));
+
                 loadingPB.setVisibility(View.GONE);
-                mealPlanRVModalArrayList.add(snapshot.getValue(MealPlanRVModal.class));
+                // mealPlanRVModalArrayList.add(snapshot.getValue(MealPlanRVModal.class));
                 mealPlanRVAdapter.notifyDataSetChanged();
+                // sortDates();
             }
 
             @Override
@@ -101,6 +153,29 @@ public class MealPlanActivity extends AppCompatActivity implements MealPlanRVAda
 
             }
         });
+
+        //mealPlanRVModalArrayList
+    }
+
+    private void sortDates(){
+        for(MealPlanRVModal meal : mealPlanRVModalArrayList){
+            Log.d("mealPlanRVModalArrayList unsorted", meal.getDate());
+        }
+
+        Collections.sort(mealPlanRVModalArrayList, new sortMeals());
+
+        for(MealPlanRVModal meal : mealPlanRVModalArrayList){
+            Log.d("mealPlanRVModalArrayList sorted", meal.getDate());
+        }
+
+//        DateTimeFormatter formatter = null;
+//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+//            formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+//        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            DateTimeFormatter finalFormatter = formatter;
+//            mealPlanRVModalArrayList.sort(Comparator.comparing(s -> LocalDateTime.parse((CharSequence) s, finalFormatter)));
+//        }
     }
 
     @Override

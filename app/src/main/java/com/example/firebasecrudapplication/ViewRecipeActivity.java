@@ -26,6 +26,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
@@ -164,7 +166,8 @@ public class ViewRecipeActivity extends AppCompatActivity implements DatePickerD
         calendar.set(Calendar.MONTH, month);
         calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-        String currentDateString = DateFormat.getDateInstance(DateFormat.FULL).format(calendar.getTime());
+        String currentDateStringShort = DateFormat.getDateInstance(DateFormat.SHORT).format(calendar.getTime());
+        String currentDateStringLong = DateFormat.getDateInstance(DateFormat.FULL).format(calendar.getTime());
         String recipeName = Objects.requireNonNull(recipeNameEdt.getText()).toString();
         String recipeCookingTime = Objects.requireNonNull(recipeCookingTimeEdt.getText()).toString();
         String recipeServings = Objects.requireNonNull(recipeServingsEdt.getText()).toString();
@@ -180,12 +183,12 @@ public class ViewRecipeActivity extends AppCompatActivity implements DatePickerD
 
         String[] ingredientsArray = recipeIngredients.split(",");
 
-        MealPlanRVModal mealPlanRVModal = new MealPlanRVModal(currentDateString,mealPlanID,recipeName,recipeCookingTime,recipeServings,recipeSuitedFor,recipeCuisine,recipeImg,recipeLink,recipeDesc,recipeMethod,recipeIngredients,recipePublic,recipeID,userID);
+        MealPlanRVModal mealPlanRVModal = new MealPlanRVModal(currentDateStringShort, mealPlanID, recipeName, recipeCookingTime, recipeServings, recipeSuitedFor, recipeCuisine, recipeImg, recipeLink, recipeDesc, recipeMethod, recipeIngredients, recipePublic, recipeID, userID, currentDateStringLong);
         assert mealPlanID != null;
         databaseReferenceMealPlan.child(mealPlanID).setValue(mealPlanRVModal);
 
         // store ingredients to ingredients child object
-        for(String ingredient : ingredientsArray){
+        for (String ingredient : ingredientsArray) {
             MealPlanIngredient mealPlanIngredient = new MealPlanIngredient(ingredient.trim(), "false");
             //databaseReferenceMealPlan.child(mealPlanID).child("ingredients").child(ingredient.trim()).setValue(false);
             databaseReferenceMealPlan.child(mealPlanID).child("ingredients").push().setValue(mealPlanIngredient);

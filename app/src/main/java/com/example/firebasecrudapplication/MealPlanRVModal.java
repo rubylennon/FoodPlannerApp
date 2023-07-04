@@ -23,16 +23,17 @@ public class MealPlanRVModal implements Parcelable {
     private Boolean recipePublic;
     private String recipeID;
     private String userID;
-    private String date;
+    private String dateShort;
     private String mealPlanID;
     private String key;
+    private String dateLong;
 
     public MealPlanRVModal(){
 
     }
 
-    public MealPlanRVModal(String date, String mealPlanID, String recipeName, String recipeCookingTime, String recipeServings, String recipeSuitedFor, String recipeCuisine, String recipeImg, String recipeLink, String recipeDescription, String recipeMethod, String recipeIngredients, Boolean recipePublic, String recipeID, String userID) {
-        this.date = date;
+    public MealPlanRVModal(String dateShort, String mealPlanID, String recipeName, String recipeCookingTime, String recipeServings, String recipeSuitedFor, String recipeCuisine, String recipeImg, String recipeLink, String recipeDescription, String recipeMethod, String recipeIngredients, Boolean recipePublic, String recipeID, String userID, String dateLong) {
+        this.dateShort = dateShort;
         this.mealPlanID = mealPlanID;
         this.recipeName = recipeName;
         this.recipeCookingTime = recipeCookingTime;
@@ -47,10 +48,11 @@ public class MealPlanRVModal implements Parcelable {
         this.recipePublic = recipePublic;
         this.userID = userID;
         this.recipeID = recipeID;
+        this.dateLong = dateLong;
     }
 
     protected MealPlanRVModal(Parcel in) {
-        date = in.readString();
+        dateShort = in.readString();
         mealPlanID = in.readString();
         recipeName = in.readString();
         recipeCookingTime = in.readString();
@@ -67,6 +69,7 @@ public class MealPlanRVModal implements Parcelable {
         }
         userID = in.readString();
         recipeID = in.readString();
+        dateLong = in.readString();
     }
 
     public static final Creator<MealPlanRVModal> CREATOR = new Creator<MealPlanRVModal>() {
@@ -82,11 +85,11 @@ public class MealPlanRVModal implements Parcelable {
     };
 
     public String getDate() {
-        return date;
+        return dateShort;
     }
 
     public void setDate(String date) {
-        this.date = date;
+        this.dateShort = date;
     }
 
     public String getMealPlanID() {
@@ -201,6 +204,30 @@ public class MealPlanRVModal implements Parcelable {
         this.recipeID = recipeID;
     }
 
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getDateShort() {
+        return dateShort;
+    }
+
+    public void setDateShort(String dateShort) {
+        this.dateShort = dateShort;
+    }
+
+    public String getDateLong() {
+        return dateLong;
+    }
+
+    public void setDateLong(String dateLong) {
+        this.dateLong = dateLong;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -208,7 +235,7 @@ public class MealPlanRVModal implements Parcelable {
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeString(date);
+        dest.writeString(dateShort);
         dest.writeString(mealPlanID);
         dest.writeString(recipeName);
         dest.writeString(recipeCookingTime);
@@ -225,5 +252,6 @@ public class MealPlanRVModal implements Parcelable {
         }
         dest.writeString(userID);
         dest.writeString(recipeID);
+        dest.writeSerializable(dateLong);
     }
 }
