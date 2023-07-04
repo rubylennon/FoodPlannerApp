@@ -83,7 +83,7 @@ public class MealPlanActivity extends AppCompatActivity implements MealPlanRVAda
 
         getQueriedList();
 
-        getAllMealPlans();
+        //getAllMealPlans();
 
 
 
@@ -95,16 +95,22 @@ public class MealPlanActivity extends AppCompatActivity implements MealPlanRVAda
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                loadingPB.setVisibility(View.GONE);
+
                 if (dataSnapshot.exists()) {
                     Log.d("snapshot2", String.valueOf(dataSnapshot));
-                    mealPlanRVModalArrayList.add(dataSnapshot.getValue(MealPlanRVModal.class));
-                    mealPlanRVAdapter.notifyDataSetChanged();
+//                    mealPlanRVModalArrayList.add(dataSnapshot.getValue(MealPlanRVModal.class));
+//                    mealPlanRVAdapter.notifyDataSetChanged();
                     //sortDates();
 
                     for (DataSnapshot issue : dataSnapshot.getChildren()) {
                         // do with your result
                         Log.d("issue", String.valueOf(issue));
+                        mealPlanRVModalArrayList.add(issue.getValue(MealPlanRVModal.class));
+                        mealPlanRVAdapter.notifyDataSetChanged();
                     }
+
+                    sortDates();
                 }
             }
 
