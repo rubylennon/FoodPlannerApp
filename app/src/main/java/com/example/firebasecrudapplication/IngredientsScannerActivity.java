@@ -270,6 +270,8 @@ public class IngredientsScannerActivity extends AppCompatActivity {
             // re-enable scan ingredients button
             mScanButton.setEnabled(true);
 
+            clearIngredientsList();
+
         // if activity result is 1 (Capture Photo Activity)
         } else if (requestCode == 2 && resultCode == RESULT_OK && null != data){
             Bitmap capturedImage = (Bitmap)data.getExtras().get("data");
@@ -281,6 +283,17 @@ public class IngredientsScannerActivity extends AppCompatActivity {
 
             // re-enable scan ingredients button
             mScanButton.setEnabled(true);
+
+            clearIngredientsList();
         }
+    }
+
+    public void clearIngredientsList(){
+        ArrayList<Ingredient> matchingIngredientsList = new ArrayList<>();
+
+        // update the ingredients recyclerview with matching ingredients
+        IngredientScannerRVAdapter ingredientScannerRVAdapter = new IngredientScannerRVAdapter(matchingIngredientsList);
+        ingredientsRV.setLayoutManager(new LinearLayoutManager(IngredientsScannerActivity.this));
+        ingredientsRV.setAdapter(ingredientScannerRVAdapter);
     }
 }
