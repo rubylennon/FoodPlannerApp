@@ -2,6 +2,7 @@ package com.example.firebasecrudapplication;
 
 //@REF 1 - https://www.geeksforgeeks.org/how-to-create-an-alert-dialog-box-in-android/
 //@REF 2: https://www.geeksforgeeks.org/java-program-to-sort-objects-in-arraylist-by-date/
+//@REF 3: https://stackoverflow.com/questions/45359822/filter-data-in-firebase-functions
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
