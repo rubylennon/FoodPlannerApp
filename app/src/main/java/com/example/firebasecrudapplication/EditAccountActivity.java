@@ -13,11 +13,14 @@ package com.example.firebasecrudapplication;
 //imports
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,10 +32,17 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class EditAccountActivity extends AppCompatActivity {
     // variables
     private TextInputEditText idEdtEmail,
-            idEdtPassword;
+            idEdtEmailConfirmation,
+            idEdtPasswordNewPwd,
+            idEdtConfirmNewPwdConfirmation,
+            idCurrentEmail;
     private Button idBtnUpdateEmail,
             idBtnUpdatePassword,
             idBtnDeleteAccount;
@@ -40,6 +50,10 @@ public class EditAccountActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener authStateListener;
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth mAuth;
+    private TextView emailHelpText,
+            pwdHelpText,
+            pwdHelpText2,
+            deleteHelpText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,13 +70,31 @@ public class EditAccountActivity extends AppCompatActivity {
         idBtnDeleteAccount = findViewById(R.id.idBtnDeleteAccount);
         idPBLoading = findViewById(R.id.idPBLoading);
         idEdtEmail = findViewById(R.id.idEdtEmail);
-        idEdtPassword = findViewById(R.id.idEdtPassword);
+        idEdtEmailConfirmation = findViewById(R.id.idEdtEmailConfirmation);
+        idEdtPasswordNewPwd = findViewById(R.id.idEdtPasswordNewPwd);
+        idEdtConfirmNewPwdConfirmation = findViewById(R.id.idEdtConfirmNewPwdConfirmation);
+        idCurrentEmail = findViewById(R.id.idCurrentEmail);
+        emailHelpText = findViewById(R.id.emailHelpText);
+        emailHelpText.setVisibility(View.GONE);
+        pwdHelpText = findViewById(R.id.pwdHelpText);
+        pwdHelpText.setVisibility(View.GONE);
+        pwdHelpText2 = findViewById(R.id.pwdHelpText2);
+        pwdHelpText2.setVisibility(View.GONE);
+        deleteHelpText = findViewById(R.id.deleteHelpText);
+        deleteHelpText.setVisibility(View.GONE);
 
         //get firebase instance
         firebaseAuth = FirebaseAuth.getInstance();
 
         //get current user
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        //update current email text view to display current users email address
+        assert user != null;
+        idCurrentEmail.setText(user.getEmail());
+        idCurrentEmail.setFocusable(false);
+        idCurrentEmail.setEnabled(false);
+        idCurrentEmail.setCursorVisible(false);
 
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -78,19 +110,33 @@ public class EditAccountActivity extends AppCompatActivity {
             }
         };
 
+
+
         // update email method
         idBtnUpdateEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // set progress bar to visible
                 idPBLoading.setVisibility(View.VISIBLE);
+                emailHelpText.setVisibility(View.GONE);
+
+                String newEmail = Objects.requireNonNull(idEdtEmail.getText()).toString();
+                String newEmailConfirmation = Objects.requireNonNull(idEdtEmailConfirmation.getText()).toString();
+
                 // if the email field is empty do the following
-                if(idEdtEmail.getText().toString().trim().equals("")){
-                    Toast.makeText(EditAccountActivity.this, "Please enter new email", Toast.LENGTH_SHORT).show();
+                if(TextUtils.isEmpty(newEmail)){
+                    Toast.makeText(EditAccountActivity.this, "Please enter your new email", Toast.LENGTH_SHORT).show();
                     idPBLoading.setVisibility(View.GONE);
-                }
-                //if user is logged in and email is not empty do the following
-                if(user != null && !idEdtEmail.getText().toString().trim().equals("")){
+                } else if (TextUtils.isEmpty(newEmailConfirmation) || newEmailConfirmation.equals("Confirm New Email")){
+                    Toast.makeText(EditAccountActivity.this, "Please confirm your new email", Toast.LENGTH_SHORT).show();
+                    idPBLoading.setVisibility(View.GONE);
+                } else if (newEmail.equals(user.getEmail())){
+                    Toast.makeText(EditAccountActivity.this, "Your account email is already set to this email", Toast.LENGTH_SHORT).show();
+                    idPBLoading.setVisibility(View.GONE);
+                } else if (!newEmail.equals(newEmailConfirmation)){
+                    Toast.makeText(EditAccountActivity.this, "Email addresses do not match", Toast.LENGTH_SHORT).show();
+                    idPBLoading.setVisibility(View.GONE);
+                } else {
                     //update email of signed in user using new email value
                     user.updateEmail(idEdtEmail.getText().toString().trim())
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -99,50 +145,88 @@ public class EditAccountActivity extends AppCompatActivity {
 
                                     if(task.isSuccessful()){
                                         Toast.makeText(EditAccountActivity.this, "Email updated", Toast.LENGTH_SHORT).show();
+                                        idCurrentEmail.setText(newEmail);
                                         idPBLoading.setVisibility(View.GONE);
                                     }else{
-                                        Toast.makeText(EditAccountActivity.this, "Email update failed", Toast.LENGTH_SHORT).show();
                                         idPBLoading.setVisibility(View.GONE);
-                                    }
 
+                                        Log.w("createUserWithEmail:failure", task.getException());
+
+                                        if(Objects.requireNonNull(task.getException()).toString().contains("The email address is badly formatted.")){
+                                            Toast.makeText(EditAccountActivity.this, "Email update failed. Please add valid email.", Toast.LENGTH_SHORT).show();
+                                        } else if(Objects.requireNonNull(task.getException()).toString().contains("The email address is already in use by another account")){
+                                            Toast.makeText(EditAccountActivity.this, "Email update failed. The email address is already in use by another account.", Toast.LENGTH_SHORT).show();
+                                        } else if(Objects.requireNonNull(task.getException()).toString().contains("This operation is sensitive and requires recent authentication. Log in again before retrying this request.")){
+                                            Toast.makeText(EditAccountActivity.this, "Email update failed. Please log in again before retrying this request.", Toast.LENGTH_SHORT).show();
+                                            emailHelpText.setVisibility(View.VISIBLE);
+                                        } else {
+                                            Toast.makeText(EditAccountActivity.this, "Email update failed. Please try again...", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
                                 }
                             });
                 }
             }
         });
 
-
         idBtnUpdatePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 idPBLoading.setVisibility(View.VISIBLE);
+                pwdHelpText.setVisibility(View.GONE);
+                pwdHelpText2.setVisibility(View.GONE);
 
-                if(idEdtPassword.getText().toString().trim().equals("")){
-                    Toast.makeText(EditAccountActivity.this, "Please enter new password", Toast.LENGTH_SHORT).show();
+                // get text from input fields
+                String pwd = idEdtPasswordNewPwd.getText().toString();
+                String cnfPwd = idEdtConfirmNewPwdConfirmation.getText().toString();
+
+                int MIN_PASSWORD_LENGTH = 8;
+                int MAX_PASSWORD_LENGTH = 20;
+
+                System.out.println(isValidPassword(pwd));
+
+                if(TextUtils.isEmpty(pwd)){
                     idPBLoading.setVisibility(View.GONE);
-                }
-
-                if(idEdtPassword.getText().toString().length() < 7){
-                    Toast.makeText(EditAccountActivity.this, "Please enter minimum 7 character password", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditAccountActivity.this, "Please add your new password...", Toast.LENGTH_SHORT).show();
+                }else if(TextUtils.isEmpty(cnfPwd) || cnfPwd.equals("Confirm New Email")) {
                     idPBLoading.setVisibility(View.GONE);
-                }
-
-                if(user != null && idEdtPassword.getText().toString().length() >= 7){
-
-                    user.updatePassword(idEdtPassword.getText().toString().trim())
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if(task.isSuccessful()){
-                                        Toast.makeText(EditAccountActivity.this, "Password updated", Toast.LENGTH_SHORT).show();
-                                        idPBLoading.setVisibility(View.GONE);
-                                    }else{
-                                        Toast.makeText(EditAccountActivity.this, "Password update failed", Toast.LENGTH_SHORT).show();
-                                        idPBLoading.setVisibility(View.GONE);
-                                    }
+                    Toast.makeText(EditAccountActivity.this, "Please confirm your new password...", Toast.LENGTH_SHORT).show();
+                }else if(!pwd.equals(cnfPwd)){
+                    idPBLoading.setVisibility(View.GONE);
+                    Toast.makeText(EditAccountActivity.this, "Passwords must match", Toast.LENGTH_SHORT).show();
+                } else if(pwd.length() < MIN_PASSWORD_LENGTH){
+                    idPBLoading.setVisibility(View.GONE);
+                    Toast.makeText(EditAccountActivity.this, "Passwords must be at least 8 characters", Toast.LENGTH_SHORT).show();
+                } else if(pwd.length() > MAX_PASSWORD_LENGTH){
+                    idPBLoading.setVisibility(View.GONE);
+                    Toast.makeText(EditAccountActivity.this, "Passwords must be less than 20 characters", Toast.LENGTH_SHORT).show();
+                } else if(!isValidPassword(pwd)){
+                    idPBLoading.setVisibility(View.GONE);
+                    Toast.makeText(EditAccountActivity.this, "Invalid password.", Toast.LENGTH_SHORT).show();
+                    pwdHelpText.setVisibility(View.VISIBLE);
+                } else{
+                    user.updatePassword(pwd).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()){
+                                Toast.makeText(EditAccountActivity.this, "Password updated", Toast.LENGTH_SHORT).show();
+                                idPBLoading.setVisibility(View.GONE);
+                                pwdHelpText.setVisibility(View.GONE);
+                            }else{
+                                Log.w("createUserWithEmail:failure", task.getException());
+                                pwdHelpText.setVisibility(View.GONE);
+                                if(Objects.requireNonNull(task.getException()).toString().contains("The given password is invalid. [ Password should be at least 6 characters ]")){
+                                    Toast.makeText(EditAccountActivity.this, "Registration failed. Password should be at least 6 characters.", Toast.LENGTH_SHORT).show();
+                                } else if(Objects.requireNonNull(task.getException()).toString().contains("This operation is sensitive and requires recent authentication. Log in again before retrying this request.")){
+                                    Toast.makeText(EditAccountActivity.this, "Email update failed. Please log in again before retrying this request.", Toast.LENGTH_SHORT).show();
+                                    pwdHelpText2.setVisibility(View.VISIBLE);
+                                } else {
+                                    Toast.makeText(EditAccountActivity.this, "Password update failed. Please try again...", Toast.LENGTH_SHORT).show();
                                 }
-                            });
+                                idPBLoading.setVisibility(View.GONE);
+                            }
+                        }
+                    });
                 }
             }
         });
@@ -150,35 +234,62 @@ public class EditAccountActivity extends AppCompatActivity {
         idBtnDeleteAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 idPBLoading.setVisibility(View.VISIBLE);
+                deleteHelpText.setVisibility(View.GONE);
 
-                if(user != null){
+                user.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
 
-                    user.delete()
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
 
-                                    if(task.isSuccessful()){
+                            Toast.makeText(EditAccountActivity.this, "Account Successfully Deleted", Toast.LENGTH_SHORT).show();
+                            idPBLoading.setVisibility(View.GONE);
 
-                                        Toast.makeText(EditAccountActivity.this, "Account Successfully Deleted", Toast.LENGTH_SHORT).show();
-                                        idPBLoading.setVisibility(View.GONE);
+                            //navigate to login page
+                            Intent i = new Intent(EditAccountActivity.this, LoginActivity.class);
+                            startActivity(i);
+                            finish();
+                        }else if(Objects.requireNonNull(task.getException()).toString().contains("This operation is sensitive and requires recent authentication. Log in again before retrying this request.")){
+                            Toast.makeText(EditAccountActivity.this, "Account deletion failed. Please log in again before retrying this request.", Toast.LENGTH_SHORT).show();
+                            deleteHelpText.setVisibility(View.VISIBLE);
+                            idPBLoading.setVisibility(View.GONE);
+                        } else{
+                            Toast.makeText(EditAccountActivity.this, "Account Deletion Failed", Toast.LENGTH_SHORT).show();
+                            idPBLoading.setVisibility(View.GONE);
+                        }
 
-                                        //navigate to login page
-                                        Intent i = new Intent(EditAccountActivity.this, LoginActivity.class);
-                                        startActivity(i);
-                                        finish();
-                                    }else{
-                                        Toast.makeText(EditAccountActivity.this, "Account Deletion Failed", Toast.LENGTH_SHORT).show();
-                                        idPBLoading.setVisibility(View.GONE);
-                                    }
-
-                                }
-                            });
-                }
+                    }
+                });
             }
         });
+    }
+
+    public static boolean isValidPassword(String password){
+
+        // Regex to check valid password.
+        String regex = "^(?=.*[0-9])"
+                + "(?=.*[a-z])(?=.*[A-Z])"
+                + "(?=.*[@#$%^&+=])"
+                + "(?=\\S+$).{8,20}$";
+
+        // Compile the ReGex
+        Pattern p = Pattern.compile(regex);
+
+        // If the password is empty
+        // return false
+        if (password == null) {
+            return false;
+        }
+
+        // Pattern class contains matcher() method
+        // to find matching between given password
+        // and regular expression.
+        Matcher m = p.matcher(password);
+
+        // Return if the password
+        // matched the ReGex
+        return m.matches();
     }
 
     // options menu code start

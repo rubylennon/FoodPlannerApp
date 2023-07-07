@@ -1,11 +1,15 @@
 package com.example.firebasecrudapplication;
 
+// @REF: GeeksForGeeks Tutorial - https://www.youtube.com/watch?v=-Gvpf8tXpbc
+// Ref Description - User Authentication and CRUD Operation with Firebase Realtime Database in Android
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -36,6 +40,7 @@ public class LoginActivity extends AppCompatActivity {
         pwdEdt = findViewById(R.id.idEdtPwd);
         loginBtn = findViewById(R.id.idBtnLogin);
         loadingPB = findViewById(R.id.idPBLoading);
+        loadingPB.setVisibility(View.GONE);
         registerTV = findViewById(R.id.idTVRegister);
         mAuth = FirebaseAuth.getInstance();
 
@@ -53,7 +58,8 @@ public class LoginActivity extends AppCompatActivity {
                 loadingPB.setVisibility(View.VISIBLE);
                 String userName = userNameEdt.getText().toString();
                 String pwd = pwdEdt.getText().toString();
-                if(TextUtils.isEmpty(userName) && TextUtils.isEmpty(pwd)){
+                if(TextUtils.isEmpty(userName) || TextUtils.isEmpty(pwd)){
+                    loadingPB.setVisibility(View.GONE);
                     Toast.makeText(LoginActivity.this, "Please add your credentials...", Toast.LENGTH_SHORT).show();
                 } else {
                     mAuth.signInWithEmailAndPassword(userName,pwd).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -67,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
                                 finish();
                             } else {
                                 loadingPB.setVisibility(View.GONE);
-                                Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, "Login Failed. Please try again...", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
