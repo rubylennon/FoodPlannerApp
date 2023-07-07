@@ -19,6 +19,13 @@
         <item name="boxStrokeWidth">1dp</item>
     </style>
 
+    <style name="ShapeAppearance.MyApp.LargeComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">20dp</item>
+        <item name="android:backgroundTint">@android:color/holo_purple</item>
+        <item name="android:shape">rectangle</item>
+    </style>
+
     <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/round_drawable</item>
     </style>
