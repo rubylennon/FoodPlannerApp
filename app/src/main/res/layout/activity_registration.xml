@@ -115,11 +115,10 @@
     
     <ProgressBar
         android:id="@+id/idPBLoading"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_below="@+id/idTVLogin"
         android:indeterminate="true"
-        android:indeterminateDrawable="@drawable/progress_back"
-        android:visibility="gone"/>
+        android:indeterminateDrawable="@drawable/progress_back" />
 
 </RelativeLayout>
