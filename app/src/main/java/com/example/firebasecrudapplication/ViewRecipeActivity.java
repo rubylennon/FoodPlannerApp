@@ -1,20 +1,38 @@
 package com.example.firebasecrudapplication;
 
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ProgressBar;
 import android.widget.Switch;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-public class ViewRecipeActivity extends AppCompatActivity {
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Objects;
+
+public class ViewRecipeActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     private TextInputEditText recipeNameEdt,
             recipeCookingTimeEdt,
             recipeServingsEdt,
@@ -28,9 +46,15 @@ public class ViewRecipeActivity extends AppCompatActivity {
     private Button viewSourceRecipe;
     private ProgressBar loadingPB;
     private FirebaseDatabase firebaseDatabase;
-    private DatabaseReference databaseReference;
+    private DatabaseReference databaseReferenceRecipe;
+    private DatabaseReference databaseReferenceMealPlan;
     private String recipeID;
+    private String mealPlanID;
     private RecipeRVModal recipeRVModal;
+    private Button addRecipeToMealPlan;
+    private String userID;
+    private String recipeImgEdt;
+    private String recipeLinkEdt;
 
     public ViewRecipeActivity() {
     }
@@ -56,11 +80,18 @@ public class ViewRecipeActivity extends AppCompatActivity {
         recipePublicEdt = findViewById(R.id.idPublicSwitch);
         viewSourceRecipe = findViewById(R.id.idBtnViewSourceRecipe);
         loadingPB = findViewById(R.id.idPBLoading);
+        addRecipeToMealPlan = findViewById(R.id.idBtnAddToMealPlan);
+        userID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+
         recipeRVModal = getIntent().getParcelableExtra("recipe");
+
+        // assign database reference to Meal Plan firebase realtime database reference
+        databaseReferenceMealPlan = firebaseDatabase.getReference("Meal Plans");
 
         // populate the layout fields with the recipe details from the database
         if (recipeRVModal != null){
             recipeNameEdt.setText(recipeRVModal.getRecipeName());
+
             recipeCookingTimeEdt.setText(recipeRVModal.getRecipeCookingTime());
             recipeServingsEdt.setText(recipeRVModal.getRecipeServings());
             recipeSuitedForEdt.setText(recipeRVModal.getRecipeSuitedFor());
@@ -70,6 +101,8 @@ public class ViewRecipeActivity extends AppCompatActivity {
             recipeIngredientsEdt.setText(recipeRVModal.getRecipeIngredients());
             recipePublicEdt.setChecked(recipeRVModal.getRecipePublic().equals(true));
             recipeID = recipeRVModal.getRecipeID();
+            recipeImgEdt = recipeRVModal.getRecipeImg();
+            recipeLinkEdt = recipeRVModal.getRecipeLink();
         }
 
         // set input fields to non focusable
@@ -106,7 +139,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
         recipePublicEdt.setClickable(false);
 
         // assign database reference to Recipes firebase realtime database reference
-        databaseReference = firebaseDatabase.getReference("Recipes").child(recipeID);
+        databaseReferenceRecipe = firebaseDatabase.getReference("Recipes").child(recipeID);
 
         // view recipe source page in browser using recipe link
         viewSourceRecipe.setOnClickListener(v -> {
@@ -114,5 +147,56 @@ public class ViewRecipeActivity extends AppCompatActivity {
             i.setData(Uri.parse(recipeRVModal.getRecipeLink()));
             startActivity(i);
         });
+
+        // view recipe source page in browser using recipe link
+        addRecipeToMealPlan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment datePicker = new DatePickerFragment();
+                datePicker.show(getSupportFragmentManager(), "date picker");
+            }
+        });
+
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+        String currentDateStringShort = DateFormat.getDateInstance(DateFormat.SHORT).format(calendar.getTime());
+        String currentDateStringLong = DateFormat.getDateInstance(DateFormat.FULL).format(calendar.getTime());
+        String recipeName = Objects.requireNonNull(recipeNameEdt.getText()).toString();
+        String recipeCookingTime = Objects.requireNonNull(recipeCookingTimeEdt.getText()).toString();
+        String recipeServings = Objects.requireNonNull(recipeServingsEdt.getText()).toString();
+        String recipeSuitedFor = Objects.requireNonNull(recipeSuitedForEdt.getText()).toString();
+        String recipeCuisine = Objects.requireNonNull(recipeCuisineEdt.getText()).toString();
+        String recipeImg = recipeImgEdt;
+        String recipeLink = recipeLinkEdt;
+        String recipeDesc = Objects.requireNonNull(recipeDescEdt.getText()).toString();
+        String recipeMethod = Objects.requireNonNull(recipeMethodEdt.getText()).toString();
+        String recipeIngredients = Objects.requireNonNull(recipeIngredientsEdt.getText()).toString();
+        Boolean recipePublic = recipePublicEdt.isChecked();
+        mealPlanID = databaseReferenceMealPlan.push().getKey();
+
+        String[] ingredientsArray = recipeIngredients.split(",");
+
+        MealPlanRVModal mealPlanRVModal = new MealPlanRVModal(currentDateStringShort, mealPlanID, recipeName, recipeCookingTime, recipeServings, recipeSuitedFor, recipeCuisine, recipeImg, recipeLink, recipeDesc, recipeMethod, recipeIngredients, recipePublic, recipeID, userID, currentDateStringLong);
+        assert mealPlanID != null;
+        databaseReferenceMealPlan.child(mealPlanID).setValue(mealPlanRVModal);
+
+        // store ingredients to ingredients child object
+        for (String ingredient : ingredientsArray) {
+            MealPlanIngredient mealPlanIngredient = new MealPlanIngredient(ingredient.trim(), "false");
+            //databaseReferenceMealPlan.child(mealPlanID).child("ingredients").child(ingredient.trim()).setValue(false);
+            databaseReferenceMealPlan.child(mealPlanID).child("ingredients").push().setValue(mealPlanIngredient);
+        }
+
+        Toast.makeText(ViewRecipeActivity.this, "Recipe Added to Meal Plan", Toast.LENGTH_SHORT).show();
+
+        startActivity(new Intent(ViewRecipeActivity.this, MealPlanActivity.class));
+
     }
 }

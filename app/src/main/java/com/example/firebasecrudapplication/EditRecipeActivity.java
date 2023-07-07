@@ -10,6 +10,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,6 +26,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -64,12 +67,12 @@ public class EditRecipeActivity extends AppCompatActivity {
     private String[] suitabilityArray;
     private String[] previouslySelectedCuisineArray;
     private String[] previouslySelectedSuitabilityArray;
-
     private AlertDialog dialog;
     private LinearLayout layout;
     private final ArrayList<String> ingredientList = new ArrayList<>();
     private String ingredientsSelectionString;
     AtomicReference<Boolean> editPageInitialLoad = new AtomicReference<>(true);
+    private FirebaseAuth mAuth;
 
     // on create method
     @Override
@@ -82,6 +85,7 @@ public class EditRecipeActivity extends AppCompatActivity {
         setTitle("Edit Recipe");
 
         // initialise variables
+        mAuth = FirebaseAuth.getInstance();
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         recipeNameEdt = findViewById(R.id.idEdtRecipeName);
         recipeCookingTimeEdt = findViewById(R.id.idEdtRecipeCookingTime);
@@ -494,4 +498,42 @@ public class EditRecipeActivity extends AppCompatActivity {
 
         layout.addView(view);
     }
+
+    // options menu code start
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.settings_main,menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(@NonNull MenuItem item){
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.idEditAccount:
+                Intent i = new Intent(EditRecipeActivity.this, EditAccountActivity.class);
+                startActivity(i);
+                return true;
+            case R.id.idScan:
+                Intent i2 = new Intent(EditRecipeActivity.this, IngredientsScannerActivity.class);
+                startActivity(i2);
+                return true;
+            case R.id.idSearch:
+                Intent i3 = new Intent(EditRecipeActivity.this, RecipeSearchActivity.class);
+                startActivity(i3);
+                return true;
+            case R.id.idMealPlan:
+                Intent i4 = new Intent(EditRecipeActivity.this, MealPlanActivity.class);
+                startActivity(i4);
+                return true;
+            case R.id.idLogout:
+                Toast.makeText(this, "User Logged Out", Toast.LENGTH_SHORT).show();
+                mAuth.signOut();
+                Intent i5 = new Intent(EditRecipeActivity.this, LoginActivity.class);
+                startActivity(i5);
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+    // options menu code end
 }

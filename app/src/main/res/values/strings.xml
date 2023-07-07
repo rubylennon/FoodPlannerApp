@@ -64,6 +64,7 @@
     <string name="cuisine_search">Cuisine Search</string>
     <string name="clear_search">Clear Search</string>
     <string name="suitability_search">Suitability Search</string>
+    <string name="recipe_details_shopping_list"><![CDATA[Recipe Details & Shopping List]]></string>
     <string-array name="cuisine_array">
         <item>Chinese</item>
         <item>Thai</item>
