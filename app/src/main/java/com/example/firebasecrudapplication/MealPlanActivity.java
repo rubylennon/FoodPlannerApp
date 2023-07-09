@@ -90,8 +90,6 @@ public class MealPlanActivity extends AppCompatActivity implements MealPlanRVAda
 
         //getAllMealPlans();
 
-
-
     }
 
     private void getQueriedList(){
@@ -126,47 +124,47 @@ public class MealPlanActivity extends AppCompatActivity implements MealPlanRVAda
         });
     }
 
-    private void getAllMealPlans() {
-
-        mealPlanRVModalArrayList.clear();
-
-        databaseReference.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                Log.d("snapshot1", String.valueOf(snapshot));
-
-                loadingPB.setVisibility(View.GONE);
-                // mealPlanRVModalArrayList.add(snapshot.getValue(MealPlanRVModal.class));
-                mealPlanRVAdapter.notifyDataSetChanged();
-                // sortDates();
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                loadingPB.setVisibility(View.GONE);
-                mealPlanRVAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-                loadingPB.setVisibility(View.GONE);
-                mealPlanRVAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                loadingPB.setVisibility(View.GONE);
-                mealPlanRVAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-        //mealPlanRVModalArrayList
-    }
+//    private void getAllMealPlans() {
+//
+//        mealPlanRVModalArrayList.clear();
+//
+//        databaseReference.addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//                Log.d("snapshot1", String.valueOf(snapshot));
+//
+//                loadingPB.setVisibility(View.GONE);
+//                // mealPlanRVModalArrayList.add(snapshot.getValue(MealPlanRVModal.class));
+//                mealPlanRVAdapter.notifyDataSetChanged();
+//                // sortDates();
+//            }
+//
+//            @Override
+//            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//                loadingPB.setVisibility(View.GONE);
+//                mealPlanRVAdapter.notifyDataSetChanged();
+//            }
+//
+//            @Override
+//            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+//                loadingPB.setVisibility(View.GONE);
+//                mealPlanRVAdapter.notifyDataSetChanged();
+//            }
+//
+//            @Override
+//            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//                loadingPB.setVisibility(View.GONE);
+//                mealPlanRVAdapter.notifyDataSetChanged();
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+//
+//        //mealPlanRVModalArrayList
+//    }
 
     private void sortDates(){
         for(MealPlanRVModal meal : mealPlanRVModalArrayList){
@@ -246,7 +244,9 @@ public class MealPlanActivity extends AppCompatActivity implements MealPlanRVAda
 
                 bottomSheetDialog.cancel();
 
-                getAllMealPlans();
+                // getAllMealPlans();
+
+                getQueriedList();
 
             });
 
