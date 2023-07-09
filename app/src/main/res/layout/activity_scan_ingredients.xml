@@ -41,6 +41,7 @@
             android:layout_height="55dp"
             android:layout_margin="5dp"
             android:text="@string/capture_image"
+            android:drawableRight="@drawable/baseline_photo_camera_24"
             android:layout_weight="1.0" />
 
         <Button
@@ -49,6 +50,7 @@
             android:layout_height="55dp"
             android:layout_margin="5dp"
             android:text="@string/select_image"
+            android:drawableRight="@drawable/baseline_image_24"
             android:layout_weight="1.0"/>
 
     </LinearLayout>
@@ -73,6 +75,34 @@
             android:layout_weight="1.0" />
 
     </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/noSearchResultsIV"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/no_matching_search_results"
+        android:layout_below="@+id/idLLButtonsTwo"
+        android:contentDescription="@string/search_icon_with_x" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No matching ingredients found"
+        android:id="@+id/no_matching_results"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:layout_below="@+id/noSearchResultsIV"/>
+
+    <TextView
+        android:id="@+id/no_matching_results_help"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/no_matching_results"
+        android:gravity="center"
+        android:text="Try selecting a different image"
+        android:textColor="#455A64"
+        android:textSize="11sp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ingredientsRV"

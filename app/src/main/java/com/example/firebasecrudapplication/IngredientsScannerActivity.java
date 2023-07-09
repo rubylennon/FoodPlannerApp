@@ -26,6 +26,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -57,6 +58,9 @@ public class IngredientsScannerActivity extends AppCompatActivity {
     private DatabaseReference ingredientsDBRef;
     private ArrayList<Ingredient> ingredientsList;
     private RecyclerView ingredientsRV;
+    private ImageView noMatchingSearchResultsIcon;
+    private TextView noMatchingSearchTextOne,
+            noMatchingSearchTextTwo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +81,11 @@ public class IngredientsScannerActivity extends AppCompatActivity {
         loadingPB = findViewById(R.id.idPBLoading);
         Button mCaptureButton = findViewById(R.id.capture_image);
         Button mSelectButton = findViewById(R.id.select_image);
+        noMatchingSearchResultsIcon = findViewById(R.id.noSearchResultsIV);
+        noMatchingSearchTextOne = findViewById(R.id.no_matching_results);
+        noMatchingSearchTextTwo = findViewById(R.id.no_matching_results_help);
+
+        hideNoIngredientsAlert();
 
         // set the recycler view to layout object
         ingredientsRV = findViewById(R.id.ingredientsRV);
@@ -172,10 +181,15 @@ public class IngredientsScannerActivity extends AppCompatActivity {
             }
         }
 
-        // update the ingredients recyclerview with matching ingredients
-        IngredientScannerRVAdapter ingredientScannerRVAdapter = new IngredientScannerRVAdapter(matchingIngredientsList);
-        ingredientsRV.setLayoutManager(new LinearLayoutManager(IngredientsScannerActivity.this));
-        ingredientsRV.setAdapter(ingredientScannerRVAdapter);
+        if(matchingIngredientsList.isEmpty()){
+            showNoIngredientsAlert();
+        }else{
+            // update the ingredients recyclerview with matching ingredients
+            IngredientScannerRVAdapter ingredientScannerRVAdapter = new IngredientScannerRVAdapter(matchingIngredientsList);
+            ingredientsRV.setLayoutManager(new LinearLayoutManager(IngredientsScannerActivity.this));
+            ingredientsRV.setAdapter(ingredientScannerRVAdapter);
+            hideNoIngredientsAlert();
+        }
 
         // hide loading progress bar
         loadingPB.setVisibility(View.GONE);
@@ -213,6 +227,7 @@ public class IngredientsScannerActivity extends AppCompatActivity {
         List<Text.TextBlock> blocks = texts.getTextBlocks();
         if (blocks.size() == 0) {
             showToast();
+            showNoIngredientsAlert();
             return;
         }
 
@@ -289,11 +304,25 @@ public class IngredientsScannerActivity extends AppCompatActivity {
     }
 
     public void clearIngredientsList(){
+        hideNoIngredientsAlert();
+
         ArrayList<Ingredient> matchingIngredientsList = new ArrayList<>();
 
         // update the ingredients recyclerview with matching ingredients
         IngredientScannerRVAdapter ingredientScannerRVAdapter = new IngredientScannerRVAdapter(matchingIngredientsList);
         ingredientsRV.setLayoutManager(new LinearLayoutManager(IngredientsScannerActivity.this));
         ingredientsRV.setAdapter(ingredientScannerRVAdapter);
+    }
+
+    private void hideNoIngredientsAlert(){
+        noMatchingSearchResultsIcon.setVisibility(View.GONE);
+        noMatchingSearchTextOne.setVisibility(View.GONE);
+        noMatchingSearchTextTwo.setVisibility(View.GONE);
+    }
+
+    private void showNoIngredientsAlert(){
+        noMatchingSearchResultsIcon.setVisibility(View.VISIBLE);
+        noMatchingSearchTextOne.setVisibility(View.VISIBLE);
+        noMatchingSearchTextTwo.setVisibility(View.VISIBLE);
     }
 }
