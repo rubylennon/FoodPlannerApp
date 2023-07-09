@@ -133,7 +133,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
@@ -156,7 +156,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
@@ -169,7 +169,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/idEdtRecipeMethod"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:importantForAutofill="no"
                     android:inputType="none"
                     android:textColor="@color/blue_shade_2"
@@ -179,7 +179,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
@@ -192,7 +192,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/idEdtRecipeIngredients"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:importantForAutofill="no"
                     android:inputType="none"
                     android:textColor="@color/blue_shade_2"
@@ -200,27 +200,25 @@
                     android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <Switch
-                android:id="@+id/idPublicSwitch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp"
-                android:minHeight="48dp"
-                android:text="@string/recipe_public"
-                tools:ignore="UseSwitchCompatOrMaterialXml" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
                 android:gravity="center"
-                android:layout_marginBottom="20dp"
                 android:weightSum="2"
                 android:orientation="horizontal" >
+
+                <Switch
+                    android:id="@+id/idPublicSwitch"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:minHeight="48dp"
+                    android:text="@string/recipe_public"
+                    tools:ignore="UseSwitchCompatOrMaterialXml" />
 
                 <Button
                     android:id="@+id/idBtnViewSourceRecipe"
@@ -235,21 +233,32 @@
 
             </LinearLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/idBtnViewSourceRecipe"
-                android:text="Shopping List:"/>
-
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scrollbars="none">
+
                 <LinearLayout
+                    android:background="@drawable/custom_border_2"
                     android:id="@+id/shopping_List_item"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginBottom="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/idBtnViewSourceRecipe"
+                        android:text="Shopping List"
+                        android:textSize="20dp"
+                        android:textStyle="bold"
+                        android:textAllCaps="true"
+                        android:gravity="center"
+                        android:textColor="@color/white"/>
                 </LinearLayout>
             </ScrollView>
 

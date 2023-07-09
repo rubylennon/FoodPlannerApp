@@ -49,6 +49,7 @@ public class ViewMealPlanActivity extends AppCompatActivity {
     private DatabaseReference ingredientsDBRef;
     private String recipeID;
     private String mealPlanID;
+    private String mealPlanDate;
     private MealPlanRVModal mealPlanRVModal;
     private MealPlanIngredient mealPlanIngredient;
     private String[] ingredientsArray;
@@ -65,9 +66,6 @@ public class ViewMealPlanActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_meal_plan);
-
-        // set the actionbar title
-        setTitle("Meal Details");
 
         // initialise variables
         mAuth = FirebaseAuth.getInstance();
@@ -88,6 +86,7 @@ public class ViewMealPlanActivity extends AppCompatActivity {
 
         // populate the layout fields with the recipe details from the database
         if (mealPlanRVModal != null) {
+            mealPlanDate = mealPlanRVModal.getDateShort();
             recipeNameEdt.setText(mealPlanRVModal.getRecipeName());
             recipeCookingTimeEdt.setText(mealPlanRVModal.getRecipeCookingTime());
             recipeServingsEdt.setText(mealPlanRVModal.getRecipeServings());
@@ -101,6 +100,9 @@ public class ViewMealPlanActivity extends AppCompatActivity {
             recipeID = mealPlanRVModal.getRecipeID();
             mealPlanID = mealPlanRVModal.getMealPlanID();
         }
+
+        // set the actionbar title
+        setTitle("Meal Details - " + mealPlanDate);
 
         // set input fields to non focusable
         recipeNameEdt.setFocusable(false);

@@ -88,23 +88,22 @@ public class MealPlanActivity extends AppCompatActivity implements MealPlanRVAda
 
         getQueriedList();
 
-        //getAllMealPlans();
+        getAllMealPlans();
 
     }
 
     private void getQueriedList(){
 
         mealPlanRVModalArrayList.clear();
+
         query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 loadingPB.setVisibility(View.GONE);
 
                 if (dataSnapshot.exists()) {
                     Log.d("snapshot2", String.valueOf(dataSnapshot));
-//                    mealPlanRVModalArrayList.add(dataSnapshot.getValue(MealPlanRVModal.class));
-//                    mealPlanRVAdapter.notifyDataSetChanged();
-                    //sortDates();
 
                     for (DataSnapshot issue : dataSnapshot.getChildren()) {
                         // do with your result
@@ -124,47 +123,45 @@ public class MealPlanActivity extends AppCompatActivity implements MealPlanRVAda
         });
     }
 
-//    private void getAllMealPlans() {
-//
-//        mealPlanRVModalArrayList.clear();
-//
-//        databaseReference.addChildEventListener(new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-//                Log.d("snapshot1", String.valueOf(snapshot));
-//
-//                loadingPB.setVisibility(View.GONE);
-//                // mealPlanRVModalArrayList.add(snapshot.getValue(MealPlanRVModal.class));
-//                mealPlanRVAdapter.notifyDataSetChanged();
-//                // sortDates();
-//            }
-//
-//            @Override
-//            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-//                loadingPB.setVisibility(View.GONE);
-//                mealPlanRVAdapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-//                loadingPB.setVisibility(View.GONE);
-//                mealPlanRVAdapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-//                loadingPB.setVisibility(View.GONE);
-//                mealPlanRVAdapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
-//
-//        //mealPlanRVModalArrayList
-//    }
+    private void getAllMealPlans() {
+
+        mealPlanRVModalArrayList.clear();
+
+        databaseReference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Log.d("snapshot1", String.valueOf(snapshot));
+
+                loadingPB.setVisibility(View.GONE);
+                // mealPlanRVModalArrayList.add(snapshot.getValue(MealPlanRVModal.class));
+                mealPlanRVAdapter.notifyDataSetChanged();
+                // sortDates();
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                loadingPB.setVisibility(View.GONE);
+                mealPlanRVAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                loadingPB.setVisibility(View.GONE);
+                mealPlanRVAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                loadingPB.setVisibility(View.GONE);
+                mealPlanRVAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
 
     private void sortDates(){
         for(MealPlanRVModal meal : mealPlanRVModalArrayList){

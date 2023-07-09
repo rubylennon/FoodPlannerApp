@@ -25,10 +25,12 @@
                     android:id="@+id/name"
                     android:layout_width="0dp"
                     android:layout_weight="5"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:text="@string/ingredient"
-                    android:textColor="@android:color/holo_purple"
-                    android:textSize="30sp"/>
+                    android:gravity="center_vertical"
+                    android:textStyle="italic"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"/>
 
                 <CheckBox
                     android:id="@+id/checkBox"
