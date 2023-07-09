@@ -295,6 +295,8 @@ public class ViewMealPlanActivity extends AppCompatActivity {
     }
 
     // options menu code start
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.settings_main,menu);
         return true;
@@ -303,32 +305,43 @@ public class ViewMealPlanActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
         int id = item.getItemId();
         switch (id) {
-            case R.id.idEditAccount:
-                Intent i = new Intent(ViewMealPlanActivity.this, EditAccountActivity.class);
-                startActivity(i);
+            case R.id.idAddRecipe:
+                Intent i1 = new Intent(ViewMealPlanActivity.this, AddRecipeActivity.class);
+                startActivity(i1);
                 return true;
-            case R.id.idScan:
-                Intent i2 = new Intent(ViewMealPlanActivity.this, IngredientsScannerActivity.class);
+            case R.id.idMyRecipes:
+                Intent i2 = new Intent(ViewMealPlanActivity.this, MainActivity.class);
                 startActivity(i2);
                 return true;
-            case R.id.idSearch:
-                Intent i3 = new Intent(ViewMealPlanActivity.this, RecipeSearchActivity.class);
+            case R.id.idPublicRecipes:
+                Intent i3 = new Intent(ViewMealPlanActivity.this, PublicRecipesActivity.class);
                 startActivity(i3);
                 return true;
-            case R.id.idMealPlan:
-                Intent i4 = new Intent(ViewMealPlanActivity.this, MealPlanActivity.class);
+            case R.id.idScan:
+                Intent i4 = new Intent(ViewMealPlanActivity.this, IngredientsScannerActivity.class);
                 startActivity(i4);
+                return true;
+            case R.id.idSearch:
+                Intent i5 = new Intent(ViewMealPlanActivity.this, RecipeSearchActivity.class);
+                startActivity(i5);
+                return true;
+            case R.id.idMealPlan:
+                Intent i6 = new Intent(ViewMealPlanActivity.this, MealPlanActivity.class);
+                startActivity(i6);
+                return true;
+            case R.id.idEditAccount:
+                Intent i7 = new Intent(ViewMealPlanActivity.this, EditAccountActivity.class);
+                startActivity(i7);
                 return true;
             case R.id.idLogout:
                 Toast.makeText(this, "User Logged Out", Toast.LENGTH_SHORT).show();
                 mAuth.signOut();
-                Intent i5 = new Intent(ViewMealPlanActivity.this, LoginActivity.class);
-                startActivity(i5);
+                Intent i8 = new Intent(ViewMealPlanActivity.this, LoginActivity.class);
+                startActivity(i8);
                 this.finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
-    // options menu code end
 }

@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -55,6 +57,7 @@ public class ViewRecipeActivity extends AppCompatActivity implements DatePickerD
     private String userID;
     private String recipeImgEdt;
     private String recipeLinkEdt;
+    private FirebaseAuth mAuth;
 
     public ViewRecipeActivity() {
     }
@@ -82,6 +85,7 @@ public class ViewRecipeActivity extends AppCompatActivity implements DatePickerD
         loadingPB = findViewById(R.id.idPBLoading);
         addRecipeToMealPlan = findViewById(R.id.idBtnAddToMealPlan);
         userID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+        mAuth = FirebaseAuth.getInstance();
 
         recipeRVModal = getIntent().getParcelableExtra("recipe");
 
@@ -198,5 +202,54 @@ public class ViewRecipeActivity extends AppCompatActivity implements DatePickerD
 
         startActivity(new Intent(ViewRecipeActivity.this, MealPlanActivity.class));
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.settings_main,menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(@NonNull MenuItem item){
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.idAddRecipe:
+                Intent i1 = new Intent(ViewRecipeActivity.this, AddRecipeActivity.class);
+                startActivity(i1);
+                return true;
+            case R.id.idMyRecipes:
+                Intent i2 = new Intent(ViewRecipeActivity.this, MainActivity.class);
+                startActivity(i2);
+                return true;
+            case R.id.idPublicRecipes:
+                Intent i3 = new Intent(ViewRecipeActivity.this, PublicRecipesActivity.class);
+                startActivity(i3);
+                return true;
+            case R.id.idScan:
+                Intent i4 = new Intent(ViewRecipeActivity.this, IngredientsScannerActivity.class);
+                startActivity(i4);
+                return true;
+            case R.id.idSearch:
+                Intent i5 = new Intent(ViewRecipeActivity.this, RecipeSearchActivity.class);
+                startActivity(i5);
+                return true;
+            case R.id.idMealPlan:
+                Intent i6 = new Intent(ViewRecipeActivity.this, MealPlanActivity.class);
+                startActivity(i6);
+                return true;
+            case R.id.idEditAccount:
+                Intent i7 = new Intent(ViewRecipeActivity.this, EditAccountActivity.class);
+                startActivity(i7);
+                return true;
+            case R.id.idLogout:
+                Toast.makeText(this, "User Logged Out", Toast.LENGTH_SHORT).show();
+                mAuth.signOut();
+                Intent i8 = new Intent(ViewRecipeActivity.this, LoginActivity.class);
+                startActivity(i8);
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

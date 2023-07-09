@@ -4,17 +4,20 @@
 
     <group>
         <item
+            android:id="@+id/idAddRecipe"
+            android:title="Add New Recipe" />
+        <item
             android:id="@+id/idMyRecipes"
             android:title="My Recipes" />
         <item
             android:id="@+id/idPublicRecipes"
             android:title="Public Recipes" />
         <item
+            android:id="@+id/idScan"
+            android:title="Ingredients Scanner" />
+        <item
             android:id="@+id/idSearch"
             android:title="@string/recipe_search" />
-        <item
-            android:id="@+id/idScan"
-            android:title="Ingredients List Scanner" />
         <item
             android:id="@+id/idMealPlan"
             android:title="@string/meal_planner" />
