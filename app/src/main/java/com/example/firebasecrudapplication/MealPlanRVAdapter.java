@@ -39,7 +39,7 @@ public class MealPlanRVAdapter extends RecyclerView.Adapter<MealPlanRVAdapter.Vi
     public void onBindViewHolder(@NonNull MealPlanRVAdapter.ViewHolder holder, int position) {
         MealPlanRVModal mealPlanRVModal = mealPlanRVModalArrayList.get(position);
         holder.recipeNameTV.setText(mealPlanRVModal.getRecipeName());
-        holder.mealPlanDate.setText(mealPlanRVModal.getDate());
+        holder.mealPlanDate.setText(mealPlanRVModal.getDateLong());
         Picasso.get().load(mealPlanRVModal.getRecipeImg()).into(holder.recipeTV);
         setAnimation(holder.itemView, position);
 
