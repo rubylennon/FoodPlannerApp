@@ -31,6 +31,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity"/>
+        <activity android:name=".PublicRecipesActivity"/>
         <activity android:name=".EditRecipeActivity"/>
         <activity android:name=".ViewRecipeActivity"/>
         <activity android:name=".AddRecipeActivity"/>
