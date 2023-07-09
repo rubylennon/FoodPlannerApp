@@ -11,6 +11,7 @@
 package com.example.firebasecrudapplication;
 
 // imports
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,15 +29,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -46,64 +44,43 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity implements RecipeRVAdapter.RecipeClickInterface {
+public class PublicRecipesActivity extends AppCompatActivity implements RecipeRVAdapter.RecipeClickInterface {
     // declare variables
     private RecyclerView recipeRV;
     private ProgressBar loadingPB;
-    private ImageButton addFAB;
-    private FirebaseDatabase firebaseDatabase;
-    private DatabaseReference databaseReference;
     private ArrayList<RecipeRVModal> recipeRVModalArrayList;
     private RelativeLayout bottomSheetRL;
     private RecipeRVAdapter recipeRVAdapter;
     private FirebaseAuth mAuth;
     private Query query;
-    private ImageView noMatchingSearchResultsIcon;
-    private TextView noMatchingSearchTextOne,
-            noMatchingSearchTextTwo;
 
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_public_activity);
 
         // set the actionbar title to Recipes
-        setTitle("My Recipes");
+        setTitle("Public Recipes");
 
         recipeRV = findViewById(R.id.idRVRecipes);
         loadingPB = findViewById(R.id.idPBLoading);
-        addFAB = findViewById(R.id.idAddFAB);
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        String userID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
-        databaseReference = firebaseDatabase.getReference("Recipes");
-        query = databaseReference.orderByChild("userID").equalTo(userID);
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference("Recipes");
+        query = databaseReference.orderByChild("recipePublic").equalTo(true);
         recipeRVModalArrayList = new ArrayList<>();
         bottomSheetRL = findViewById(R.id.idRLBSheet);
         mAuth = FirebaseAuth.getInstance();
         recipeRVAdapter = new RecipeRVAdapter(recipeRVModalArrayList, this, this);
         recipeRV.setLayoutManager(new LinearLayoutManager(this));
         recipeRV.setAdapter(recipeRVAdapter);
-        noMatchingSearchResultsIcon = findViewById(R.id.noSearchResultsIV);
-        noMatchingSearchTextOne = findViewById(R.id.no_matching_results);
-        noMatchingSearchTextTwo = findViewById(R.id.no_matching_results_help);
 
-        addFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, AddRecipeActivity.class));
-            }
-        });
-
-        showNoIngredientsAlert();
-
-        getAllUserRecipes();
+        getAllPublicRecipes();
 
     }
 
-    private void getAllUserRecipes() {
+    private void getAllPublicRecipes() {
 
         recipeRVModalArrayList.clear();
 //        databaseReference.addChildEventListener(new ChildEventListener() {
@@ -145,19 +122,15 @@ public class MainActivity extends AppCompatActivity implements RecipeRVAdapter.R
 
                 if (dataSnapshot.exists()) {
                     Log.d("snapshot2", String.valueOf(dataSnapshot));
+//                    mealPlanRVModalArrayList.add(dataSnapshot.getValue(MealPlanRVModal.class));
+//                    mealPlanRVAdapter.notifyDataSetChanged();
+                    //sortDates();
 
                     for (DataSnapshot issue : dataSnapshot.getChildren()) {
                         // do with your result
                         Log.d("issue", String.valueOf(issue));
-
                         recipeRVModalArrayList.add(issue.getValue(RecipeRVModal.class));
                         recipeRVAdapter.notifyDataSetChanged();
-
-                        if(recipeRVModalArrayList.isEmpty()){
-                            showNoIngredientsAlert();
-                        }else{
-                            hideNoIngredientsAlert();
-                        }
                     }
                 }
             }
@@ -178,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements RecipeRVAdapter.R
     @SuppressLint("SetTextI18n")
     private void displayBottomSheet(RecipeRVModal recipeRVModal){
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
-        View layout = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_dialog,bottomSheetRL);
+        View layout = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_dialog_without_edit,bottomSheetRL);
         bottomSheetDialog.setContentView(layout);
         bottomSheetDialog.setCancelable(false);
         bottomSheetDialog.setCanceledOnTouchOutside(true);
@@ -189,7 +162,6 @@ public class MainActivity extends AppCompatActivity implements RecipeRVAdapter.R
         TextView recipeSuitedForTV = layout.findViewById(R.id.idTVSuitedFor);
         TextView recipeCookingTimeTV = layout.findViewById(R.id.idTVCookingTime);
         ImageView recipeIV = layout.findViewById(R.id.idIVRecipe);
-        Button editBtn = layout.findViewById(R.id.idBtnEdit);
         Button viewDetailsBtn = layout.findViewById(R.id.idBtnViewDetails);
 
         recipeNameTV.setText(recipeRVModal.getRecipeName());
@@ -198,19 +170,10 @@ public class MainActivity extends AppCompatActivity implements RecipeRVAdapter.R
         recipeCookingTimeTV.setText("Cooking Time: " + recipeRVModal.getRecipeCookingTime());
         Picasso.get().load(recipeRVModal.getRecipeImg()).into(recipeIV);
 
-        editBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, EditRecipeActivity.class);
-                i.putExtra("recipe", recipeRVModal);
-                startActivity(i);
-            }
-        });
-
         viewDetailsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, ViewRecipeActivity.class);
+                Intent i = new Intent(PublicRecipesActivity.this, ViewRecipeActivity.class);
                 i.putExtra("recipe", recipeRVModal);
                 startActivity(i);
             }
@@ -228,50 +191,30 @@ public class MainActivity extends AppCompatActivity implements RecipeRVAdapter.R
         int id = item.getItemId();
         switch (id) {
             case R.id.idEditAccount:
-                Intent i = new Intent(MainActivity.this, EditAccountActivity.class);
+                Intent i = new Intent(PublicRecipesActivity.this, EditAccountActivity.class);
                 startActivity(i);
                 return true;
             case R.id.idScan:
-                Intent i2 = new Intent(MainActivity.this, IngredientsScannerActivity.class);
+                Intent i2 = new Intent(PublicRecipesActivity.this, IngredientsScannerActivity.class);
                 startActivity(i2);
                 return true;
             case R.id.idSearch:
-                Intent i3 = new Intent(MainActivity.this, RecipeSearchActivity.class);
+                Intent i3 = new Intent(PublicRecipesActivity.this, RecipeSearchActivity.class);
                 startActivity(i3);
                 return true;
             case R.id.idMealPlan:
-                Intent i4 = new Intent(MainActivity.this, MealPlanActivity.class);
+                Intent i4 = new Intent(PublicRecipesActivity.this, MealPlanActivity.class);
                 startActivity(i4);
-                return true;
-            case R.id.idMyRecipes:
-                Intent i5 = new Intent(MainActivity.this, MainActivity.class);
-                startActivity(i5);
-                return true;
-            case R.id.idPublicRecipes:
-                Intent i6 = new Intent(MainActivity.this, PublicRecipesActivity.class);
-                startActivity(i6);
                 return true;
             case R.id.idLogout:
                 Toast.makeText(this, "User Logged Out", Toast.LENGTH_SHORT).show();
                 mAuth.signOut();
-                Intent i7 = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(i7);
+                Intent i5 = new Intent(PublicRecipesActivity.this, LoginActivity.class);
+                startActivity(i5);
                 this.finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    private void hideNoIngredientsAlert(){
-        noMatchingSearchResultsIcon.setVisibility(View.GONE);
-        noMatchingSearchTextOne.setVisibility(View.GONE);
-        noMatchingSearchTextTwo.setVisibility(View.GONE);
-    }
-
-    private void showNoIngredientsAlert(){
-        noMatchingSearchResultsIcon.setVisibility(View.VISIBLE);
-        noMatchingSearchTextOne.setVisibility(View.VISIBLE);
-        noMatchingSearchTextTwo.setVisibility(View.VISIBLE);
     }
 }
