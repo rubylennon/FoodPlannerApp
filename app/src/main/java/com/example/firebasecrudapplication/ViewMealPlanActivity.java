@@ -2,6 +2,7 @@ package com.example.firebasecrudapplication;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -148,11 +149,11 @@ public class ViewMealPlanActivity extends AppCompatActivity {
 //        Log.d("TEST", String.valueOf(databaseReferenceIngredients.child(mealPlanID).child("ingredients").child("Tomato").get()));
 
         // view recipe source page in browser using recipe link
-//        viewSourceRecipe.setOnClickListener(v -> {
-//            Intent i = new Intent(Intent.ACTION_VIEW);
-//            i.setData(Uri.parse(mealPlanRVModal.getRecipeLink()));
-//            startActivity(i);
-//        });
+        viewSourceRecipe.setOnClickListener(v -> {
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(mealPlanRVModal.getRecipeLink()));
+            startActivity(i);
+        });
 
         // create ingredients db reference value events listener
 
