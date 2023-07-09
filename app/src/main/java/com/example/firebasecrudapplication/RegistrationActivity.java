@@ -60,6 +60,8 @@ public class RegistrationActivity extends AppCompatActivity {
         pwdHelpText = findViewById(R.id.pwdHelpText);
         pwdHelpText.setVisibility(View.GONE);
 
+        setTitle("Create Account");
+
         // if user clicks Login TextView redirect them to the Login Page
         LoginTV.setOnClickListener(new View.OnClickListener() {
             @Override

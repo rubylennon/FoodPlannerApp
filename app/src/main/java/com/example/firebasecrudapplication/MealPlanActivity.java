@@ -11,6 +11,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -58,6 +60,7 @@ public class MealPlanActivity extends AppCompatActivity implements MealPlanRVAda
     private ArrayList<MealPlanRVModal> mealPlanRVModalArrayList;
     private RelativeLayout bottomSheetRL;
     private MealPlanRVAdapter mealPlanRVAdapter;
+    private FirebaseAuth mAuth;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -73,6 +76,7 @@ public class MealPlanActivity extends AppCompatActivity implements MealPlanRVAda
         String userID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("Meal Plans");
+        mAuth = FirebaseAuth.getInstance();
 
         mealPlanRVModalArrayList = new ArrayList<>();
         bottomSheetRL = findViewById(R.id.idRLBSheetMealPlan);
@@ -264,6 +268,56 @@ public class MealPlanActivity extends AppCompatActivity implements MealPlanRVAda
             startActivity(i);
         });
 
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.settings_main,menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(@NonNull MenuItem item){
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.idAddRecipe:
+                Intent i1 = new Intent(MealPlanActivity.this, AddRecipeActivity.class);
+                startActivity(i1);
+                return true;
+            case R.id.idMyRecipes:
+                Intent i2 = new Intent(MealPlanActivity.this, MainActivity.class);
+                startActivity(i2);
+                return true;
+            case R.id.idPublicRecipes:
+                Intent i3 = new Intent(MealPlanActivity.this, PublicRecipesActivity.class);
+                startActivity(i3);
+                return true;
+            case R.id.idScan:
+                Intent i4 = new Intent(MealPlanActivity.this, IngredientsScannerActivity.class);
+                startActivity(i4);
+                return true;
+            case R.id.idSearch:
+                Intent i5 = new Intent(MealPlanActivity.this, RecipeSearchActivity.class);
+                startActivity(i5);
+                return true;
+            case R.id.idMealPlan:
+                Intent i6 = new Intent(MealPlanActivity.this, MealPlanActivity.class);
+                startActivity(i6);
+                return true;
+            case R.id.idEditAccount:
+                Intent i7 = new Intent(MealPlanActivity.this, EditAccountActivity.class);
+                startActivity(i7);
+                return true;
+            case R.id.idLogout:
+                Toast.makeText(this, "User Logged Out", Toast.LENGTH_SHORT).show();
+                mAuth.signOut();
+                Intent i8 = new Intent(MealPlanActivity.this, LoginActivity.class);
+                startActivity(i8);
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 }

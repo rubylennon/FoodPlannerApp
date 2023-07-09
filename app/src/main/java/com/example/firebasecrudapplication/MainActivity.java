@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements RecipeRVAdapter.R
             }
         });
 
-        showNoIngredientsAlert();
+        hideNoRecipesAlert();
 
         getAllUserRecipes();
 
@@ -154,9 +154,9 @@ public class MainActivity extends AppCompatActivity implements RecipeRVAdapter.R
                         recipeRVAdapter.notifyDataSetChanged();
 
                         if(recipeRVModalArrayList.isEmpty()){
-                            showNoIngredientsAlert();
+                            showNoRecipesAlert();
                         }else{
-                            hideNoIngredientsAlert();
+                            hideNoRecipesAlert();
                         }
                     }
                 }
@@ -227,35 +227,39 @@ public class MainActivity extends AppCompatActivity implements RecipeRVAdapter.R
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
         int id = item.getItemId();
         switch (id) {
-            case R.id.idEditAccount:
-                Intent i = new Intent(MainActivity.this, EditAccountActivity.class);
-                startActivity(i);
-                return true;
-            case R.id.idScan:
-                Intent i2 = new Intent(MainActivity.this, IngredientsScannerActivity.class);
-                startActivity(i2);
-                return true;
-            case R.id.idSearch:
-                Intent i3 = new Intent(MainActivity.this, RecipeSearchActivity.class);
-                startActivity(i3);
-                return true;
-            case R.id.idMealPlan:
-                Intent i4 = new Intent(MainActivity.this, MealPlanActivity.class);
-                startActivity(i4);
+            case R.id.idAddRecipe:
+                Intent i1 = new Intent(MainActivity.this, AddRecipeActivity.class);
+                startActivity(i1);
                 return true;
             case R.id.idMyRecipes:
-                Intent i5 = new Intent(MainActivity.this, MainActivity.class);
-                startActivity(i5);
+                Intent i2 = new Intent(MainActivity.this, MainActivity.class);
+                startActivity(i2);
                 return true;
             case R.id.idPublicRecipes:
-                Intent i6 = new Intent(MainActivity.this, PublicRecipesActivity.class);
+                Intent i3 = new Intent(MainActivity.this, PublicRecipesActivity.class);
+                startActivity(i3);
+                return true;
+            case R.id.idScan:
+                Intent i4 = new Intent(MainActivity.this, IngredientsScannerActivity.class);
+                startActivity(i4);
+                return true;
+            case R.id.idSearch:
+                Intent i5 = new Intent(MainActivity.this, RecipeSearchActivity.class);
+                startActivity(i5);
+                return true;
+            case R.id.idMealPlan:
+                Intent i6 = new Intent(MainActivity.this, MealPlanActivity.class);
                 startActivity(i6);
+                return true;
+            case R.id.idEditAccount:
+                Intent i7 = new Intent(MainActivity.this, EditAccountActivity.class);
+                startActivity(i7);
                 return true;
             case R.id.idLogout:
                 Toast.makeText(this, "User Logged Out", Toast.LENGTH_SHORT).show();
                 mAuth.signOut();
-                Intent i7 = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(i7);
+                Intent i8 = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(i8);
                 this.finish();
                 return true;
             default:
@@ -263,13 +267,13 @@ public class MainActivity extends AppCompatActivity implements RecipeRVAdapter.R
         }
     }
 
-    private void hideNoIngredientsAlert(){
+    private void hideNoRecipesAlert(){
         noMatchingSearchResultsIcon.setVisibility(View.GONE);
         noMatchingSearchTextOne.setVisibility(View.GONE);
         noMatchingSearchTextTwo.setVisibility(View.GONE);
     }
 
-    private void showNoIngredientsAlert(){
+    private void showNoRecipesAlert(){
         noMatchingSearchResultsIcon.setVisibility(View.VISIBLE);
         noMatchingSearchTextOne.setVisibility(View.VISIBLE);
         noMatchingSearchTextTwo.setVisibility(View.VISIBLE);

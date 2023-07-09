@@ -44,6 +44,8 @@ public class LoginActivity extends AppCompatActivity {
         registerTV = findViewById(R.id.idTVRegister);
         mAuth = FirebaseAuth.getInstance();
 
+        setTitle("Login");
+
         registerTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
