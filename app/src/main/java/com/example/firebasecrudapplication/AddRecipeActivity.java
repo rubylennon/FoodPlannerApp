@@ -329,10 +329,14 @@ public class AddRecipeActivity extends AppCompatActivity {
         builder.setView(view);
         builder.setTitle("Enter Ingredient")
                 .setPositiveButton("OK", (dialog, which) -> {
-                    addCard(name.getText().toString());
-                    ingredientList.add(name.getText().toString());
-                    Log.d("ingredientList", String.valueOf(ingredientList));
-                    name.setText("");
+                    if(name.getText().toString().trim().equals("") || name.getText().toString().equals("Name")){
+                        Toast.makeText(this, "Ingredient cannot be blank.", Toast.LENGTH_SHORT).show();
+                        name.setText("");
+                    }else{
+                        addCard(name.getText().toString());
+                        ingredientList.add(name.getText().toString());
+                        name.setText("");
+                    }
                 })
                 .setNegativeButton("Cancel", (dialog, which) -> name.setText(""));
 
