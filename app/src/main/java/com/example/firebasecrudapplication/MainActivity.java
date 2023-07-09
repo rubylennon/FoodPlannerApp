@@ -14,6 +14,7 @@ package com.example.firebasecrudapplication;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,6 +41,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -56,6 +59,10 @@ public class MainActivity extends AppCompatActivity implements RecipeRVAdapter.R
     private RelativeLayout bottomSheetRL;
     private RecipeRVAdapter recipeRVAdapter;
     private FirebaseAuth mAuth;
+    private Query query;
+    private ImageView noMatchingSearchResultsIcon;
+    private TextView noMatchingSearchTextOne,
+            noMatchingSearchTextTwo;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -70,13 +77,18 @@ public class MainActivity extends AppCompatActivity implements RecipeRVAdapter.R
         loadingPB = findViewById(R.id.idPBLoading);
         addFAB = findViewById(R.id.idAddFAB);
         firebaseDatabase = FirebaseDatabase.getInstance();
+        String userID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         databaseReference = firebaseDatabase.getReference("Recipes");
+        query = databaseReference.orderByChild("userID").equalTo(userID);
         recipeRVModalArrayList = new ArrayList<>();
         bottomSheetRL = findViewById(R.id.idRLBSheet);
         mAuth = FirebaseAuth.getInstance();
         recipeRVAdapter = new RecipeRVAdapter(recipeRVModalArrayList, this, this);
         recipeRV.setLayoutManager(new LinearLayoutManager(this));
         recipeRV.setAdapter(recipeRVAdapter);
+        noMatchingSearchResultsIcon = findViewById(R.id.noSearchResultsIV);
+        noMatchingSearchTextOne = findViewById(R.id.no_matching_results);
+        noMatchingSearchTextTwo = findViewById(R.id.no_matching_results_help);
 
         addFAB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,41 +97,73 @@ public class MainActivity extends AppCompatActivity implements RecipeRVAdapter.R
             }
         });
 
-        getAllRecipes();
+        showNoIngredientsAlert();
+
+        getAllUserRecipes();
 
     }
 
-    private void getAllRecipes() {
+    private void getAllUserRecipes() {
 
         recipeRVModalArrayList.clear();
-        databaseReference.addChildEventListener(new ChildEventListener() {
+//        databaseReference.addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//                loadingPB.setVisibility(View.GONE);
+//                recipeRVModalArrayList.add(snapshot.getValue(RecipeRVModal.class));
+//                recipeRVAdapter.notifyDataSetChanged();
+//            }
+//
+//            @Override
+//            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//                loadingPB.setVisibility(View.GONE);
+//                recipeRVAdapter.notifyDataSetChanged();
+//            }
+//
+//            @Override
+//            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+//                loadingPB.setVisibility(View.GONE);
+//                recipeRVAdapter.notifyDataSetChanged();
+//            }
+//
+//            @Override
+//            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//                loadingPB.setVisibility(View.GONE);
+//                recipeRVAdapter.notifyDataSetChanged();
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+            public void onDataChange(DataSnapshot dataSnapshot) {
                 loadingPB.setVisibility(View.GONE);
-                recipeRVModalArrayList.add(snapshot.getValue(RecipeRVModal.class));
-                recipeRVAdapter.notifyDataSetChanged();
+
+                if (dataSnapshot.exists()) {
+                    Log.d("snapshot2", String.valueOf(dataSnapshot));
+
+                    for (DataSnapshot issue : dataSnapshot.getChildren()) {
+                        // do with your result
+                        Log.d("issue", String.valueOf(issue));
+
+                        recipeRVModalArrayList.add(issue.getValue(RecipeRVModal.class));
+                        recipeRVAdapter.notifyDataSetChanged();
+
+                        if(recipeRVModalArrayList.isEmpty()){
+                            showNoIngredientsAlert();
+                        }else{
+                            hideNoIngredientsAlert();
+                        }
+                    }
+                }
             }
 
             @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                loadingPB.setVisibility(View.GONE);
-                recipeRVAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-                loadingPB.setVisibility(View.GONE);
-                recipeRVAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                loadingPB.setVisibility(View.GONE);
-                recipeRVAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onCancelled(DatabaseError databaseError) {
 
             }
         });
@@ -217,5 +261,17 @@ public class MainActivity extends AppCompatActivity implements RecipeRVAdapter.R
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void hideNoIngredientsAlert(){
+        noMatchingSearchResultsIcon.setVisibility(View.GONE);
+        noMatchingSearchTextOne.setVisibility(View.GONE);
+        noMatchingSearchTextTwo.setVisibility(View.GONE);
+    }
+
+    private void showNoIngredientsAlert(){
+        noMatchingSearchResultsIcon.setVisibility(View.VISIBLE);
+        noMatchingSearchTextOne.setVisibility(View.VISIBLE);
+        noMatchingSearchTextTwo.setVisibility(View.VISIBLE);
     }
 }

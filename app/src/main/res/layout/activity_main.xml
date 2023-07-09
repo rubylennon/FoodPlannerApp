@@ -20,6 +20,33 @@
         android:indeterminate="true"
         android:indeterminateDrawable="@drawable/progress_back" />
 
+    <ImageView
+        android:id="@+id/noSearchResultsIV"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_centerInParent="true"
+        android:contentDescription="@string/search_icon_with_x"
+        android:src="@drawable/baseline_menu_book_24" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No Recipes Added"
+        android:id="@+id/no_matching_results"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:layout_below="@+id/noSearchResultsIV"/>
+
+    <TextView
+        android:id="@+id/no_matching_results_help"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/no_matching_results"
+        android:gravity="center"
+        android:text="Click the Add Recipe icon below or the Add Recipe menu item to add a recipe."
+        android:textColor="#455A64"
+        android:textSize="11sp" />
+
     <ImageButton
         android:id="@+id/idAddFAB"
         android:layout_width="65dp"
