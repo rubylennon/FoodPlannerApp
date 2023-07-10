@@ -8,6 +8,10 @@ public class MealPlanIngredient {
             ingredient,
             purchased;
 
+    public MealPlanIngredient(){
+
+    }
+
     public MealPlanIngredient(String ingredient, String purchased) {
         this.ingredient = ingredient;
         this.purchased = purchased;
