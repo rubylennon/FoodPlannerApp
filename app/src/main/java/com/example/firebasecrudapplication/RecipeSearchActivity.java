@@ -44,11 +44,13 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 
 public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVAdapter.RecipeClickInterface {
     private ProgressBar loadingPB;
@@ -77,6 +79,7 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
     private TextView appliedSearchInfoTV;
     private CardView appliedSearchInfoCV;
     private FirebaseAuth mAuth;
+    private Query query;
 
     @SuppressLint({"MissingInflatedId", "SetTextI18n"})
     @Override
@@ -112,7 +115,9 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
         // RECIPES CODE START
         // declare variables
         RecyclerView recipeRV = findViewById(R.id.idRVRecipes);
+        String userID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         databaseReferenceRecipes = firebaseDatabase.getReference("Recipes");
+        query = databaseReferenceRecipes.orderByChild("userID");
         originalRecipesList = new ArrayList<>();
         cuisineFilteredRecipesList = new ArrayList<>();
         ingredientsFilteredRecipesList = new ArrayList<>();
@@ -254,8 +259,8 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 loadingPB.setVisibility(View.GONE);
-                originalRecipesList.add(snapshot.getValue(RecipeRVModal.class));
-                recipeRVAdapter.notifyDataSetChanged();
+//                originalRecipesList.add(snapshot.getValue(RecipeRVModal.class));
+//                recipeRVAdapter.notifyDataSetChanged();
             }
 
             @SuppressLint("NotifyDataSetChanged")
@@ -281,6 +286,49 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                loadingPB.setVisibility(View.GONE);
+
+                if (dataSnapshot.exists()) {
+                    Log.d("snapshot2", String.valueOf(dataSnapshot));
+
+                    for (DataSnapshot issue : dataSnapshot.getChildren()) {
+                        // do with your result
+                        Log.d("issue", String.valueOf(issue));
+
+                        String userID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+
+                        if(issue.child("userID").getValue().equals(userID) && issue.child("recipePublic").getValue().equals(true)){
+                            System.out.println(issue + "belongs to user");
+                            originalRecipesList.add(issue.getValue(RecipeRVModal.class));
+                            recipeRVAdapter.notifyDataSetChanged();
+                        } else if(issue.child("userID").getValue().equals(userID) && issue.child("recipePublic").getValue().equals(false)) {
+                            System.out.println(issue + "belongs to user");
+                            originalRecipesList.add(issue.getValue(RecipeRVModal.class));
+                            recipeRVAdapter.notifyDataSetChanged();
+                        } else if(!issue.child("userID").getValue().equals(userID) && issue.child("recipePublic").getValue().equals(true)) {
+                            System.out.println(issue + "belongs to user");
+                            originalRecipesList.add(issue.getValue(RecipeRVModal.class));
+                            recipeRVAdapter.notifyDataSetChanged();
+                        }
+
+//                        if(recipeRVModalArrayList.isEmpty()){
+//                            showNoRecipesAlert();
+//                        }else{
+//                            hideNoRecipesAlert();
+//                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
             }
         });
@@ -782,4 +830,11 @@ public class RecipeSearchActivity extends AppCompatActivity implements RecipeRVA
                 return super.onOptionsItemSelected(item);
         }
     }
+
+//    @Override
+//    public void onBackPressed(){
+//        super.onBackPressed();
+//        startActivity(new Intent(RecipeSearchActivity.this, RecipeSearchActivity.class));
+//        finish();
+//    }
 }
