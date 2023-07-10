@@ -14,7 +14,6 @@ package com.example.firebasecrudapplication;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,15 +27,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -49,12 +45,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements RecipeRVAdapter.RecipeClickInterface {
-    // declare variables
-    private RecyclerView recipeRV;
     private ProgressBar loadingPB;
-    private ImageButton addFAB;
-    private FirebaseDatabase firebaseDatabase;
-    private DatabaseReference databaseReference;
     private ArrayList<RecipeRVModal> recipeRVModalArrayList;
     private RelativeLayout bottomSheetRL;
     private RecipeRVAdapter recipeRVAdapter;
@@ -68,17 +59,21 @@ public class MainActivity extends AppCompatActivity implements RecipeRVAdapter.R
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // set the activity layout
         setContentView(R.layout.activity_main);
 
         // set the actionbar title to Recipes
         setTitle("My Recipes");
 
-        recipeRV = findViewById(R.id.idRVRecipes);
+        // locate layout elements by ID and assign to variables
+        // declare variables
+        RecyclerView recipeRV = findViewById(R.id.idRVRecipes);
         loadingPB = findViewById(R.id.idPBLoading);
-        addFAB = findViewById(R.id.idAddFAB);
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        ImageButton addFAB = findViewById(R.id.idAddFAB);
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         String userID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
-        databaseReference = firebaseDatabase.getReference("Recipes");
+        DatabaseReference databaseReference = firebaseDatabase.getReference("Recipes");
         query = databaseReference.orderByChild("userID").equalTo(userID);
         recipeRVModalArrayList = new ArrayList<>();
         bottomSheetRL = findViewById(R.id.idRLBSheet);
@@ -90,69 +85,37 @@ public class MainActivity extends AppCompatActivity implements RecipeRVAdapter.R
         noMatchingSearchTextOne = findViewById(R.id.no_matching_results);
         noMatchingSearchTextTwo = findViewById(R.id.no_matching_results_help);
 
-        addFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, AddRecipeActivity.class));
-            }
-        });
+        // if the add floating actions button is clicked then direct user to add recipe page
+        addFAB.setOnClickListener(v -> startActivity(new Intent(MainActivity.this,
+                AddRecipeActivity.class)));
 
+        // hide the alert that appears if the user has no recipes
         hideNoRecipesAlert();
 
+        // get all user recipes from firebase database
         getAllUserRecipes();
 
     }
 
     private void getAllUserRecipes() {
 
+        // clear the recipe arraylist
         recipeRVModalArrayList.clear();
-//        databaseReference.addChildEventListener(new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-//                loadingPB.setVisibility(View.GONE);
-//                recipeRVModalArrayList.add(snapshot.getValue(RecipeRVModal.class));
-//                recipeRVAdapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-//                loadingPB.setVisibility(View.GONE);
-//                recipeRVAdapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-//                loadingPB.setVisibility(View.GONE);
-//                recipeRVAdapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-//                loadingPB.setVisibility(View.GONE);
-//                recipeRVAdapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
 
+        // add value event listener to firebase query
         query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 loadingPB.setVisibility(View.GONE);
 
                 if (dataSnapshot.exists()) {
-                    Log.d("snapshot2", String.valueOf(dataSnapshot));
 
                     for (DataSnapshot issue : dataSnapshot.getChildren()) {
-                        // do with your result
-                        Log.d("issue", String.valueOf(issue));
-
                         recipeRVModalArrayList.add(issue.getValue(RecipeRVModal.class));
                         recipeRVAdapter.notifyDataSetChanged();
 
+                        // if there are no recipes returned then show the no recipes notice
                         if(recipeRVModalArrayList.isEmpty()){
                             showNoRecipesAlert();
                         }else{
@@ -163,18 +126,21 @@ public class MainActivity extends AppCompatActivity implements RecipeRVAdapter.R
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
 
     }
 
+    // if a recipe is clicked
     @Override
     public void onRecipeClick(int position) {
+        // then display the bottom sheet dialog for that recipe
         displayBottomSheet(recipeRVModalArrayList.get(position));
     }
 
+    // bottom sheet dialog builder and functionality
     @SuppressLint("SetTextI18n")
     private void displayBottomSheet(RecipeRVModal recipeRVModal){
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
@@ -184,6 +150,7 @@ public class MainActivity extends AppCompatActivity implements RecipeRVAdapter.R
         bottomSheetDialog.setCanceledOnTouchOutside(true);
         bottomSheetDialog.show();
 
+        // get the bottom sheet dialog elements by ID and assign to local variables
         TextView recipeNameTV = layout.findViewById(R.id.idTVRecipeName);
         TextView recipeDescTV = layout.findViewById(R.id.idTVDescription);
         TextView recipeSuitedForTV = layout.findViewById(R.id.idTVSuitedFor);
@@ -192,38 +159,55 @@ public class MainActivity extends AppCompatActivity implements RecipeRVAdapter.R
         Button editBtn = layout.findViewById(R.id.idBtnEdit);
         Button viewDetailsBtn = layout.findViewById(R.id.idBtnViewDetails);
 
+        // set text in bottom sheet dialog using selected recipe values
         recipeNameTV.setText(recipeRVModal.getRecipeName());
         recipeDescTV.setText(recipeRVModal.getRecipeDescription());
         recipeSuitedForTV.setText("Suitable For: " + recipeRVModal.getRecipeSuitedFor());
         recipeCookingTimeTV.setText("Cooking Time: " + recipeRVModal.getRecipeCookingTime());
+
+        // load and display the recipe image using the recipe URL
         Picasso.get().load(recipeRVModal.getRecipeImg()).into(recipeIV);
 
-        editBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, EditRecipeActivity.class);
-                i.putExtra("recipe", recipeRVModal);
-                startActivity(i);
-            }
+        // if the bottom sheet dialog edit recipe button is clicked then direct user to edit recipe
+        // page and pass selected recipe object
+        editBtn.setOnClickListener(v -> {
+            Intent i = new Intent(MainActivity.this, EditRecipeActivity.class);
+            i.putExtra("recipe", recipeRVModal);
+            startActivity(i);
         });
 
-        viewDetailsBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, ViewRecipeActivity.class);
-                i.putExtra("recipe", recipeRVModal);
-                startActivity(i);
-            }
+        // if the bottom sheet dialog view details recipe button is clicked then direct user to
+        // view recipe page and pass selected recipe object
+        viewDetailsBtn.setOnClickListener(v -> {
+            Intent i = new Intent(MainActivity.this, ViewRecipeActivity.class);
+            i.putExtra("recipe", recipeRVModal);
+            startActivity(i);
         });
 
     }
 
+    // method for hiding notice that there are no recipes
+    private void hideNoRecipesAlert(){
+        noMatchingSearchResultsIcon.setVisibility(View.GONE);
+        noMatchingSearchTextOne.setVisibility(View.GONE);
+        noMatchingSearchTextTwo.setVisibility(View.GONE);
+    }
+
+    // method for displaying notice that there are no recipes
+    private void showNoRecipesAlert(){
+        noMatchingSearchResultsIcon.setVisibility(View.VISIBLE);
+        noMatchingSearchTextOne.setVisibility(View.VISIBLE);
+        noMatchingSearchTextTwo.setVisibility(View.VISIBLE);
+    }
+
+    // settings menu code start
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.settings_main,menu);
         return true;
     }
 
+    @SuppressLint("NonConstantResourceId")
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
         int id = item.getItemId();
         switch (id) {
@@ -266,16 +250,5 @@ public class MainActivity extends AppCompatActivity implements RecipeRVAdapter.R
                 return super.onOptionsItemSelected(item);
         }
     }
-
-    private void hideNoRecipesAlert(){
-        noMatchingSearchResultsIcon.setVisibility(View.GONE);
-        noMatchingSearchTextOne.setVisibility(View.GONE);
-        noMatchingSearchTextTwo.setVisibility(View.GONE);
-    }
-
-    private void showNoRecipesAlert(){
-        noMatchingSearchResultsIcon.setVisibility(View.VISIBLE);
-        noMatchingSearchTextOne.setVisibility(View.VISIBLE);
-        noMatchingSearchTextTwo.setVisibility(View.VISIBLE);
-    }
+    // settings menu code end
 }
