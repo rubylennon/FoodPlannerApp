@@ -37,31 +37,31 @@ import java.util.Objects;
 
 public class AddRecipeActivity extends AppCompatActivity {
     // variables
-    private TextInputEditText recipeNameEdt;
-    private TextInputEditText recipeCookingTimeEdt;
-    private TextInputEditText recipeServingsEdt;
-    private TextInputEditText recipeImgEdt;
-    private TextInputEditText recipeLinkEdt;
-    private TextInputEditText recipeDescEdt;
-    private TextInputEditText recipeMethodEdt;
+    private TextInputEditText recipeNameEdt,
+            recipeCookingTimeEdt,
+            recipeServingsEdt,
+            recipeImgEdt,
+            recipeLinkEdt,
+            recipeDescEdt,
+            recipeMethodEdt;
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     private Switch recipePublicEdt;
     private ProgressBar loadingPB;
     private DatabaseReference databaseReference;
-    private String recipeID;
-    private String userID;
-    private TextView recipeCuisineEdt;
-    private boolean[] selectedCuisine;
-    private final ArrayList<Integer> cuisineList = new ArrayList<>();
-    private String[] cuisineArray;
-    private TextView recipeSuitabilityEdt;
-    private boolean[] selectedSuitability;
-    private final ArrayList<Integer> suitabilityList = new ArrayList<>();
-    private String[] suitabilityArray;
+    private String recipeID,
+            userID,
+            ingredientsSelectionString;
+    private TextView recipeCuisineEdt,
+            recipeSuitabilityEdt;
+    private boolean[] selectedCuisine,
+            selectedSuitability;
+    private final ArrayList<Integer> cuisineList = new ArrayList<>(),
+            suitabilityList = new ArrayList<>();
+    private String[] cuisineArray,
+            suitabilityArray;
     private AlertDialog dialog;
     private LinearLayout layout;
     private final ArrayList<String> ingredientList = new ArrayList<>();
-    private String ingredientsSelectionString;
     private FirebaseAuth mAuth;
 
     @Override
@@ -92,7 +92,10 @@ public class AddRecipeActivity extends AppCompatActivity {
         Button addIngredient = findViewById(R.id.add);
         layout = findViewById(R.id.container);
 
+        // build alert dialog for adding ingredients to recipe
         buildDialogAddIngredient();
+
+        // when the add ingredients button is clicked show the dialog
         addIngredient.setOnClickListener(v -> dialog.show());
 
         // SELECT CUISINE DIALOG START
@@ -299,6 +302,7 @@ public class AddRecipeActivity extends AppCompatActivity {
                 Boolean recipePublic = recipePublicEdt.isChecked();
                 recipeID = databaseReference.push().getKey();
 
+                // build the object using the above variables
                 RecipeRVModal recipeRVModal = new RecipeRVModal(recipeName,recipeCookingTime,recipeServings,recipeSuitedFor,recipeCuisine,recipeImg,recipeLink,recipeDesc,recipeMethod,recipeIngredients,recipePublic,recipeID,userID);
 
                 // add the new recipe to the database
@@ -343,6 +347,7 @@ public class AddRecipeActivity extends AppCompatActivity {
         dialog = builder.create();
     }
 
+    // add ingredient card to screen
     private void addCard(String name) {
         @SuppressLint("InflateParams") final View view = getLayoutInflater().inflate(R.layout.ingredient_card_rounded, null);
 
@@ -361,13 +366,14 @@ public class AddRecipeActivity extends AppCompatActivity {
         layout.addView(view);
     }
 
-
+    // settings code menu start
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.settings_main,menu);
         return true;
     }
 
+    @SuppressLint("NonConstantResourceId")
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
         int id = item.getItemId();
         switch (id) {
@@ -410,5 +416,6 @@ public class AddRecipeActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+    // settings code menu end
 
 }
