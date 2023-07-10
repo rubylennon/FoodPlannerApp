@@ -5,7 +5,6 @@ package com.example.firebasecrudapplication;
 //@Ref 3 - https://codevedanam.blogspot.com/2021/04/dynamic-views-in-android.html
 
 //imports
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
