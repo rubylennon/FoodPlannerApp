@@ -1,8 +1,8 @@
 package com.example.firebasecrudapplication;
 
 public class Ingredient {
-    private String ingredientName;
-    private String ingredientDescription;
+    private String ingredientName,
+            ingredientDescription;
 
     public Ingredient() {
     }
@@ -16,15 +16,8 @@ public class Ingredient {
         return ingredientName;
     }
 
-    public void setIngredientName(String ingredientName) {
-        this.ingredientName = ingredientName;
-    }
-
     public String getIngredientDescription() {
         return ingredientDescription;
     }
 
-    public void setIngredientDescription(String ingredientDescription) {
-        this.ingredientDescription = ingredientDescription;
-    }
 }

@@ -3,10 +3,10 @@ package com.example.firebasecrudapplication;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-class IngredientTest {
+class IngredientRVModalTest {
     String name = "Sugar";
     String description = "Test Description";
-    Ingredient i = new Ingredient(name, description);
+    IngredientRVModal i = new IngredientRVModal(name, description);
 
     @Test
     void getIngredientName() {
@@ -15,7 +15,7 @@ class IngredientTest {
 
     @Test
     void setIngredientName() {
-        Ingredient i2 = new Ingredient();
+        IngredientRVModal i2 = new IngredientRVModal();
         i2.setIngredientName("Sugar");
         i2.setIngredientDescription("Test Description");
         assertEquals("Sugar", i2.getIngredientName());
@@ -28,7 +28,7 @@ class IngredientTest {
 
     @Test
     void setIngredientDescription() {
-        Ingredient i3 = new Ingredient();
+        IngredientRVModal i3 = new IngredientRVModal();
         i3.setIngredientName("Sugar");
         i3.setIngredientDescription("Test Description");
         assertEquals("Test Description", i3.getIngredientDescription());
