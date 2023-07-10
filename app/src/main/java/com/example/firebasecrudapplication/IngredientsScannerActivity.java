@@ -14,6 +14,7 @@ package com.example.firebasecrudapplication;
 // @REF 5: User Authentication and CRUD Operation with Firebase Realtime Database in Android | GeeksForGeeks - https://www.youtube.com/watch?v=-Gvpf8tXpbc
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -54,14 +55,14 @@ import java.util.Collections;
 import java.util.List;
 
 public class IngredientsScannerActivity extends AppCompatActivity {
-    private ImageView mImageView;
+    private ImageView mImageView,
+            noMatchingSearchResultsIcon;
     private Button mScanButton;
     private Bitmap mSelectedImage;
     private ProgressBar loadingPB;
     private DatabaseReference ingredientsDBRef;
     private ArrayList<Ingredient> ingredientsList;
     private RecyclerView ingredientsRV;
-    private ImageView noMatchingSearchResultsIcon;
     private TextView noMatchingSearchTextOne,
             noMatchingSearchTextTwo;
     private FirebaseAuth mAuth;
@@ -88,15 +89,13 @@ public class IngredientsScannerActivity extends AppCompatActivity {
         noMatchingSearchResultsIcon = findViewById(R.id.noSearchResultsIV);
         noMatchingSearchTextOne = findViewById(R.id.no_matching_results);
         noMatchingSearchTextTwo = findViewById(R.id.no_matching_results_help);
-
         mAuth = FirebaseAuth.getInstance();
 
+        // hide the no ingredients alert
         hideNoIngredientsAlert();
 
         // set the recycler view to layout object
         ingredientsRV = findViewById(R.id.ingredientsRV);
-        // LATER - set to empty layout to stop ingredients loading on page load
-        // ingredientsRV.setLayoutManager(new LinearLayoutManager(this));
 
         // disable scan ingredients button
         mScanButton.setEnabled(false);
@@ -187,9 +186,10 @@ public class IngredientsScannerActivity extends AppCompatActivity {
             }
         }
 
+        // if there are no matching ingredients show a notification on screen
         if(matchingIngredientsList.isEmpty()){
             showNoIngredientsAlert();
-        }else{
+        }else{ // if there are matching ingredients in the database then execute the following
             // update the ingredients recyclerview with matching ingredients
             IngredientScannerRVAdapter ingredientScannerRVAdapter = new IngredientScannerRVAdapter(matchingIngredientsList);
             ingredientsRV.setLayoutManager(new LinearLayoutManager(IngredientsScannerActivity.this));
@@ -320,12 +320,28 @@ public class IngredientsScannerActivity extends AppCompatActivity {
         ingredientsRV.setAdapter(ingredientScannerRVAdapter);
     }
 
+    // hide the no ingredients notification from screen
+    private void hideNoIngredientsAlert(){
+        noMatchingSearchResultsIcon.setVisibility(View.GONE);
+        noMatchingSearchTextOne.setVisibility(View.GONE);
+        noMatchingSearchTextTwo.setVisibility(View.GONE);
+    }
+
+    // show the no ingredients notification from screen
+    private void showNoIngredientsAlert(){
+        noMatchingSearchResultsIcon.setVisibility(View.VISIBLE);
+        noMatchingSearchTextOne.setVisibility(View.VISIBLE);
+        noMatchingSearchTextTwo.setVisibility(View.VISIBLE);
+    }
+
+    // settings menu code start
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.settings_main,menu);
         return true;
     }
 
+    @SuppressLint("NonConstantResourceId")
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
         int id = item.getItemId();
         switch (id) {
@@ -368,16 +384,5 @@ public class IngredientsScannerActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
-    private void hideNoIngredientsAlert(){
-        noMatchingSearchResultsIcon.setVisibility(View.GONE);
-        noMatchingSearchTextOne.setVisibility(View.GONE);
-        noMatchingSearchTextTwo.setVisibility(View.GONE);
-    }
-
-    private void showNoIngredientsAlert(){
-        noMatchingSearchResultsIcon.setVisibility(View.VISIBLE);
-        noMatchingSearchTextOne.setVisibility(View.VISIBLE);
-        noMatchingSearchTextTwo.setVisibility(View.VISIBLE);
-    }
+    // settings menu code end
 }
