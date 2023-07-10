@@ -10,6 +10,7 @@ import androidx.fragment.app.DialogFragment;
 
 import java.util.Calendar;
 
+// dialog fragment class for meal plan date selection on recipe view page
 public class DatePickerFragment extends DialogFragment {
 
     @NonNull
@@ -20,6 +21,7 @@ public class DatePickerFragment extends DialogFragment {
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
+        // return the selected date to the view recipe class
         return new DatePickerDialog(getActivity(), (DatePickerDialog.OnDateSetListener) getActivity(), year, month, day);
     }
 }
