@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class IngredientScannerRVAdapter extends RecyclerView.Adapter<IngredientScannerRVAdapter.MyViewHolder> {
-
     ArrayList<Ingredient> list;
     public IngredientScannerRVAdapter(ArrayList<Ingredient> list){
         this.list = list;
@@ -35,7 +34,7 @@ public class IngredientScannerRVAdapter extends RecyclerView.Adapter<IngredientS
         return list.size();
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder {
+    static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView name, description;
 
         public MyViewHolder(@NonNull View itemView) {
