@@ -1,20 +1,16 @@
 package com.example.firebasecrudapplication;
 
-import android.annotation.SuppressLint;
-import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.widget.Switch;
 
 import androidx.annotation.NonNull;
 
 public class IngredientRVModal implements Parcelable {
     // variables
-    private String ingredientName;
-    private String ingredientDescription;
+    private String ingredientName,
+            ingredientDescription;
 
     public IngredientRVModal(){
-
     }
 
     public IngredientRVModal(String ingredientName, String ingredientDescription) {
