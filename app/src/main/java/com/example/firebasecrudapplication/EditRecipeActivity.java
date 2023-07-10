@@ -8,7 +8,6 @@ package com.example.firebasecrudapplication;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,33 +42,33 @@ import java.util.concurrent.atomic.AtomicReference;
 // edit recipe class
 public class EditRecipeActivity extends AppCompatActivity {
     // text input variables
-    private TextInputEditText recipeNameEdt;
-    private TextInputEditText recipeCookingTimeEdt;
-    private TextInputEditText recipeServingsEdt;
-    private TextInputEditText recipeImgEdt;
-    private TextInputEditText recipeLinkEdt;
-    private TextInputEditText recipeDescEdt;
-    private TextInputEditText recipeMethodEdt;
+    private TextInputEditText recipeNameEdt,
+            recipeCookingTimeEdt,
+            recipeServingsEdt,
+            recipeImgEdt,
+            recipeLinkEdt,
+            recipeDescEdt,
+            recipeMethodEdt;
     // switch button
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     private Switch recipePublicEdt;
     private ProgressBar loadingPB;
     private DatabaseReference databaseReference;
-    private String recipeID;
-    private TextView recipeSuitabilityEdt;
-    private TextView recipeCuisineEdt;
-    private boolean[] selectedCuisine;
-    private final ArrayList<Integer> cuisineList = new ArrayList<>();
-    private String[] cuisineArray;
-    private boolean[] selectedSuitability;
-    private final ArrayList<Integer> suitabilityList = new ArrayList<>();
-    private String[] suitabilityArray;
-    private String[] previouslySelectedCuisineArray;
-    private String[] previouslySelectedSuitabilityArray;
+    private String recipeID,
+            ingredientsSelectionString;
+    private TextView recipeSuitabilityEdt,
+            recipeCuisineEdt;
+    private boolean[] selectedCuisine,
+            selectedSuitability;
+    private final ArrayList<Integer> cuisineList = new ArrayList<>(),
+            suitabilityList = new ArrayList<>();
+    private String[] cuisineArray,
+            suitabilityArray,
+            previouslySelectedCuisineArray,
+            previouslySelectedSuitabilityArray;
     private AlertDialog dialog;
     private LinearLayout layout;
     private final ArrayList<String> ingredientList = new ArrayList<>();
-    private String ingredientsSelectionString;
     AtomicReference<Boolean> editPageInitialLoad = new AtomicReference<>(true);
     private FirebaseAuth mAuth;
 
@@ -96,16 +95,22 @@ public class EditRecipeActivity extends AppCompatActivity {
         recipeDescEdt = findViewById(R.id.idEdtRecipeDesc);
         recipeMethodEdt = findViewById(R.id.idEdtRecipeMethod);
         recipePublicEdt = findViewById(R.id.idPublicSwitch);
+        loadingPB = findViewById(R.id.idPBLoading);
 
         Button addIngredient = findViewById(R.id.add);
         layout = findViewById(R.id.container);
+
+        // build the add ingredients alert dialog
         buildDialogAddIngredient();
+
+        // when the add ingredient button is clicked show the add ingredients dialog
         addIngredient.setOnClickListener(v -> dialog.show());
 
         // update and delete buttons
         Button updateRecipeBtn = findViewById(R.id.idBtnUpdateRecipe);
         Button deleteRecipeBtn = findViewById(R.id.idBtnDeleteRecipe);
-        loadingPB = findViewById(R.id.idPBLoading);
+
+        // get the parcelable recipe object received when the edit recipe page was opened
         RecipeRVModal recipeRVModal = getIntent().getParcelableExtra("recipe");
 
         // if a recipe is returned from the database
@@ -124,9 +129,10 @@ public class EditRecipeActivity extends AppCompatActivity {
             recipeDescEdt.setText(recipeRVModal.getRecipeDescription());
             recipeMethodEdt.setText(recipeRVModal.getRecipeMethod());
             String previouslySelectedIngredients = recipeRVModal.getRecipeIngredients();
-            String[] previouslySelectedIngredientsArray = previouslySelectedIngredients.split(",");
+            String[] previouslySelectedIngredientsArray =
+                    previouslySelectedIngredients.split(",");
 
-            // add previously added ingredients to view
+            // add previously added ingredients to view (saved ingredients)
             for(String ingredient : previouslySelectedIngredientsArray){
                 addCard(ingredient);
             }
@@ -148,9 +154,12 @@ public class EditRecipeActivity extends AppCompatActivity {
         // initialize selected language array
         selectedCuisine = new boolean[cuisineArray.length];
 
+        // booleans for indicating whether the cuisine selection has been updated since the page
+        // was loaded (default false)
         AtomicReference<Boolean> cuisineSelectionUpdated = new AtomicReference<>(false);
         AtomicReference<Boolean> newSelectionInitiated = new AtomicReference<>(false);
 
+        // if the cuisine selection has not been updated update the previously select cuisine list
         if(!cuisineSelectionUpdated.get()){
             // store previouslySelectedCuisineArray indexes to array
             for(String cuisine : previouslySelectedCuisineArray){
@@ -160,6 +169,7 @@ public class EditRecipeActivity extends AppCompatActivity {
             }
         }
 
+        // if the recipe cuisine button is clicked execute the following
         recipeCuisineEdt.setOnClickListener(view -> {
 
             // Initialize alert dialog
@@ -171,6 +181,7 @@ public class EditRecipeActivity extends AppCompatActivity {
             // set dialog non cancelable
             builder.setCancelable(false);
 
+            // build the alert dialog with the cuisine list
             builder.setMultiChoiceItems(cuisineArray, selectedCuisine, (dialogInterface, i, b) -> {
                 if(!cuisineSelectionUpdated.get()){
                     // add previously selected cuisine to cuisine selection list
@@ -198,6 +209,7 @@ public class EditRecipeActivity extends AppCompatActivity {
                 }
             });
 
+            // if the OK button is selected execute the following
             builder.setPositiveButton("OK", (dialogInterface, i) -> {
                 if(!cuisineSelectionUpdated.get() && !newSelectionInitiated.get()){
                     // add previously selected cuisine to cuisine selection list
@@ -230,10 +242,13 @@ public class EditRecipeActivity extends AppCompatActivity {
                 cuisineSelectionUpdated.set(true);
             });
 
+            // if the dialog alert Cancel button is selected execute the following
             builder.setNegativeButton("Cancel", (dialogInterface, i) -> {
                 // dismiss dialog
                 dialogInterface.dismiss();
             });
+
+            // if the dialog alert Clear All button is selected execute the following
             builder.setNeutralButton("Clear All", (dialogInterface, i) -> {
                 // use for loop
                 for (int j = 0; j < selectedCuisine.length; j++) {
@@ -257,9 +272,14 @@ public class EditRecipeActivity extends AppCompatActivity {
         // initialize selected language array
         selectedSuitability = new boolean[suitabilityArray.length];
 
-        AtomicReference<Boolean> suitabilitySelectionUpdated = new AtomicReference<>(false);
-        AtomicReference<Boolean> newSuitabilitySelectionInitiated = new AtomicReference<>(false);
+        // booleans for indicating whether the suitability selection has been updated since the page
+        // was loaded (default false)
+        AtomicReference<Boolean> suitabilitySelectionUpdated =
+                new AtomicReference<>(false);
+        AtomicReference<Boolean> newSuitabilitySelectionInitiated =
+                new AtomicReference<>(false);
 
+        // if the suitability selection has not been updated update the previously selected suitability list
         if(!suitabilitySelectionUpdated.get()){
             for(String suitability : previouslySelectedSuitabilityArray){
                 suitability = suitability.trim();
@@ -268,6 +288,7 @@ public class EditRecipeActivity extends AppCompatActivity {
             }
         }
 
+        // if the recipe suitability field button is clicked execute the following
         recipeSuitabilityEdt.setOnClickListener(view -> {
 
             // Initialize alert dialog
@@ -279,6 +300,7 @@ public class EditRecipeActivity extends AppCompatActivity {
             // set dialog non cancelable
             builder2.setCancelable(false);
 
+            // build the alert dialog for selecting the recipe suitability
             builder2.setMultiChoiceItems(suitabilityArray, selectedSuitability, (dialogInterface, i, b) -> {
                 if(!suitabilitySelectionUpdated.get()){
                     // add previously selected cuisine to cuisine selection list
@@ -292,7 +314,7 @@ public class EditRecipeActivity extends AppCompatActivity {
                 // check condition
                 if (b) {
                     // when checkbox selected
-                    // Add position  in lang list
+                    // Add position  in suitability list
                     suitabilityList.add(i);
                     // Sort array list
                     Collections.sort(suitabilityList);
@@ -300,12 +322,13 @@ public class EditRecipeActivity extends AppCompatActivity {
 
                 } else {
                     // when checkbox unselected
-                    // Remove position from langList
+                    // Remove position from suitability list
                     suitabilityList.remove(Integer.valueOf(i));
                     newSuitabilitySelectionInitiated.set(true);
                 }
             });
 
+            // if the OK button is selected execute the following
             builder2.setPositiveButton("OK", (dialogInterface, i) -> {
                 if(!suitabilitySelectionUpdated.get() && !newSuitabilitySelectionInitiated.get()){
                     // add previously selected cuisine to cuisine selection list
@@ -338,10 +361,13 @@ public class EditRecipeActivity extends AppCompatActivity {
                 suitabilitySelectionUpdated.set(true);
             });
 
+            // if the Cancel button is selected execute the following
             builder2.setNegativeButton("Cancel", (dialogInterface, i) -> {
                 // dismiss dialog
                 dialogInterface.dismiss();
             });
+
+            // if the Clear All button is selected execute the following
             builder2.setNeutralButton("Clear All", (dialogInterface, i) -> {
                 // use for loop
                 for (int j = 0; j < selectedSuitability.length; j++) {
@@ -358,6 +384,7 @@ public class EditRecipeActivity extends AppCompatActivity {
         });
         // SELECT SUITABILITY DIALOG END
 
+        // update button functionality
         updateRecipeBtn.setOnClickListener(v -> {
             // if statements to validate that all required fields are populated before adding recipe
             if(Objects.requireNonNull(recipeNameEdt.getText()).toString().equals("")){
@@ -398,10 +425,8 @@ public class EditRecipeActivity extends AppCompatActivity {
                     }
                 }
                 ingredientsSelectionString = stringBuilder3.toString();
-                Log.d("stringBuilder3.toString()", stringBuilder3.toString());
-                Log.d("ingredientsSelectionString", ingredientsSelectionString);
 
-
+                // assign values to variable which will be used to update recipe object
                 String recipeName = Objects.requireNonNull(recipeNameEdt.getText()).toString();
                 String recipeCookingTime = Objects.requireNonNull(recipeCookingTimeEdt.getText()).toString();
                 String recipeServings = Objects.requireNonNull(recipeServingsEdt.getText()).toString();
@@ -414,6 +439,7 @@ public class EditRecipeActivity extends AppCompatActivity {
                 String recipeIngredients = Objects.requireNonNull(ingredientsSelectionString);
                 Boolean recipePublic = recipePublicEdt.isChecked();
 
+                // map the values to the object variables
                 Map<String,Object> map = new HashMap<>();
                 map.put("recipeName",recipeName);
                 map.put("recipeCookingTime",recipeCookingTime);
@@ -428,12 +454,15 @@ public class EditRecipeActivity extends AppCompatActivity {
                 map.put("recipePublic",recipePublic);
                 map.put("recipeID",recipeID);
 
+                // database reference value event lister
                 databaseReference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         loadingPB.setVisibility(View.GONE);
+                        // update the recipe object using the mapped values defined above
                         databaseReference.updateChildren(map);
                         Toast.makeText(EditRecipeActivity.this, "Recipe Updated", Toast.LENGTH_SHORT).show();
+                        // redirect the user to the main activity screen (My Recipes)
                         startActivity(new Intent(EditRecipeActivity.this, MainActivity.class));
                     }
 
@@ -445,69 +474,86 @@ public class EditRecipeActivity extends AppCompatActivity {
             }
         });
 
+        // delete recipe button action
         deleteRecipeBtn.setOnClickListener(v -> deleteRecipe());
     }
 
+    // method for deleting recipe from Firebase Realtime database
     private void deleteRecipe(){
         databaseReference.removeValue();
         Toast.makeText(this, "Recipe Deleted", Toast.LENGTH_SHORT).show();
         startActivity(new Intent(EditRecipeActivity.this, MainActivity.class));
     }
 
+    // Ingredient list alert dialog builder for adding ingredients to recipe
     private void buildDialogAddIngredient() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View view = getLayoutInflater().inflate(R.layout.dialog, null);
 
+        // variable for storing the user input ingredient value from the alert dialog
         final EditText name = view.findViewById(R.id.nameEdit);
 
+        // show the dialog
         builder.setView(view);
+        // set the alert dialog title
         builder.setTitle("Enter Ingredient")
+                // functionality if alert dialog OK is clicked
                 .setPositiveButton("OK", (dialog, which) -> {
+                    // if the user input ingredient is blank then execute the following
                     if(name.getText().toString().trim().equals("") || name.getText().toString().equals("Name")){
                         Toast.makeText(this, "Ingredient cannot be blank.", Toast.LENGTH_SHORT).show();
                         name.setText("");
-                    }else{
+                    }else{// if the user input ingredient is not blank then execute the following
+                        // create a card view item for the new ingredient
                         addCard(name.getText().toString());
+                        // add the new ingredient to the recipe ingredients list
                         ingredientList.add(name.getText().toString());
+                        // clear the input field for adding new ingredients
                         name.setText("");
                     }
                 })
+                // if the alert dialog Cancel button is clicked then execute the following
                 .setNegativeButton("Cancel", (dialog, which) -> name.setText(""));
 
         dialog = builder.create();
     }
 
+    // method for adding ingredient card view items to recipe edit page
     private void addCard(String name) {
         @SuppressLint("InflateParams") final View view = getLayoutInflater().inflate(R.layout.ingredient_card_rounded, null);
-
-        Log.d("addCard ingredientList", String.valueOf(ingredientList));
 
         // if the edit page is being loaded for the first time then add all previously added ingredients to selected list
         if(editPageInitialLoad.get()){
             ingredientList.add(name);
         }
 
+        // find and assign layout elements
         TextView nameView = view.findViewById(R.id.name);
         Button delete = view.findViewById(R.id.delete);
 
+        // set the ingredient name
         nameView.setText(name);
 
         // delete ingredient button action
         delete.setOnClickListener(v -> {
+            // remove the ingredient from the ingredientsList
             ingredientList.remove(name);
-            Log.d("ingredientList", String.valueOf(ingredientList));
+            // remove the deleted ingredient from the list
             layout.removeView(view);
         });
 
+        // add the ingredient card item to the view
         layout.addView(view);
     }
 
+    // settings menu code start
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.settings_main,menu);
         return true;
     }
 
+    @SuppressLint("NonConstantResourceId")
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
         int id = item.getItemId();
         switch (id) {
@@ -550,4 +596,5 @@ public class EditRecipeActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+    // settings menu code end
 }
