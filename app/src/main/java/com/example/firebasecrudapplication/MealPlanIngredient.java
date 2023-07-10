@@ -4,12 +4,9 @@ import com.google.firebase.database.Exclude;
 
 public class MealPlanIngredient {
     @Exclude
-    public String key;
-    private String ingredient;
-    private String purchased;
-
-    public MealPlanIngredient() {
-    }
+    public String key,
+            ingredient,
+            purchased;
 
     public MealPlanIngredient(String ingredient, String purchased) {
         this.ingredient = ingredient;
@@ -18,10 +15,6 @@ public class MealPlanIngredient {
 
     public String getKey() {
         return key;
-    }
-
-    public void setKey() {
-        this.key = key;
     }
 
     public String getIngredient() {
@@ -36,7 +29,4 @@ public class MealPlanIngredient {
         return purchased;
     }
 
-    public void setPurchased(String purchased) {
-        this.purchased = purchased;
-    }
 }
