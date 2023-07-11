@@ -1,17 +1,16 @@
 package com.example.firebasecrudapplication;
 
+// imports
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,31 +30,16 @@ import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class ViewMealPlanActivity extends AppCompatActivity {
-    private TextInputEditText recipeNameEdt,
-            recipeCookingTimeEdt,
-            recipeServingsEdt,
-            recipeSuitedForEdt,
-            recipeCuisineEdt,
-            recipeDescEdt,
-            recipeMethodEdt,
-            recipeIngredientsEdt;
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     private Switch recipePublicEdt;
-    private Button viewSourceRecipe;
-    private ProgressBar loadingPB;
-    private FirebaseDatabase firebaseDatabase;
-    private DatabaseReference databaseReference;
-    private DatabaseReference databaseReferenceIngredients;
-    private DatabaseReference ingredientsDBRef;
-    private String recipeID;
-    private String mealPlanID;
-    private String mealPlanDate;
+    private DatabaseReference databaseReferenceIngredients,
+            ingredientsDBRef;
+    private String mealPlanID,
+            mealPlanDate;
     private MealPlanRVModal mealPlanRVModal;
     private MealPlanIngredient mealPlanIngredient;
-    private String[] ingredientsArray;
     private LinearLayout layout;
-    AtomicReference<Boolean> initialLoad = new AtomicReference<>(true);
-    private ArrayList<String> ingredientList = new ArrayList<>();
+    private final AtomicReference<Boolean> initialLoad = new AtomicReference<>(true);
     private ArrayList<MealPlanIngredient> ingredientsList;
     private FirebaseAuth mAuth;
 
@@ -65,22 +49,23 @@ public class ViewMealPlanActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // set activity layout
         setContentView(R.layout.activity_view_meal_plan);
 
         // initialise variables
         mAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        recipeNameEdt = findViewById(R.id.idEdtRecipeName);
-        recipeCookingTimeEdt = findViewById(R.id.idEdtRecipeCookingTime);
-        recipeServingsEdt = findViewById(R.id.idEdtRecipeServings);
-        recipeSuitedForEdt = findViewById(R.id.idEdtRecipeSuitedFor);
-        recipeCuisineEdt = findViewById(R.id.idEdtRecipeCuisine);
-        recipeDescEdt = findViewById(R.id.idEdtRecipeDesc);
-        recipeMethodEdt = findViewById(R.id.idEdtRecipeMethod);
-        recipeIngredientsEdt = findViewById(R.id.idEdtRecipeIngredients);
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        TextInputEditText recipeNameEdt = findViewById(R.id.idEdtRecipeName);
+        TextInputEditText recipeCookingTimeEdt = findViewById(R.id.idEdtRecipeCookingTime);
+        TextInputEditText recipeServingsEdt = findViewById(R.id.idEdtRecipeServings);
+        TextInputEditText recipeSuitedForEdt = findViewById(R.id.idEdtRecipeSuitedFor);
+        TextInputEditText recipeCuisineEdt = findViewById(R.id.idEdtRecipeCuisine);
+        TextInputEditText recipeDescEdt = findViewById(R.id.idEdtRecipeDesc);
+        TextInputEditText recipeMethodEdt = findViewById(R.id.idEdtRecipeMethod);
+        TextInputEditText recipeIngredientsEdt = findViewById(R.id.idEdtRecipeIngredients);
         recipePublicEdt = findViewById(R.id.idPublicSwitch);
-        viewSourceRecipe = findViewById(R.id.idBtnViewSourceRecipe);
-        loadingPB = findViewById(R.id.idPBLoading);
+        Button viewSourceRecipe = findViewById(R.id.idBtnViewSourceRecipe);
         mealPlanRVModal = getIntent().getParcelableExtra("MealPlan");
         layout = findViewById(R.id.shopping_List_item);
 
@@ -95,9 +80,7 @@ public class ViewMealPlanActivity extends AppCompatActivity {
             recipeDescEdt.setText(mealPlanRVModal.getRecipeDescription());
             recipeMethodEdt.setText(mealPlanRVModal.getRecipeMethod());
             recipeIngredientsEdt.setText(mealPlanRVModal.getRecipeIngredients());
-            ingredientsArray = mealPlanRVModal.getRecipeIngredients().split(",");
             recipePublicEdt.setChecked(mealPlanRVModal.getRecipePublic().equals(true));
-            recipeID = mealPlanRVModal.getRecipeID();
             mealPlanID = mealPlanRVModal.getMealPlanID();
         }
 
@@ -137,18 +120,9 @@ public class ViewMealPlanActivity extends AppCompatActivity {
         // set switch button to non clickable
         recipePublicEdt.setClickable(false);
 
-        // assign database reference to Recipes firebase realtime database reference
-        databaseReference = firebaseDatabase.getReference("Meal Plans").child(mealPlanID);
-
-        ingredientsDBRef = firebaseDatabase.getReference("Meal Plans").child(mealPlanID).child("ingredients");
-
-//        // assign database reference to Recipes firebase realtime database reference
-//        databaseReferenceIngredients = firebaseDatabase.getReference("Meal Plans");
-//        databaseReferenceIngredients.child(mealPlanID).child("ingredients").child("Tomato").setValue(true);
-//
-//        databaseReferenceIngredients.child(mealPlanID).child("ingredients").child("Tomato").get();
-//
-//        Log.d("TEST", String.valueOf(databaseReferenceIngredients.child(mealPlanID).child("ingredients").child("Tomato").get()));
+        // meal plan ingredients child reference
+        ingredientsDBRef = firebaseDatabase.getReference("Meal Plans").child(mealPlanID)
+                .child("ingredients");
 
         // view recipe source page in browser using recipe link
         viewSourceRecipe.setOnClickListener(v -> {
@@ -157,36 +131,9 @@ public class ViewMealPlanActivity extends AppCompatActivity {
             startActivity(i);
         });
 
-        // create ingredients db reference value events listener
-
-//        for (MealPlanIngredient ingredient : ingredientsList) {
-//            Log.d("ingredient", String.valueOf(ingredient));
-//        }
-
-        //    private void addCard(String name) {
-//        @SuppressLint("InflateParams") final View view = getLayoutInflater().inflate(R.layout.ingredient_card_rounded, null);
-//
-//        // if the edit page is being loaded for the first time then add all previously added ingredients to selected list
-//        if(editPageInitialLoad.get()){
-//            ingredientsArray.add(name);
-//        }
-//
-//        TextView nameView = view.findViewById(R.id.name);
-//        Button delete = view.findViewById(R.id.delete);
-//
-//        nameView.setText(name);
-//
-//        // delete ingredient button action
-//        delete.setOnClickListener(v -> {
-//            ingredientsArray.remove(name);
-//            Log.d("ingredientList", String.valueOf(ingredientsArray));
-//            layout.removeView(view);
-//        });
-//
-//        layout.addView(view);
-//    }
-
-        databaseReferenceIngredients = firebaseDatabase.getReference("Meal Plans").child(mealPlanID).child("ingredients");
+        // meal plan ingredients child reference
+        databaseReferenceIngredients = firebaseDatabase.getReference("Meal Plans")
+                .child(mealPlanID).child("ingredients");
     }
 
     @Override
@@ -202,22 +149,22 @@ public class ViewMealPlanActivity extends AppCompatActivity {
                         ingredientsList = new ArrayList<>();
                         // store db ingredients to arraylist
                         for(DataSnapshot ds : dataSnapshot.getChildren()){
-
                             mealPlanIngredient = ds.getValue(MealPlanIngredient.class);
+                            assert mealPlanIngredient != null;
                             mealPlanIngredient.key = ds.getKey();
                             ingredientsList.add(mealPlanIngredient);
-                            Log.d("ingredients", String.valueOf(ds));
-                            Log.d("mealPlanIngredient.getKey()", mealPlanIngredient.getKey());
-                            Log.d("mealPlanIngredient.getIngredient()", mealPlanIngredient.getIngredient());
-                            Log.d("mealPlanIngredient.getPurchased()", mealPlanIngredient.getPurchased());
                         }
 
                         if(initialLoad.get()){
                             for(MealPlanIngredient ingredientListItem : ingredientsList){
-                                addCardTest(ingredientListItem.getIngredient(), ingredientListItem.getPurchased(), ingredientListItem.getKey());
+                                addCard(ingredientListItem.getIngredient(),
+                                        ingredientListItem.getPurchased(),
+                                        ingredientListItem.getKey());
                             }
                         }
 
+                        // set the indicator used to indicate whether the page is being loaded for
+                        // the first time to false
                         initialLoad.set(false);
                     }
                 }
@@ -231,115 +178,94 @@ public class ViewMealPlanActivity extends AppCompatActivity {
         // SEARCH CODE END
     }
 
+    // add ingredient cards to layout
+    private void addCard(String ingredient, String purchased, String key) {
+        @SuppressLint("InflateParams") final View view = getLayoutInflater()
+                .inflate(R.layout.shopping_list_item, null);
 
-//    private void addCard(String name) {
-//        @SuppressLint("InflateParams") final View view = getLayoutInflater().inflate(R.layout.shopping_list_item, null);
-//
-//        Log.d("addCard ingredientList", String.valueOf(ingredientList));
-//
-//        // if the edit page is being loaded for the first time then add all previously added ingredients to selected list
-//        if(editPageInitialLoad.get()){
-//            ingredientList.add(name);
-//        }
-//
-//        TextView nameView = view.findViewById(R.id.name);
-//        Button delete = view.findViewById(R.id.delete);
-//        CheckBox checkBox = view.findViewById(R.id.checkBox);
-//
-//        nameView.setText(name);
-//
-//        // delete ingredient button action
-//        delete.setOnClickListener(v -> {
-//            ingredientList.remove(name);
-//            Log.d("ingredientList", String.valueOf(ingredientList));
-//            layout.removeView(view);
-//        });
-//
-//        layout.addView(view);
-//    }
-
-    private void addCardTest(String ingredient, String purchased, String key) {
-        @SuppressLint("InflateParams") final View view = getLayoutInflater().inflate(R.layout.shopping_list_item, null);
-
+        // find the layout element by ID and assign to variables
         TextView nameView = view.findViewById(R.id.name);
         CheckBox checkBox = view.findViewById(R.id.checkBox);
 
+        // set the ingredient card text to the ingredient name
         nameView.setText(ingredient);
 
+        // if a ingredients is noted as purchased in the database then check the checkbox
         if(purchased.equals("true")){
             checkBox.setChecked(true);
         }
 
+        // if the ingredient checkbox is checked then set the ingredients purchased value to true
         checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if(checkBox.isChecked()){
-                Toast.makeText(ViewMealPlanActivity.this, "Shopping List Updated", Toast.LENGTH_SHORT).show();
-                Log.d("ingredient", ingredient);
-                Log.d("purchased", purchased);
-                Log.d("key", key);
-                databaseReferenceIngredients.child(key).child("purchased").setValue("true");
-            }else{
-                Toast.makeText(ViewMealPlanActivity.this, "Shopping List Updated", Toast.LENGTH_SHORT).show();
-                Log.d("ingredient", ingredient);
-                Log.d("purchased", purchased);
-                Log.d("key", key);
-                databaseReferenceIngredients.child(key).child("purchased").setValue("false");
+                Toast.makeText(ViewMealPlanActivity.this, "Shopping List Updated",
+                        Toast.LENGTH_SHORT).show();
+                databaseReferenceIngredients.child(key).child("purchased")
+                        .setValue("true");
+            }else{// if the ingredient checkbox is checked then set the ingredients purchased value
+                // to false
+                Toast.makeText(ViewMealPlanActivity.this, "Shopping List Updated",
+                        Toast.LENGTH_SHORT).show();
+                databaseReferenceIngredients.child(key).child("purchased")
+                        .setValue("false");
             }
         });
 
-//        checkBox.setOnCheckedChangeListener(v -> {
-//            if(checkBox.isChecked()){
-//                Toast.makeText(this, "checkbox checked", Toast.LENGTH_SHORT).show();
-//            }else{
-//                Toast.makeText(this, "checkbox unchecked", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-
+        // add the ingredient card to the layout
         layout.addView(view);
     }
 
-    // options menu code start
-
+    // settings menu start
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.settings_main,menu);
         return true;
     }
 
+    @SuppressLint("NonConstantResourceId")
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
         int id = item.getItemId();
         switch (id) {
             case R.id.idAddRecipe:
-                Intent i1 = new Intent(ViewMealPlanActivity.this, AddRecipeActivity.class);
+                Intent i1 = new Intent(ViewMealPlanActivity.this,
+                        AddRecipeActivity.class);
                 startActivity(i1);
                 return true;
             case R.id.idMyRecipes:
-                Intent i2 = new Intent(ViewMealPlanActivity.this, MainActivity.class);
+                Intent i2 = new Intent(ViewMealPlanActivity.this,
+                        MainActivity.class);
                 startActivity(i2);
                 return true;
             case R.id.idPublicRecipes:
-                Intent i3 = new Intent(ViewMealPlanActivity.this, PublicRecipesActivity.class);
+                Intent i3 = new Intent(ViewMealPlanActivity.this,
+                        PublicRecipesActivity.class);
                 startActivity(i3);
                 return true;
             case R.id.idScan:
-                Intent i4 = new Intent(ViewMealPlanActivity.this, IngredientsScannerActivity.class);
+                Intent i4 = new Intent(ViewMealPlanActivity.this,
+                        IngredientsScannerActivity.class);
                 startActivity(i4);
                 return true;
             case R.id.idSearch:
-                Intent i5 = new Intent(ViewMealPlanActivity.this, RecipeSearchActivity.class);
+                Intent i5 = new Intent(ViewMealPlanActivity.this,
+                        RecipeSearchActivity.class);
                 startActivity(i5);
                 return true;
             case R.id.idMealPlan:
-                Intent i6 = new Intent(ViewMealPlanActivity.this, MealPlanActivity.class);
+                Intent i6 = new Intent(ViewMealPlanActivity.this,
+                        MealPlanActivity.class);
                 startActivity(i6);
                 return true;
             case R.id.idEditAccount:
-                Intent i7 = new Intent(ViewMealPlanActivity.this, EditAccountActivity.class);
+                Intent i7 = new Intent(ViewMealPlanActivity.this,
+                        EditAccountActivity.class);
                 startActivity(i7);
                 return true;
             case R.id.idLogout:
                 Toast.makeText(this, "User Logged Out", Toast.LENGTH_SHORT).show();
                 mAuth.signOut();
-                Intent i8 = new Intent(ViewMealPlanActivity.this, LoginActivity.class);
+                Intent i8 = new Intent(ViewMealPlanActivity.this,
+                        LoginActivity.class);
                 startActivity(i8);
                 this.finish();
                 return true;
@@ -347,4 +273,5 @@ public class ViewMealPlanActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+    // settings menu end
 }
