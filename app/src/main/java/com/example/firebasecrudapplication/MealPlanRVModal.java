@@ -6,28 +6,26 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
-import java.util.Date;
-
 public class MealPlanRVModal implements Parcelable {
     // variables
-    private String recipeName;
-    private String recipeCookingTime;
-    private String recipeServings;
-    private String recipeSuitedFor;
-    private String recipeCuisine;
-    private String recipeImg;
-    private String recipeLink;
-    private String recipeDescription;
-    private String recipeMethod;
-    private String recipeIngredients;
+    private String recipeName,
+            recipeCookingTime,
+            recipeServings,
+            recipeSuitedFor,
+            recipeCuisine,
+            recipeImg,
+            recipeLink,
+            recipeDescription,
+            recipeMethod,
+            recipeIngredients,
+            recipeID,
+            userID,
+            dateShort,
+            mealPlanID,
+            dateLong;
     private Boolean recipePublic;
-    private String recipeID;
-    private String userID;
-    private String dateShort;
-    private String mealPlanID;
-    private String key;
-    private String dateLong;
 
+    @SuppressWarnings("unused")
     public MealPlanRVModal(){
 
     }
@@ -84,148 +82,69 @@ public class MealPlanRVModal implements Parcelable {
         }
     };
 
-    public String getDate() {
-        return dateShort;
-    }
-
-    public void setDate(String date) {
-        this.dateShort = date;
-    }
-
     public String getMealPlanID() {
         return mealPlanID;
-    }
-
-    public void setMealPlanID(String mealPlanID) {
-        this.mealPlanID = mealPlanID;
     }
 
     public String getRecipeName() {
         return recipeName;
     }
 
-    public void setRecipeName(String recipeName) {
-        this.recipeName = recipeName;
-    }
-
     public String getRecipeCookingTime() {
         return recipeCookingTime;
-    }
-
-    public void setRecipeCookingTime(String recipeCookingTime) {
-        this.recipeCookingTime = recipeCookingTime;
     }
 
     public String getRecipeServings() {
         return recipeServings;
     }
 
-    public void setRecipeServings(String recipeServings) {
-        this.recipeServings = recipeServings;
-    }
-
     public String getRecipeSuitedFor() {
         return recipeSuitedFor;
-    }
-
-    public void setRecipeSuitedFor(String recipeSuitedFor) {
-        this.recipeSuitedFor = recipeSuitedFor;
     }
 
     public String getRecipeCuisine() {
         return recipeCuisine;
     }
 
-    public void setRecipeCuisine(String recipeCuisine) {
-        this.recipeCuisine = recipeCuisine;
-    }
-
     public String getRecipeImg() {
         return recipeImg;
-    }
-
-    public void setRecipeImg(String recipeImg) {
-        this.recipeImg = recipeImg;
     }
 
     public String getRecipeLink() {
         return recipeLink;
     }
 
-    public void setRecipeLink(String recipeLink) {
-        this.recipeLink = recipeLink;
-    }
-
     public String getRecipeDescription() {
         return recipeDescription;
-    }
-
-    public void setRecipeDescription(String recipeDescription) {
-        this.recipeDescription = recipeDescription;
     }
 
     public String getRecipeMethod() {
         return recipeMethod;
     }
 
-    public void setRecipeMethod(String recipeMethod) {
-        this.recipeMethod = recipeMethod;
-    }
-
     public String getRecipeIngredients() {
         return recipeIngredients;
-    }
-
-    public void setRecipeIngredients(String recipeIngredients) {
-        this.recipeIngredients = recipeIngredients;
     }
 
     public Boolean getRecipePublic() {
         return recipePublic;
     }
 
-    public void setRecipePublic(Boolean recipePublic) {
-        this.recipePublic = recipePublic;
-    }
-
+    @SuppressWarnings("unused")
     public String getUserID() {
         return userID;
-    }
-
-    public void setUserID(String userID) {
-        this.userID = userID;
     }
 
     public String getRecipeID() {
         return recipeID;
     }
 
-    public void setRecipeID(String recipeID) {
-        this.recipeID = recipeID;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
-
     public String getDateShort() {
         return dateShort;
     }
 
-    public void setDateShort(String dateShort) {
-        this.dateShort = dateShort;
-    }
-
     public String getDateLong() {
         return dateLong;
-    }
-
-    public void setDateLong(String dateLong) {
-        this.dateLong = dateLong;
     }
 
     @Override
