@@ -5,14 +5,10 @@ package com.example.firebasecrudapplication;
 import java.util.Comparator;
 
 class sortMeals implements Comparator<MealPlanRVModal> {
-
-    // Method of this class
-    // @Override
-    public int compare(MealPlanRVModal a, MealPlanRVModal b)
-    {
-
+    // comparison method
+    public int compare(MealPlanRVModal mealPlanA, MealPlanRVModal mealPlanB) {
         // Returning the value after comparing the objects
         // this will sort the data in Ascending order
-        return a.getDateShort().compareTo(b.getDateShort());
+        return mealPlanA.getDateShort().compareTo(mealPlanB.getDateShort());
     }
 }
