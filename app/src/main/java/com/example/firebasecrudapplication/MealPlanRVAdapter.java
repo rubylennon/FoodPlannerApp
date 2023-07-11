@@ -18,9 +18,9 @@ import java.util.ArrayList;
 
 public class MealPlanRVAdapter extends RecyclerView.Adapter<MealPlanRVAdapter.ViewHolder> {
     int lastPos = -1;
-    private ArrayList<MealPlanRVModal> mealPlanRVModalArrayList;
-    private Context context;
-    private MealPlanClickInterface mealPlanClickInterface;
+    private final ArrayList<MealPlanRVModal> mealPlanRVModalArrayList;
+    private final Context context;
+    private final MealPlanClickInterface mealPlanClickInterface;
 
     public MealPlanRVAdapter(ArrayList<MealPlanRVModal> mealPlanRVModalArrayList, Context context, MealPlanClickInterface mealPlanClickInterface) {
         this.mealPlanRVModalArrayList = mealPlanRVModalArrayList;
@@ -42,7 +42,6 @@ public class MealPlanRVAdapter extends RecyclerView.Adapter<MealPlanRVAdapter.Vi
         holder.mealPlanDate.setText(mealPlanRVModal.getDateLong());
         Picasso.get().load(mealPlanRVModal.getRecipeImg()).into(holder.recipeTV);
         setAnimation(holder.itemView, position);
-
         holder.itemView.setOnClickListener(v -> mealPlanClickInterface.onMealPlanClick(position));
     }
 
@@ -59,10 +58,11 @@ public class MealPlanRVAdapter extends RecyclerView.Adapter<MealPlanRVAdapter.Vi
         return mealPlanRVModalArrayList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView recipeNameTV,mealPlanDate;
-        private ImageView recipeTV;
+        private final TextView recipeNameTV,
+                mealPlanDate;
+        private final ImageView recipeTV;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
