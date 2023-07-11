@@ -1,34 +1,37 @@
 package com.example.firebasecrudapplication;
 
-import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.widget.Switch;
 
 import androidx.annotation.NonNull;
 
 public class RecipeRVModal implements Parcelable {
     // variables
-    private String recipeName;
-    private String recipeCookingTime;
-    private String recipeServings;
-    private String recipeSuitedFor;
-    private String recipeCuisine;
-    private String recipeImg;
-    private String recipeLink;
-    private String recipeDescription;
-    private String recipeMethod;
-    private String recipeIngredients;
+    private String recipeName,
+            recipeCookingTime,
+            recipeServings,
+            recipeSuitedFor,
+            recipeCuisine,
+            recipeImg,
+            recipeLink,
+            recipeDescription,
+            recipeMethod,
+            recipeIngredients,
+            recipeID,
+            userID;
     private Boolean recipePublic;
-    private String recipeID;
-    private String userID;
 
+    @SuppressWarnings("unused")
     public RecipeRVModal(){
 
     }
 
-    public RecipeRVModal(String recipeName, String recipeCookingTime, String recipeServings, String recipeSuitedFor, String recipeCuisine, String recipeImg, String recipeLink, String recipeDescription, String recipeMethod, String recipeIngredients, Boolean recipePublic, String recipeID, String userID) {
+    public RecipeRVModal(String recipeName, String recipeCookingTime, String recipeServings,
+                         String recipeSuitedFor, String recipeCuisine, String recipeImg,
+                         String recipeLink, String recipeDescription, String recipeMethod,
+                         String recipeIngredients, Boolean recipePublic, String recipeID,
+                         String userID) {
         this.recipeName = recipeName;
         this.recipeCookingTime = recipeCookingTime;
         this.recipeServings = recipeServings;
@@ -78,104 +81,53 @@ public class RecipeRVModal implements Parcelable {
         return recipeName;
     }
 
-    public void setRecipeName(String recipeName) {
-        this.recipeName = recipeName;
-    }
-
     public String getRecipeCookingTime() {
         return recipeCookingTime;
-    }
-
-    public void setRecipeCookingTime(String recipeCookingTime) {
-        this.recipeCookingTime = recipeCookingTime;
     }
 
     public String getRecipeServings() {
         return recipeServings;
     }
 
-    public void setRecipeServings(String recipeServings) {
-        this.recipeServings = recipeServings;
-    }
-
     public String getRecipeSuitedFor() {
         return recipeSuitedFor;
-    }
-
-    public void setRecipeSuitedFor(String recipeSuitedFor) {
-        this.recipeSuitedFor = recipeSuitedFor;
     }
 
     public String getRecipeCuisine() {
         return recipeCuisine;
     }
 
-    public void setRecipeCuisine(String recipeCuisine) {
-        this.recipeCuisine = recipeCuisine;
-    }
-
     public String getRecipeImg() {
         return recipeImg;
-    }
-
-    public void setRecipeImg(String recipeImg) {
-        this.recipeImg = recipeImg;
     }
 
     public String getRecipeLink() {
         return recipeLink;
     }
 
-    public void setRecipeLink(String recipeLink) {
-        this.recipeLink = recipeLink;
-    }
-
     public String getRecipeDescription() {
         return recipeDescription;
-    }
-
-    public void setRecipeDescription(String recipeDescription) {
-        this.recipeDescription = recipeDescription;
     }
 
     public String getRecipeMethod() {
         return recipeMethod;
     }
 
-    public void setRecipeMethod(String recipeMethod) {
-        this.recipeMethod = recipeMethod;
-    }
-
     public String getRecipeIngredients() {
         return recipeIngredients;
-    }
-
-    public void setRecipeIngredients(String recipeIngredients) {
-        this.recipeIngredients = recipeIngredients;
     }
 
     public Boolean getRecipePublic() {
         return recipePublic;
     }
 
-    public void setRecipePublic(Boolean recipePublic) {
-        this.recipePublic = recipePublic;
-    }
-
+    @SuppressWarnings("unused")
     public String getUserID() {
         return userID;
     }
 
-    public void setUserID(String userID) {
-        this.userID = userID;
-    }
-
     public String getRecipeID() {
         return recipeID;
-    }
-
-    public void setRecipeID(String recipeID) {
-        this.recipeID = recipeID;
     }
 
     @Override
