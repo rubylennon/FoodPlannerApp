@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group>
         <item
             android:id="@+id/idAddRecipe"
-            android:title="Add New Recipe" />
+            android:title="@string/add_recipe" />
         <item
             android:id="@+id/idMyRecipes"
-            android:title="My Recipes" />
+            android:title="@string/my_recipes" />
         <item
             android:id="@+id/idPublicRecipes"
-            android:title="Public Recipes" />
+            android:title="@string/public_recipes" />
         <item
             android:id="@+id/idScan"
-            android:title="Ingredients Scanner" />
+            android:title="@string/ingredients_scanner" />
         <item
             android:id="@+id/idSearch"
             android:title="@string/recipe_search" />
