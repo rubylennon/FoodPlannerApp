@@ -68,6 +68,7 @@
     <string name="view_recipe_details">View Recipe Details</string>
     <string name="select_recipe_suitability">Select Recipe Suitability</string>
     <string name="add_ingredient">Add Ingredient</string>
+    <string name="sample">sample</string>
     <string-array name="cuisine_array">
         <item>Chinese</item>
         <item>Thai</item>
