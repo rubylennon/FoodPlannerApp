@@ -66,6 +66,8 @@
     <string name="suitability_search">Suitability Search</string>
     <string name="recipe_details_shopping_list"><![CDATA[Recipe Details & Shopping List]]></string>
     <string name="view_recipe_details">View Recipe Details</string>
+    <string name="select_recipe_suitability">Select Recipe Suitability</string>
+    <string name="add_ingredient">Add Ingredient</string>
     <string-array name="cuisine_array">
         <item>Chinese</item>
         <item>Thai</item>
