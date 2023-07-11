@@ -19,11 +19,12 @@ import java.util.ArrayList;
 
 public class RecipeRVAdapter extends RecyclerView.Adapter<RecipeRVAdapter.ViewHolder> {
     int lastPos = -1;
-    private ArrayList<RecipeRVModal> recipeRVModalArrayList;
-    private Context context;
-    private RecipeClickInterface recipeClickInterface;
+    private final ArrayList<RecipeRVModal> recipeRVModalArrayList;
+    private final Context context;
+    private final RecipeClickInterface recipeClickInterface;
 
-    public RecipeRVAdapter(ArrayList<RecipeRVModal> recipeRVModalArrayList, Context context, RecipeClickInterface recipeClickInterface) {
+    public RecipeRVAdapter(ArrayList<RecipeRVModal> recipeRVModalArrayList, Context context,
+                           RecipeClickInterface recipeClickInterface) {
         this.recipeRVModalArrayList = recipeRVModalArrayList;
         this.context = context;
         this.recipeClickInterface = recipeClickInterface;
@@ -32,29 +33,28 @@ public class RecipeRVAdapter extends RecyclerView.Adapter<RecipeRVAdapter.ViewHo
     @NonNull
     @Override
     public RecipeRVAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.recipe_rv_item,parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.recipe_rv_item, parent,
+                false);
         return new ViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(@NonNull RecipeRVAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+    public void onBindViewHolder(@NonNull RecipeRVAdapter.ViewHolder holder,
+                                 @SuppressLint("RecyclerView") int position) {
         RecipeRVModal recipeRVModal = recipeRVModalArrayList.get(position);
         holder.recipeNameTV.setText(recipeRVModal.getRecipeName());
         holder.recipeCookingTimeTV.setText("Cooking Time: " + recipeRVModal.getRecipeCookingTime());
         Picasso.get().load(recipeRVModal.getRecipeImg()).into(holder.recipeTV);
         setAnimation(holder.itemView, position);
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                recipeClickInterface.onRecipeClick(position);
-            }
-        });
+        holder.itemView.setOnClickListener(v -> recipeClickInterface.onRecipeClick(position));
     }
 
     private void setAnimation(View itemView, int position){
         if(position > lastPos){
-            Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left);
+            Animation animation = AnimationUtils.loadAnimation(context,
+                    android.R.anim.slide_in_left);
             itemView.setAnimation(animation);
             lastPos = position;
         }
@@ -65,10 +65,10 @@ public class RecipeRVAdapter extends RecyclerView.Adapter<RecipeRVAdapter.ViewHo
         return recipeRVModalArrayList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-
-        private TextView recipeNameTV, recipeServesTV,recipeCookingTimeTV;
-        private ImageView recipeTV;
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private final TextView recipeNameTV,
+                recipeCookingTimeTV;
+        private final ImageView recipeTV;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
