@@ -11,7 +11,6 @@
 package com.example.firebasecrudapplication;
 
 // imports
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,7 +20,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -46,8 +44,6 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 public class PublicRecipesActivity extends AppCompatActivity implements RecipeRVAdapter.RecipeClickInterface {
-    // declare variables
-    private RecyclerView recipeRV;
     private ProgressBar loadingPB;
     private ArrayList<RecipeRVModal> recipeRVModalArrayList;
     private RelativeLayout bottomSheetRL;
@@ -59,12 +55,15 @@ public class PublicRecipesActivity extends AppCompatActivity implements RecipeRV
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // set activity layout
         setContentView(R.layout.activity_public_activity);
 
         // set the actionbar title to Recipes
         setTitle("Public Recipes");
 
-        recipeRV = findViewById(R.id.idRVRecipes);
+        // declare variables
+        RecyclerView recipeRV = findViewById(R.id.idRVRecipes);
         loadingPB = findViewById(R.id.idPBLoading);
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = firebaseDatabase.getReference("Recipes");
@@ -76,59 +75,27 @@ public class PublicRecipesActivity extends AppCompatActivity implements RecipeRV
         recipeRV.setLayoutManager(new LinearLayoutManager(this));
         recipeRV.setAdapter(recipeRVAdapter);
 
+        // retrieve and display all public recipes from Firebase Realtime Database
         getAllPublicRecipes();
 
     }
 
+    // retrieve and display all public recipes from Firebase Realtime Database
     private void getAllPublicRecipes() {
 
+        // clear recipeRVModalArrayList before adding recipes
         recipeRVModalArrayList.clear();
-//        databaseReference.addChildEventListener(new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-//                loadingPB.setVisibility(View.GONE);
-//                recipeRVModalArrayList.add(snapshot.getValue(RecipeRVModal.class));
-//                recipeRVAdapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-//                loadingPB.setVisibility(View.GONE);
-//                recipeRVAdapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-//                loadingPB.setVisibility(View.GONE);
-//                recipeRVAdapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-//                loadingPB.setVisibility(View.GONE);
-//                recipeRVAdapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
 
         query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 loadingPB.setVisibility(View.GONE);
 
                 if (dataSnapshot.exists()) {
                     Log.d("snapshot2", String.valueOf(dataSnapshot));
-//                    mealPlanRVModalArrayList.add(dataSnapshot.getValue(MealPlanRVModal.class));
-//                    mealPlanRVAdapter.notifyDataSetChanged();
-                    //sortDates();
 
                     for (DataSnapshot issue : dataSnapshot.getChildren()) {
-                        // do with your result
-                        Log.d("issue", String.valueOf(issue));
                         recipeRVModalArrayList.add(issue.getValue(RecipeRVModal.class));
                         recipeRVAdapter.notifyDataSetChanged();
                     }
@@ -136,18 +103,20 @@ public class PublicRecipesActivity extends AppCompatActivity implements RecipeRV
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
 
     }
 
+    // method for displaying clicked recipe bottom sheet dialog
     @Override
     public void onRecipeClick(int position) {
         displayBottomSheet(recipeRVModalArrayList.get(position));
     }
 
+    // recipe bottom sheet dialog builder and functionality
     @SuppressLint("SetTextI18n")
     private void displayBottomSheet(RecipeRVModal recipeRVModal){
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
@@ -164,29 +133,31 @@ public class PublicRecipesActivity extends AppCompatActivity implements RecipeRV
         ImageView recipeIV = layout.findViewById(R.id.idIVRecipe);
         Button viewDetailsBtn = layout.findViewById(R.id.idBtnViewDetails);
 
+        // update the bottom sheet dialog with selected recipe details
         recipeNameTV.setText(recipeRVModal.getRecipeName());
         recipeDescTV.setText(recipeRVModal.getRecipeDescription());
         recipeSuitedForTV.setText("Suitable For: " + recipeRVModal.getRecipeSuitedFor());
         recipeCookingTimeTV.setText("Cooking Time: " + recipeRVModal.getRecipeCookingTime());
         Picasso.get().load(recipeRVModal.getRecipeImg()).into(recipeIV);
 
-        viewDetailsBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(PublicRecipesActivity.this, ViewRecipeActivity.class);
-                i.putExtra("recipe", recipeRVModal);
-                startActivity(i);
-            }
+        // view recipe details button
+        viewDetailsBtn.setOnClickListener(v -> {
+            // redirect user to recipe details page
+            Intent i = new Intent(PublicRecipesActivity.this, ViewRecipeActivity.class);
+            i.putExtra("recipe", recipeRVModal);
+            startActivity(i);
         });
 
     }
 
+    // settings menu code start
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.settings_main,menu);
         return true;
     }
 
+    @SuppressLint("NonConstantResourceId")
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
         int id = item.getItemId();
         switch (id) {
@@ -229,4 +200,5 @@ public class PublicRecipesActivity extends AppCompatActivity implements RecipeRV
                 return super.onOptionsItemSelected(item);
         }
     }
+    // settings menu code end
 }
