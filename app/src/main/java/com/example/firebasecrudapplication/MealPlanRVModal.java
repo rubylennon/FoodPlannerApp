@@ -1,5 +1,13 @@
 package com.example.firebasecrudapplication;
 
+/*
+ * @Author: Ruby Lennon (x19128355)
+ * 1st July 2023
+ * MealPlanRVModal.java
+ * Description - Meal Plan model class used by Meal Planner Activities
+ */
+
+// imports
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -27,7 +35,6 @@ public class MealPlanRVModal implements Parcelable {
 
     @SuppressWarnings("unused")
     public MealPlanRVModal(){
-
     }
 
     public MealPlanRVModal(String dateShort, String mealPlanID, String recipeName, String recipeCookingTime, String recipeServings, String recipeSuitedFor, String recipeCuisine, String recipeImg, String recipeLink, String recipeDescription, String recipeMethod, String recipeIngredients, Boolean recipePublic, String recipeID, String userID, String dateLong) {
@@ -135,6 +142,7 @@ public class MealPlanRVModal implements Parcelable {
         return userID;
     }
 
+    @SuppressWarnings("unused")
     public String getRecipeID() {
         return recipeID;
     }

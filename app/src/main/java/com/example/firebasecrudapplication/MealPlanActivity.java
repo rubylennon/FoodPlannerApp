@@ -1,8 +1,15 @@
 package com.example.firebasecrudapplication;
 
+/*
+ * @Author: Ruby Lennon (x19128355)
+ * 1 July 2023
+ * MealPlanActivity.java
+ * Description - Meal Plan list activity to view list of meals in meal plan
+ */
+
 //@REF 1 - https://www.geeksforgeeks.org/how-to-create-an-alert-dialog-box-in-android/
-//@REF 2: https://www.geeksforgeeks.org/java-program-to-sort-objects-in-arraylist-by-date/
-//@REF 3: https://stackoverflow.com/questions/45359822/filter-data-in-firebase-functions
+//@REF 2 - https://www.geeksforgeeks.org/java-program-to-sort-objects-in-arraylist-by-date/
+//@REF 3 - https://stackoverflow.com/questions/45359822/filter-data-in-firebase-functions
 
 import android.annotation.SuppressLint;
 import android.content.Intent;

@@ -1,5 +1,15 @@
 package com.example.firebasecrudapplication;
 
+/*
+ * @Author: Ruby Lennon (x19128355)
+ * 27th February 2023
+ * RecipeRVModal.java
+ * Description - Recipe Model class
+ */
+
+// @REF 1 - GeeksForGeeks Tutorial - https://www.youtube.com/watch?v=-Gvpf8tXpbc
+
+// imports
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;

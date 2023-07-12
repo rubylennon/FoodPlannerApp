@@ -1,5 +1,12 @@
 package com.example.firebasecrudapplication;
 
+/*
+ * @Author: Ruby Lennon (x19128355)
+ * 28th April 2023
+ * RegistrationActivity.java
+ * Description - Registration Activity to allow new users to register for an account
+ */
+
 //@REF 1 - GeeksForGeeks Tutorial - https://www.youtube.com/watch?v=-Gvpf8tXpbc
 //@REF 2 - https://firebase.google.com/docs/auth/android/password-auth
 //@REF 3 - https://www.geeksforgeeks.org/how-to-validate-a-password-using-regular-expressions-in-java/

@@ -1,7 +1,14 @@
 package com.example.firebasecrudapplication;
 
-//@REF 1: https://www.youtube.com/watch?v=33BFCdL0Di0 DatePickerDialog - Android Studio Tutorial
-//@REF 2: GeeksForGeeks Tutorial - https://www.youtube.com/watch?v=-Gvpf8tXpbc
+/*
+ * @Author: Ruby Lennon (x19128355)
+ * 28th February 2023
+ * ViewRecipeActivity.java
+ * Description - Activity for viewing Recipe details
+ */
+
+//@REF 1 - https://www.youtube.com/watch?v=33BFCdL0Di0 DatePickerDialog - Android Studio Tutorial
+//@REF 2 - GeeksForGeeks Tutorial - https://www.youtube.com/watch?v=-Gvpf8tXpbc
 
 // imports
 import android.annotation.SuppressLint;

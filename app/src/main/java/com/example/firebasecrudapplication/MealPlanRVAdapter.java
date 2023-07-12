@@ -1,5 +1,15 @@
 package com.example.firebasecrudapplication;
 
+/*
+ * @Author: Ruby Lennon (x19128355)
+ * 1st July 2023
+ * MealPlanRVAdapter.java
+ * Description - Ingredient RecyclerView Adapter class
+ */
+
+// @REF 1 - https://www.youtube.com/watch?v=-Gvpf8tXpbc
+
+// imports
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;

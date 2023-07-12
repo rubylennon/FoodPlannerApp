@@ -7,11 +7,11 @@ package com.example.firebasecrudapplication;
  * Description - OCR Ingredients List Activity of Java Android App 'FoodPlannerApp'
  */
 
-// @REF 1: select image from gallery and show it in ImageView - https://www.youtube.com/watch?v=i3-WL9Xv4hA
-// @REF 2: Google MLKit Samples - https://github.com/googlesamples/mlkit/tree/master/android/vision-quickstart
-// @REF 3: How to Capture Image And Display in ImageView in android Studio - https://www.youtube.com/watch?v=d7Nia9vKUDM
-// @REF 4: Search Bar + RecyclerView+Firebase Realtime Database easy Steps - https://www.youtube.com/watch?v=PmqYd-AdmC0
-// @REF 5: User Authentication and CRUD Operation with Firebase Realtime Database in Android | GeeksForGeeks - https://www.youtube.com/watch?v=-Gvpf8tXpbc
+// @REF 1 - Select image from gallery and show it in ImageView - https://www.youtube.com/watch?v=i3-WL9Xv4hA
+// @REF 2 - Google MLKit Samples - https://github.com/googlesamples/mlkit/tree/master/android/vision-quickstart
+// @REF 3 - How to Capture Image And Display in ImageView in android Studio - https://www.youtube.com/watch?v=d7Nia9vKUDM
+// @REF 4 - Search Bar + RecyclerView+Firebase Realtime Database easy Steps - https://www.youtube.com/watch?v=PmqYd-AdmC0
+// @REF 5 - User Authentication and CRUD Operation with Firebase Realtime Database in Android | GeeksForGeeks - https://www.youtube.com/watch?v=-Gvpf8tXpbc
 
 import android.Manifest;
 import android.annotation.SuppressLint;

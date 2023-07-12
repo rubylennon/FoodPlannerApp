@@ -1,8 +1,16 @@
 package com.example.firebasecrudapplication;
 
-// @REF: GeeksForGeeks Tutorial - https://www.youtube.com/watch?v=-Gvpf8tXpbc
+/*
+ * @Author: Ruby Lennon (x19128355)
+ * 28th April 2023
+ * LoginActivity.java
+ * Description - Login Activity to allow registered users to login to application
+ */
+
+// @REF 1 - GeeksForGeeks Tutorial - https://www.youtube.com/watch?v=-Gvpf8tXpbc
 // Ref Description - User Authentication and CRUD Operation with Firebase Realtime Database in Android
 
+//imports
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;

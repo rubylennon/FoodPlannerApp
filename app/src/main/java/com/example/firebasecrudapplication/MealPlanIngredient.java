@@ -1,5 +1,13 @@
 package com.example.firebasecrudapplication;
 
+/*
+ * @Author: Ruby Lennon (x19128355)
+ * 2nd July 2023
+ * MealPlanIngredient.java
+ * Description - Ingredient model class used by Meal Plan Activities
+ */
+
+// imports
 import com.google.firebase.database.Exclude;
 
 public class MealPlanIngredient {
@@ -8,8 +16,8 @@ public class MealPlanIngredient {
             ingredient,
             purchased;
 
+    @SuppressWarnings("unused")
     public MealPlanIngredient(){
-
     }
 
     public MealPlanIngredient(String ingredient, String purchased) {

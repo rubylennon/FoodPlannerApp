@@ -1,5 +1,15 @@
 package com.example.firebasecrudapplication;
 
+/*
+ * @Author: Ruby Lennon (x19128355)
+ * 27th February 2023
+ * RecipeRVAdapter.java
+ * Description - Recipe RecyclerView Adapter class
+ */
+
+// @REF 1 - GeeksForGeeks Tutorial - https://www.youtube.com/watch?v=-Gvpf8tXpbc
+
+// imports
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;

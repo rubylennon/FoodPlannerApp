@@ -1,5 +1,12 @@
 package com.example.firebasecrudapplication;
 
+/*
+ * @Author: Ruby Lennon (x19128355)
+ * 1st July 2023
+ * ViewMealPlanActivity.java
+ * Description - Activity for viewing Meal Plan meal details
+ */
+
 // imports
 import android.annotation.SuppressLint;
 import android.content.Intent;

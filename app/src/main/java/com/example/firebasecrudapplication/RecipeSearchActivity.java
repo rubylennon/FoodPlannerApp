@@ -1,3 +1,5 @@
+package com.example.firebasecrudapplication;
+
 /*
  * @Author: Ruby Lennon (x19128355)
  * 13th June 2023
@@ -8,8 +10,6 @@
 // @Ref 1 - Custom Alert dialog plus send data to activity - https://www.youtube.com/watch?v=qCcsE1_yTCI
 // @Ref 2 - https://www.geeksforgeeks.org/how-to-implement-multiselect-dropdown-in-android/
 // @Ref 3 - Search Bar + RecyclerView+Firebase Realtime Database easy Steps - https://www.youtube.com/watch?v=PmqYd-AdmC0
-
-package com.example.firebasecrudapplication;
 
 // imports
 import android.annotation.SuppressLint;

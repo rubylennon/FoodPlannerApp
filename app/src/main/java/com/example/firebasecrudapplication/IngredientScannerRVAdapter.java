@@ -1,5 +1,14 @@
 package com.example.firebasecrudapplication;
 
+/*
+ * @Author: Ruby Lennon (x19128355)
+ * 5th June 2023
+ * IngredientScannerRVAdapter.java
+ * Description - Ingredient RecyclerView Adapter class
+ */
+
+// @REF 1 - https://www.youtube.com/watch?v=-Gvpf8tXpbc
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

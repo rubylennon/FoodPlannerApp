@@ -1,3 +1,5 @@
+package com.example.firebasecrudapplication;
+
 /*
  * @Author: Ruby Lennon (x19128355)
  * 27th February 2023
@@ -5,10 +7,8 @@
  * Description - Main Activity of Java Android App 'FoodPlannerApp'
  */
 
-// @REF: GeeksForGeeks Tutorial - https://www.youtube.com/watch?v=-Gvpf8tXpbc
+// @REF 1 - GeeksForGeeks Tutorial - https://www.youtube.com/watch?v=-Gvpf8tXpbc
 // Ref Description - User Authentication and CRUD Operation with Firebase Realtime Database in Android
-
-package com.example.firebasecrudapplication;
 
 // imports
 import android.annotation.SuppressLint;
