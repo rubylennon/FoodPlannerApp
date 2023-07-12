@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:id="@+id/idRLRecipeSearchActivity"
     android:background="@color/blue_shade_1"
-    tools:context=".RecipeSearchActivity">
+    tools:context=".activities.RecipeSearchActivity">
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/searchView"

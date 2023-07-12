@@ -1,4 +1,4 @@
-package com.example.firebasecrudapplication;
+package com.example.firebasecrudapplication.activities;
 
 /*
  * @Author: Ruby Lennon (x19128355)
@@ -39,6 +39,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.firebasecrudapplication.models.Ingredient;
+import com.example.firebasecrudapplication.adapters.IngredientScannerRVAdapter;
+import com.example.firebasecrudapplication.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

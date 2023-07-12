@@ -1,4 +1,4 @@
-package com.example.firebasecrudapplication;
+package com.example.firebasecrudapplication.adapters;
 
 /*
  * @Author: Ruby Lennon (x19128355)
@@ -23,6 +23,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.firebasecrudapplication.R;
+import com.example.firebasecrudapplication.models.RecipeRVModal;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

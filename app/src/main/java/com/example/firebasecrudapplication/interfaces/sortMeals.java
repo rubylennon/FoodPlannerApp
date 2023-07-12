@@ -1,4 +1,4 @@
-package com.example.firebasecrudapplication;
+package com.example.firebasecrudapplication.interfaces;
 
 /*
  * @Author: Ruby Lennon (x19128355)
@@ -9,9 +9,11 @@ package com.example.firebasecrudapplication;
 
 //@Ref 1: https://www.geeksforgeeks.org/java-program-to-sort-objects-in-arraylist-by-date/
 
+import com.example.firebasecrudapplication.models.MealPlanRVModal;
+
 import java.util.Comparator;
 
-class sortMeals implements Comparator<MealPlanRVModal> {
+public class sortMeals implements Comparator<MealPlanRVModal> {
     // comparison method
     public int compare(MealPlanRVModal mealPlanA, MealPlanRVModal mealPlanB) {
         // Returning the value after comparing the objects

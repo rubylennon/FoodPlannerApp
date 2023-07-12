@@ -1,4 +1,4 @@
-package com.example.firebasecrudapplication;
+package com.example.firebasecrudapplication.activities;
 
 /*
  * @Author: Ruby Lennon (x19128355)
@@ -25,6 +25,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.firebasecrudapplication.R;
+import com.example.firebasecrudapplication.models.MealPlanIngredient;
+import com.example.firebasecrudapplication.models.MealPlanRVModal;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:id="@+id/idRLScanIngredient"
     android:background="@color/blue_shade_1"
-    tools:context=".IngredientsScannerActivity"
+    tools:context=".activities.IngredientsScannerActivity"
     android:layout_centerHorizontal="true" >
 
     <ImageView

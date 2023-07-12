@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:id="@+id/idRLMealPlan"
     android:background="@color/blue_shade_1"
-    tools:context=".MealPlanActivity">
+    tools:context=".activities.MealPlanActivity">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/idRVRecipes"

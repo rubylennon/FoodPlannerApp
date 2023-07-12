@@ -1,4 +1,4 @@
-package com.example.firebasecrudapplication;
+package com.example.firebasecrudapplication.activities;
 
 /*
  * @Author: Ruby Lennon (x19128355)
@@ -32,6 +32,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.firebasecrudapplication.R;
+import com.example.firebasecrudapplication.adapters.MealPlanRVAdapter;
+import com.example.firebasecrudapplication.models.MealPlanRVModal;
+import com.example.firebasecrudapplication.interfaces.sortMeals;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;

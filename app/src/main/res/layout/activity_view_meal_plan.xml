@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blue_shade_1"
-    tools:context=".ViewMealPlanActivity" >
+    tools:context=".activities.ViewMealPlanActivity" >
 
     <RelativeLayout
         android:layout_width="match_parent"

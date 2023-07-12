@@ -1,4 +1,4 @@
-package com.example.firebasecrudapplication;
+package com.example.firebasecrudapplication.fragments;
 
 /*
  * @Author: Ruby Lennon (x19128355)
