@@ -1,8 +1,16 @@
 package com.example.firebasecrudapplication;
 
-//@Ref 1 - https://developer.android.com/develop/ui/views/components/spinner
-//@Ref 2 - https://www.geeksforgeeks.org/how-to-implement-multiselect-dropdown-in-android/
-//@Ref 3 - https://codevedanam.blogspot.com/2021/04/dynamic-views-in-android.html
+/*
+ * @Author: Ruby Lennon (x19128355)
+ * 28th April 2023
+ * AddRecipeActivity.java
+ * Description - Add Recipe Activity for creating new recipes
+ */
+
+// @REF 1 - https://developer.android.com/develop/ui/views/components/spinner
+// @REF 2 - https://www.geeksforgeeks.org/how-to-implement-multiselect-dropdown-in-android/
+// @REF 3 - https://codevedanam.blogspot.com/2021/04/dynamic-views-in-android.html
+// @REF 4 - https://www.youtube.com/watch?v=-Gvpf8tXpbc
 
 import android.annotation.SuppressLint;
 import android.content.Intent;

@@ -1,5 +1,14 @@
 package com.example.firebasecrudapplication;
 
+/*
+ * @Author: Ruby Lennon (x19128355)
+ * 30th May 2023
+ * IngredientRVModal.java
+ * Description - Ingredient model class used by Ingredient Scanner and Recipe Search Activities
+ */
+
+// @REF 1 - https://www.youtube.com/watch?v=-Gvpf8tXpbc
+
 import android.os.Parcel;
 import android.os.Parcelable;
 

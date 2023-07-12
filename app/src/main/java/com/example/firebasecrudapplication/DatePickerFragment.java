@@ -1,6 +1,13 @@
 package com.example.firebasecrudapplication;
 
-//@Ref - https://www.youtube.com/watch?v=33BFCdL0Di0 DatePickerDialog - Android Studio Tutorial
+/*
+ * @Author: Ruby Lennon (x19128355)
+ * 1st July 2023
+ * DatePickerFragment.java
+ * Description - Dialog Fragment for Meal Plan Date selection on the Recipe Details page
+ */
+
+// @REF 1 - https://www.youtube.com/watch?v=33BFCdL0Di0 DatePickerDialog - Android Studio Tutorial
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;

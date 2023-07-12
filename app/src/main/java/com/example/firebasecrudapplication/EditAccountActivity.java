@@ -1,14 +1,14 @@
+package com.example.firebasecrudapplication;
+
 /*
  * @Author: Ruby Lennon (x19128355)
  * 30th February 2023
  * EditAccountActivity.java
- * Description - Edit Account Activity of Java Android App 'FoodPlannerApp'
+ * Description - Edit Account Activity for editing user account details
  */
 
-// @REF: https://www.youtube.com/watch?v=FptELNWvnqQ
+// @REF 1 - https://www.youtube.com/watch?v=FptELNWvnqQ
 // Ref Description - Firebase Authentication 4: Change password, email & Delete users #2020 | Android Studio Tutorial
-
-package com.example.firebasecrudapplication;
 
 //imports
 import android.annotation.SuppressLint;
