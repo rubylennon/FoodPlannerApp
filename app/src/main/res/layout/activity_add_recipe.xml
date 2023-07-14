@@ -14,10 +14,11 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:gravity="center">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+                android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="20dp"
@@ -40,7 +41,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+                android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
@@ -58,13 +59,11 @@
                     android:importantForAutofill="no"
                     android:inputType="number"
                     android:maxWidth="488dp"
-                    android:textColor="@color/blue_shade_2"
-                    android:textColorHint="#01579B"
                     android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+                android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
@@ -90,7 +89,7 @@
 
             <TextView
                 android:id="@+id/selectSuitabilityTV"
-                android:layout_width="match_parent"
+                android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="12dp"
@@ -103,7 +102,7 @@
 
             <TextView
                 android:id="@+id/selectCuisineTV"
-                android:layout_width="match_parent"
+                android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="12dp"
@@ -115,7 +114,7 @@
                 app:drawableRightCompat="@android:drawable/arrow_down_float" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+                android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
@@ -139,7 +138,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+                android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
@@ -157,14 +156,12 @@
                     android:importantForAutofill="no"
                     android:inputType="text"
                     android:maxWidth="488dp"
-                    android:textColor="@color/blue_shade_2"
-                    android:textColorHint="#01579B"
                     android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
@@ -186,8 +183,8 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
@@ -209,7 +206,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <Switch
-                android:layout_width="match_parent"
+                android:layout_width="320dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
@@ -225,11 +222,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@string/add_ingredient"
-                android:drawableEnd="@android:drawable/ic_input_add"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
                 android:layout_marginEnd="20dp"
-                android:layout_marginStart="20dp"/>
+                android:backgroundTint="@android:color/holo_purple"
+                android:drawableEnd="@android:drawable/ic_input_add"
+                android:text="@string/add_ingredient"
+                android:textColor="#000000" />
 
             <ScrollView
                 android:layout_width="match_parent"
@@ -246,16 +246,18 @@
 
             <Button
                 android:id="@+id/idBtnAddRecipe"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:minWidth="64dp"
+                android:paddingLeft="16pt"
+                android:paddingRight="16pt"
+                android:textSize="18sp"
                 android:layout_marginTop="20dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="20dp"
                 android:background="@drawable/custom_button_back"
                 android:text="@string/add_recipe"
-                android:textAllCaps="false"
-                android:textColor="#E1F5FE" />
+                android:textAllCaps="true"
+                android:textColor="@color/white" />
 
         </LinearLayout>
 
