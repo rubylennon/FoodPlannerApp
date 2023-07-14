@@ -34,8 +34,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.firebasecrudapplication.R;
 import com.example.firebasecrudapplication.adapters.MealPlanRVAdapter;
+import com.example.firebasecrudapplication.interfaces.SortMeals;
 import com.example.firebasecrudapplication.models.Meal;
-import com.example.firebasecrudapplication.interfaces.sortMeals;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -172,8 +172,8 @@ public class MealPlanActivity extends AppCompatActivity implements MealPlanRVAda
 
     // sort the meal plans by date (ascending order)
     private void sortDates(){
-        // sort meals using sortMeals() comparator class
-        mealArrayList.sort(new sortMeals());
+        // sort meals using SortMeals() comparator class
+        mealArrayList.sort(new SortMeals());
     }
 
     // if meal is clicked open the bottom sheet dialog for that meal
