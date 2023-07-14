@@ -32,7 +32,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.firebasecrudapplication.R;
-import com.example.firebasecrudapplication.models.RecipeRVModal;
+import com.example.firebasecrudapplication.models.Recipe;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -121,24 +121,24 @@ public class EditRecipeActivity extends AppCompatActivity {
         Button deleteRecipeBtn = findViewById(R.id.idBtnDeleteRecipe);
 
         // get the parcelable recipe object received when the edit recipe page was opened
-        RecipeRVModal recipeRVModal = getIntent().getParcelableExtra("recipe");
+        Recipe recipe = getIntent().getParcelableExtra("recipe");
 
         // if a recipe is returned from the database
-        if (recipeRVModal != null){
-            recipeNameEdt.setText(recipeRVModal.getRecipeName());
-            recipeCookingTimeEdt.setText(recipeRVModal.getRecipeCookingTime());
-            recipeServingsEdt.setText(recipeRVModal.getRecipeServings());
-            recipeSuitabilityEdt.setText(recipeRVModal.getRecipeSuitedFor());
-            String previouslySelectedSuitability = recipeRVModal.getRecipeSuitedFor();
+        if (recipe != null){
+            recipeNameEdt.setText(recipe.getRecipeName());
+            recipeCookingTimeEdt.setText(recipe.getRecipeCookingTime());
+            recipeServingsEdt.setText(recipe.getRecipeServings());
+            recipeSuitabilityEdt.setText(recipe.getRecipeSuitedFor());
+            String previouslySelectedSuitability = recipe.getRecipeSuitedFor();
             previouslySelectedSuitabilityArray = previouslySelectedSuitability.split(",");
-            recipeCuisineEdt.setText(recipeRVModal.getRecipeCuisine());
-            String previouslySelectedCuisine = recipeRVModal.getRecipeCuisine();
+            recipeCuisineEdt.setText(recipe.getRecipeCuisine());
+            String previouslySelectedCuisine = recipe.getRecipeCuisine();
             previouslySelectedCuisineArray = previouslySelectedCuisine.split(",");
-            recipeImgEdt.setText(recipeRVModal.getRecipeImg());
-            recipeLinkEdt.setText(recipeRVModal.getRecipeLink());
-            recipeDescEdt.setText(recipeRVModal.getRecipeDescription());
-            recipeMethodEdt.setText(recipeRVModal.getRecipeMethod());
-            String previouslySelectedIngredients = recipeRVModal.getRecipeIngredients();
+            recipeImgEdt.setText(recipe.getRecipeImg());
+            recipeLinkEdt.setText(recipe.getRecipeLink());
+            recipeDescEdt.setText(recipe.getRecipeDescription());
+            recipeMethodEdt.setText(recipe.getRecipeMethod());
+            String previouslySelectedIngredients = recipe.getRecipeIngredients();
             String[] previouslySelectedIngredientsArray =
                     previouslySelectedIngredients.split(",");
 
@@ -150,8 +150,8 @@ public class EditRecipeActivity extends AppCompatActivity {
             // after adding previously added ingredients to view set editPageInitialLoad to false
             editPageInitialLoad.set(false);
 
-            recipePublicEdt.setChecked(recipeRVModal.getRecipePublic().equals(true));
-            recipeID = recipeRVModal.getRecipeID();
+            recipePublicEdt.setChecked(recipe.getRecipePublic().equals(true));
+            recipeID = recipe.getRecipeID();
         }
 
         // update the firebase database reference to the Recipes object

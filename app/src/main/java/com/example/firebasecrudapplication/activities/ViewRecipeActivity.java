@@ -31,7 +31,7 @@ import com.example.firebasecrudapplication.fragments.DatePickerFragment;
 import com.example.firebasecrudapplication.R;
 import com.example.firebasecrudapplication.models.Meal;
 import com.example.firebasecrudapplication.models.MealIngredient;
-import com.example.firebasecrudapplication.models.RecipeRVModal;
+import com.example.firebasecrudapplication.models.Recipe;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -57,7 +57,7 @@ public class ViewRecipeActivity extends AppCompatActivity implements DatePickerD
             userID,
             recipeImgEdt,
             recipeLinkEdt;
-    private RecipeRVModal recipeRVModal;
+    private Recipe recipe;
     private FirebaseAuth mAuth;
 
     public ViewRecipeActivity() {
@@ -89,25 +89,25 @@ public class ViewRecipeActivity extends AppCompatActivity implements DatePickerD
         userID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         mAuth = FirebaseAuth.getInstance();
 
-        recipeRVModal = getIntent().getParcelableExtra("recipe");
+        recipe = getIntent().getParcelableExtra("recipe");
 
         // assign database reference to Meal Plan firebase realtime database reference
         databaseReferenceMealPlan = firebaseDatabase.getReference("Meal Plans");
 
         // populate the layout fields with the recipe details from the database
-        if (recipeRVModal != null){
-            recipeNameEdt.setText(recipeRVModal.getRecipeName());
-            recipeCookingTimeEdt.setText(recipeRVModal.getRecipeCookingTime());
-            recipeServingsEdt.setText(recipeRVModal.getRecipeServings());
-            recipeSuitedForEdt.setText(recipeRVModal.getRecipeSuitedFor());
-            recipeCuisineEdt.setText(recipeRVModal.getRecipeCuisine());
-            recipeDescEdt.setText(recipeRVModal.getRecipeDescription());
-            recipeMethodEdt.setText(recipeRVModal.getRecipeMethod());
-            recipeIngredientsEdt.setText(recipeRVModal.getRecipeIngredients());
-            recipePublicEdt.setChecked(recipeRVModal.getRecipePublic().equals(true));
-            recipeID = recipeRVModal.getRecipeID();
-            recipeImgEdt = recipeRVModal.getRecipeImg();
-            recipeLinkEdt = recipeRVModal.getRecipeLink();
+        if (recipe != null){
+            recipeNameEdt.setText(recipe.getRecipeName());
+            recipeCookingTimeEdt.setText(recipe.getRecipeCookingTime());
+            recipeServingsEdt.setText(recipe.getRecipeServings());
+            recipeSuitedForEdt.setText(recipe.getRecipeSuitedFor());
+            recipeCuisineEdt.setText(recipe.getRecipeCuisine());
+            recipeDescEdt.setText(recipe.getRecipeDescription());
+            recipeMethodEdt.setText(recipe.getRecipeMethod());
+            recipeIngredientsEdt.setText(recipe.getRecipeIngredients());
+            recipePublicEdt.setChecked(recipe.getRecipePublic().equals(true));
+            recipeID = recipe.getRecipeID();
+            recipeImgEdt = recipe.getRecipeImg();
+            recipeLinkEdt = recipe.getRecipeLink();
         }
 
         // set input fields to non focusable
@@ -146,7 +146,7 @@ public class ViewRecipeActivity extends AppCompatActivity implements DatePickerD
         // view recipe source page in browser using recipe link
         viewSourceRecipe.setOnClickListener(v -> {
             Intent i = new Intent(Intent.ACTION_VIEW);
-            i.setData(Uri.parse(recipeRVModal.getRecipeLink()));
+            i.setData(Uri.parse(recipe.getRecipeLink()));
             startActivity(i);
         });
 

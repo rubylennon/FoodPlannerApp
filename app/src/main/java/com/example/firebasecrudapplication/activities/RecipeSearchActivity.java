@@ -38,7 +38,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.firebasecrudapplication.R;
 import com.example.firebasecrudapplication.adapters.RecipeRVAdapter;
 import com.example.firebasecrudapplication.models.Ingredient;
-import com.example.firebasecrudapplication.models.RecipeRVModal;
+import com.example.firebasecrudapplication.models.Recipe;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -57,7 +57,7 @@ import java.util.Objects;
 public class RecipeSearchActivity extends AppCompatActivity
         implements RecipeRVAdapter.RecipeClickInterface {
     private ProgressBar loadingPB;
-    private ArrayList<RecipeRVModal> originalRecipesList,
+    private ArrayList<Recipe> originalRecipesList,
             cuisineFilteredRecipesList,
             ingredientsFilteredRecipesList,
             suitabilityFilteredRecipesList,
@@ -307,17 +307,17 @@ public class RecipeSearchActivity extends AppCompatActivity
                         if(Objects.equals(issue.child("userID").getValue(), userID)
                                 && Objects.equals(issue.child("recipePublic")
                                 .getValue(), true)){
-                            originalRecipesList.add(issue.getValue(RecipeRVModal.class));
+                            originalRecipesList.add(issue.getValue(Recipe.class));
                             recipeRVAdapter.notifyDataSetChanged();
                         } else if(Objects.equals(issue.child("userID").getValue(), userID)
                                 && Objects.equals(issue.child("recipePublic")
                                 .getValue(), false)) {
-                            originalRecipesList.add(issue.getValue(RecipeRVModal.class));
+                            originalRecipesList.add(issue.getValue(Recipe.class));
                             recipeRVAdapter.notifyDataSetChanged();
                         } else if(!Objects.equals(issue.child("userID").getValue(), userID)
                                 && Objects.equals(issue.child("recipePublic")
                                 .getValue(), true)) {
-                            originalRecipesList.add(issue.getValue(RecipeRVModal.class));
+                            originalRecipesList.add(issue.getValue(Recipe.class));
                             recipeRVAdapter.notifyDataSetChanged();
                         }
                     }
@@ -464,11 +464,11 @@ public class RecipeSearchActivity extends AppCompatActivity
         appliedSearchInfoTV.setText("Applied Ingredients Search Filters:\n" + filteredIngredients);
 
         // arraylist to store recipes with matching
-        ArrayList<RecipeRVModal> matchingRecipesList = new ArrayList<>();
+        ArrayList<Recipe> matchingRecipesList = new ArrayList<>();
 
         // loop through the recipes and if they contain any of the selected ingredients then
         // store them to arraylist
-        for(RecipeRVModal recipe : originalRecipesList){
+        for(Recipe recipe : originalRecipesList){
             for(String ingredient : filteredIngredients){
                 if(recipe.getRecipeIngredients().toLowerCase().contains(ingredient.toLowerCase())){
                     matchingRecipesList.add(recipe);
@@ -519,11 +519,11 @@ public class RecipeSearchActivity extends AppCompatActivity
         appliedSearchInfoTV.setText("Applied Cuisine Search Filters:\n" + filteredCuisine);
 
         // arraylist to store recipes with matching
-        ArrayList<RecipeRVModal> matchingRecipesList = new ArrayList<>();
+        ArrayList<Recipe> matchingRecipesList = new ArrayList<>();
 
         // loop through the recipes and if they contain any of the selected ingredients then
         // store them to arraylist
-        for(RecipeRVModal recipe : originalRecipesList){
+        for(Recipe recipe : originalRecipesList){
             for(String cuisine : filteredCuisine){
                 if(recipe.getRecipeCuisine().toLowerCase().contains(cuisine.toLowerCase())){
                     matchingRecipesList.add(recipe);
@@ -574,11 +574,11 @@ public class RecipeSearchActivity extends AppCompatActivity
         appliedSearchInfoTV.setText("Applied Suitability Search Filters:\n" + filteredSuitability);
 
         // arraylist to store recipes with matching
-        ArrayList<RecipeRVModal> matchingRecipesList = new ArrayList<>();
+        ArrayList<Recipe> matchingRecipesList = new ArrayList<>();
 
         // loop through the recipes and if they contain any of the selected ingredients then
         // store them to arraylist
-        for(RecipeRVModal recipe : originalRecipesList){
+        for(Recipe recipe : originalRecipesList){
             for(String suitability : filteredSuitability){
                 if(recipe.getRecipeSuitedFor().toLowerCase().contains(suitability.toLowerCase())){
                     matchingRecipesList.add(recipe);
@@ -614,10 +614,10 @@ public class RecipeSearchActivity extends AppCompatActivity
     }
 
     private void searchByName(String str) {
-        ArrayList<RecipeRVModal> matchingRecipesList = new ArrayList<>();
+        ArrayList<Recipe> matchingRecipesList = new ArrayList<>();
 
         if (!str.equals("")){
-            for (RecipeRVModal recipe : originalRecipesList){
+            for (Recipe recipe : originalRecipesList){
                 if(recipe.getRecipeName().toLowerCase().contains(str.toLowerCase())){
                     matchingRecipesList.add(recipe);
                 }
@@ -701,7 +701,7 @@ public class RecipeSearchActivity extends AppCompatActivity
     }
 
     @SuppressLint("SetTextI18n")
-    private void displayBottomSheet(RecipeRVModal recipeRVModal){
+    private void displayBottomSheet(Recipe recipe){
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
         View layout = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_dialog,bottomSheetRL);
         bottomSheetDialog.setContentView(layout);
@@ -717,21 +717,21 @@ public class RecipeSearchActivity extends AppCompatActivity
         Button editBtn = layout.findViewById(R.id.idBtnEdit);
         Button viewDetailsBtn = layout.findViewById(R.id.idBtnViewDetails);
 
-        recipeNameTV.setText(recipeRVModal.getRecipeName());
-        recipeDescTV.setText(recipeRVModal.getRecipeDescription());
-        recipeSuitedForTV.setText("Suitable For: " + recipeRVModal.getRecipeSuitedFor());
-        recipeCookingTimeTV.setText("Cooking Time: " + recipeRVModal.getRecipeCookingTime());
-        Picasso.get().load(recipeRVModal.getRecipeImg()).into(recipeIV);
+        recipeNameTV.setText(recipe.getRecipeName());
+        recipeDescTV.setText(recipe.getRecipeDescription());
+        recipeSuitedForTV.setText("Suitable For: " + recipe.getRecipeSuitedFor());
+        recipeCookingTimeTV.setText("Cooking Time: " + recipe.getRecipeCookingTime());
+        Picasso.get().load(recipe.getRecipeImg()).into(recipeIV);
 
         editBtn.setOnClickListener(v -> {
             Intent i = new Intent(RecipeSearchActivity.this, EditRecipeActivity.class);
-            i.putExtra("recipe", recipeRVModal);
+            i.putExtra("recipe", recipe);
             startActivity(i);
         });
 
         viewDetailsBtn.setOnClickListener(v -> {
             Intent i = new Intent(RecipeSearchActivity.this, ViewRecipeActivity.class);
-            i.putExtra("recipe", recipeRVModal);
+            i.putExtra("recipe", recipe);
             startActivity(i);
         });
 

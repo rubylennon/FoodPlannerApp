@@ -33,7 +33,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.firebasecrudapplication.R;
 import com.example.firebasecrudapplication.adapters.RecipeRVAdapter;
-import com.example.firebasecrudapplication.models.RecipeRVModal;
+import com.example.firebasecrudapplication.models.Recipe;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -48,7 +48,7 @@ import java.util.ArrayList;
 
 public class PublicRecipesActivity extends AppCompatActivity implements RecipeRVAdapter.RecipeClickInterface {
     private ProgressBar loadingPB;
-    private ArrayList<RecipeRVModal> recipeRVModalArrayList;
+    private ArrayList<Recipe> recipeArrayList;
     private RelativeLayout bottomSheetRL;
     private RecipeRVAdapter recipeRVAdapter;
     private FirebaseAuth mAuth;
@@ -71,10 +71,10 @@ public class PublicRecipesActivity extends AppCompatActivity implements RecipeRV
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = firebaseDatabase.getReference("Recipes");
         query = databaseReference.orderByChild("recipePublic").equalTo(true);
-        recipeRVModalArrayList = new ArrayList<>();
+        recipeArrayList = new ArrayList<>();
         bottomSheetRL = findViewById(R.id.idRLBSheet);
         mAuth = FirebaseAuth.getInstance();
-        recipeRVAdapter = new RecipeRVAdapter(recipeRVModalArrayList, this, this);
+        recipeRVAdapter = new RecipeRVAdapter(recipeArrayList, this, this);
         recipeRV.setLayoutManager(new LinearLayoutManager(this));
         recipeRV.setAdapter(recipeRVAdapter);
 
@@ -86,8 +86,8 @@ public class PublicRecipesActivity extends AppCompatActivity implements RecipeRV
     // retrieve and display all public recipes from Firebase Realtime Database
     private void getAllPublicRecipes() {
 
-        // clear recipeRVModalArrayList before adding recipes
-        recipeRVModalArrayList.clear();
+        // clear recipeArrayList before adding recipes
+        recipeArrayList.clear();
 
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
@@ -99,7 +99,7 @@ public class PublicRecipesActivity extends AppCompatActivity implements RecipeRV
                     Log.d("snapshot2", String.valueOf(dataSnapshot));
 
                     for (DataSnapshot issue : dataSnapshot.getChildren()) {
-                        recipeRVModalArrayList.add(issue.getValue(RecipeRVModal.class));
+                        recipeArrayList.add(issue.getValue(Recipe.class));
                         recipeRVAdapter.notifyDataSetChanged();
                     }
                 }
@@ -116,12 +116,12 @@ public class PublicRecipesActivity extends AppCompatActivity implements RecipeRV
     // method for displaying clicked recipe bottom sheet dialog
     @Override
     public void onRecipeClick(int position) {
-        displayBottomSheet(recipeRVModalArrayList.get(position));
+        displayBottomSheet(recipeArrayList.get(position));
     }
 
     // recipe bottom sheet dialog builder and functionality
     @SuppressLint("SetTextI18n")
-    private void displayBottomSheet(RecipeRVModal recipeRVModal){
+    private void displayBottomSheet(Recipe recipe){
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
         View layout = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_dialog_without_edit,bottomSheetRL);
         bottomSheetDialog.setContentView(layout);
@@ -137,17 +137,17 @@ public class PublicRecipesActivity extends AppCompatActivity implements RecipeRV
         Button viewDetailsBtn = layout.findViewById(R.id.idBtnViewDetails);
 
         // update the bottom sheet dialog with selected recipe details
-        recipeNameTV.setText(recipeRVModal.getRecipeName());
-        recipeDescTV.setText(recipeRVModal.getRecipeDescription());
-        recipeSuitedForTV.setText("Suitable For: " + recipeRVModal.getRecipeSuitedFor());
-        recipeCookingTimeTV.setText("Cooking Time: " + recipeRVModal.getRecipeCookingTime());
-        Picasso.get().load(recipeRVModal.getRecipeImg()).into(recipeIV);
+        recipeNameTV.setText(recipe.getRecipeName());
+        recipeDescTV.setText(recipe.getRecipeDescription());
+        recipeSuitedForTV.setText("Suitable For: " + recipe.getRecipeSuitedFor());
+        recipeCookingTimeTV.setText("Cooking Time: " + recipe.getRecipeCookingTime());
+        Picasso.get().load(recipe.getRecipeImg()).into(recipeIV);
 
         // view recipe details button
         viewDetailsBtn.setOnClickListener(v -> {
             // redirect user to recipe details page
             Intent i = new Intent(PublicRecipesActivity.this, ViewRecipeActivity.class);
-            i.putExtra("recipe", recipeRVModal);
+            i.putExtra("recipe", recipe);
             startActivity(i);
         });
 

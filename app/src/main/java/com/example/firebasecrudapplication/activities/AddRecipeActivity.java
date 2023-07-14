@@ -32,7 +32,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.firebasecrudapplication.R;
-import com.example.firebasecrudapplication.models.RecipeRVModal;
+import com.example.firebasecrudapplication.models.Recipe;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -313,14 +313,14 @@ public class AddRecipeActivity extends AppCompatActivity {
                 recipeID = databaseReference.push().getKey();
 
                 // build the object using the above variables
-                RecipeRVModal recipeRVModal = new RecipeRVModal(recipeName,recipeCookingTime,recipeServings,recipeSuitedFor,recipeCuisine,recipeImg,recipeLink,recipeDesc,recipeMethod,recipeIngredients,recipePublic,recipeID,userID);
+                Recipe recipe = new Recipe(recipeName,recipeCookingTime,recipeServings,recipeSuitedFor,recipeCuisine,recipeImg,recipeLink,recipeDesc,recipeMethod,recipeIngredients,recipePublic,recipeID,userID);
 
                 // add the new recipe to the database
                 databaseReference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         loadingPB.setVisibility(View.GONE);
-                        databaseReference.child(recipeID).setValue(recipeRVModal);
+                        databaseReference.child(recipeID).setValue(recipe);
                         Toast.makeText(AddRecipeActivity.this, "Recipe Added", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(AddRecipeActivity.this, MainActivity.class));
                     }

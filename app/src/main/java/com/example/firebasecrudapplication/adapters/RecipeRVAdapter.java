@@ -24,20 +24,20 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.firebasecrudapplication.R;
-import com.example.firebasecrudapplication.models.RecipeRVModal;
+import com.example.firebasecrudapplication.models.Recipe;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 public class RecipeRVAdapter extends RecyclerView.Adapter<RecipeRVAdapter.ViewHolder> {
     int lastPos = -1;
-    private final ArrayList<RecipeRVModal> recipeRVModalArrayList;
+    private final ArrayList<Recipe> recipeArrayList;
     private final Context context;
     private final RecipeClickInterface recipeClickInterface;
 
-    public RecipeRVAdapter(ArrayList<RecipeRVModal> recipeRVModalArrayList, Context context,
+    public RecipeRVAdapter(ArrayList<Recipe> recipeArrayList, Context context,
                            RecipeClickInterface recipeClickInterface) {
-        this.recipeRVModalArrayList = recipeRVModalArrayList;
+        this.recipeArrayList = recipeArrayList;
         this.context = context;
         this.recipeClickInterface = recipeClickInterface;
     }
@@ -54,10 +54,10 @@ public class RecipeRVAdapter extends RecyclerView.Adapter<RecipeRVAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull RecipeRVAdapter.ViewHolder holder,
                                  @SuppressLint("RecyclerView") int position) {
-        RecipeRVModal recipeRVModal = recipeRVModalArrayList.get(position);
-        holder.recipeNameTV.setText(recipeRVModal.getRecipeName());
-        holder.recipeCookingTimeTV.setText("Cooking Time: " + recipeRVModal.getRecipeCookingTime());
-        Picasso.get().load(recipeRVModal.getRecipeImg()).into(holder.recipeTV);
+        Recipe recipe = recipeArrayList.get(position);
+        holder.recipeNameTV.setText(recipe.getRecipeName());
+        holder.recipeCookingTimeTV.setText("Cooking Time: " + recipe.getRecipeCookingTime());
+        Picasso.get().load(recipe.getRecipeImg()).into(holder.recipeTV);
         setAnimation(holder.itemView, position);
 
         holder.itemView.setOnClickListener(v -> recipeClickInterface.onRecipeClick(position));
@@ -74,7 +74,7 @@ public class RecipeRVAdapter extends RecyclerView.Adapter<RecipeRVAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return recipeRVModalArrayList.size();
+        return recipeArrayList.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

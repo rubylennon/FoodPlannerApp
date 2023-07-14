@@ -3,7 +3,7 @@ package com.example.firebasecrudapplication.models;
 /*
  * @Author: Ruby Lennon (x19128355)
  * 27th February 2023
- * RecipeRVModal.java
+ * Recipe.java
  * Description - Recipe Model class
  */
 
@@ -16,7 +16,7 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
-public class RecipeRVModal implements Parcelable {
+public class Recipe implements Parcelable {
     // variables
     private String recipeName,
             recipeCookingTime,
@@ -33,15 +33,15 @@ public class RecipeRVModal implements Parcelable {
     private Boolean recipePublic;
 
     @SuppressWarnings("unused")
-    public RecipeRVModal(){
+    public Recipe(){
 
     }
 
-    public RecipeRVModal(String recipeName, String recipeCookingTime, String recipeServings,
-                         String recipeSuitedFor, String recipeCuisine, String recipeImg,
-                         String recipeLink, String recipeDescription, String recipeMethod,
-                         String recipeIngredients, Boolean recipePublic, String recipeID,
-                         String userID) {
+    public Recipe(String recipeName, String recipeCookingTime, String recipeServings,
+                  String recipeSuitedFor, String recipeCuisine, String recipeImg,
+                  String recipeLink, String recipeDescription, String recipeMethod,
+                  String recipeIngredients, Boolean recipePublic, String recipeID,
+                  String userID) {
         this.recipeName = recipeName;
         this.recipeCookingTime = recipeCookingTime;
         this.recipeServings = recipeServings;
@@ -57,7 +57,7 @@ public class RecipeRVModal implements Parcelable {
         this.recipeID = recipeID;
     }
 
-    protected RecipeRVModal(Parcel in) {
+    protected Recipe(Parcel in) {
         recipeName = in.readString();
         recipeCookingTime = in.readString();
         recipeServings = in.readString();
@@ -75,15 +75,15 @@ public class RecipeRVModal implements Parcelable {
         recipeID = in.readString();
     }
 
-    public static final Creator<RecipeRVModal> CREATOR = new Creator<RecipeRVModal>() {
+    public static final Creator<Recipe> CREATOR = new Creator<Recipe>() {
         @Override
-        public RecipeRVModal createFromParcel(Parcel in) {
-            return new RecipeRVModal(in);
+        public Recipe createFromParcel(Parcel in) {
+            return new Recipe(in);
         }
 
         @Override
-        public RecipeRVModal[] newArray(int size) {
-            return new RecipeRVModal[size];
+        public Recipe[] newArray(int size) {
+            return new Recipe[size];
         }
     };
 
