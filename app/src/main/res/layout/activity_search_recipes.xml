@@ -21,21 +21,19 @@
 
     <LinearLayout
         android:id="@+id/buttonSetOne"
-        android:layout_width="match_parent"
+        android:layout_width="420dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/searchView"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="0dp"
-        android:orientation="horizontal"
-        android:weightSum="2">
+        android:layout_centerHorizontal="true"
+        android:weightSum="2"
+        android:orientation="horizontal" >
 
         <Button
             android:id="@+id/BtnIngredientsFilter"
             android:layout_width="0dp"
             android:minWidth="320dp"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="9dp"
             android:layout_weight="1"
             android:text="@string/ingredients_search"
             tools:ignore="ButtonStyle" />
@@ -43,8 +41,8 @@
         <Button
             android:id="@+id/BtnSuitabilityFilter"
             android:layout_width="0dp"
+            android:layout_margin="9dp"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
             android:minWidth="320dp"
             android:layout_weight="1"
             android:text="@string/suitability_search"
@@ -53,10 +51,8 @@
 
     <LinearLayout
         android:id="@+id/buttonSetTwo"
-        android:layout_width="match_parent"
+        android:layout_width="420dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="10dp"
         android:layout_below="@+id/buttonSetOne"
         android:weightSum="2"
         android:orientation="horizontal" >

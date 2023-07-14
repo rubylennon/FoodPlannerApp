@@ -72,6 +72,23 @@
     <string name="my_recipes">My Recipes</string>
     <string name="public_recipes">Public Recipes</string>
     <string name="ingredients_scanner">Ingredients Scanner</string>
+    <string name="account_email_address">Account Email Address</string>
+    <string name="enter_new_email">Enter New Email</string>
+    <string name="confirm_new_email">Confirm New Email</string>
+    <string name="update_email">Update Email</string>
+    <string name="authentication_required">This operation is sensitive and requires recent authentication.\n Please log out and back in again before retrying this request.</string>
+    <string name="enter_new_password">Enter New Password</string>
+    <string name="confirm_new_password">Confirm New Password</string>
+    <string name="update_password">Update Password</string>
+    <string name="passwords_must_contain_an_uppercase_letter_a_lowercase_letter_a_number_and_a_special_character">Passwords must contain: An uppercase letter, a lowercase letter, a number, and a special character.</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="select_suitability">Select Suitability</string>
+    <string name="application_logo">Application Logo</string>
+    <string name="no_recipes_added">No Recipes Added</string>
+    <string name="click_the_add_recipe_icon_below_or_the_add_recipe_menu_item_to_add_a_recipe">Click the Add Recipe icon below or the Add Recipe menu item to add a recipe.</string>
+    <string name="recipe_book_icon">Recipe Book Icon</string>
+    <string name="no_matching_ingredients_found">No matching ingredients found</string>
+    <string name="try_selecting_a_different_image">Try selecting a different image</string>
     <string-array name="cuisine_array">
         <item>Chinese</item>
         <item>Thai</item>

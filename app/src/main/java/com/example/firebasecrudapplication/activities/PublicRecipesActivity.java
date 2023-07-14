@@ -60,7 +60,7 @@ public class PublicRecipesActivity extends AppCompatActivity implements RecipeRV
         super.onCreate(savedInstanceState);
 
         // set activity layout
-        setContentView(R.layout.activity_public_activity);
+        setContentView(R.layout.activity_public_recipes);
 
         // set the actionbar title to Recipes
         setTitle("Public Recipes");

@@ -16,16 +16,17 @@
             android:id="@+id/currentEmailLL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:layout_margin="10dp"
             android:backgroundTint="@android:color/white"
             android:background="@drawable/custom_border">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+                android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
-                android:hint="Account Email Address"
+                android:hint="@string/account_email_address"
                 style="@style/TextInputLayout"
                 android:padding="5dp"
                 android:textColorHint="@color/blue_shade_2"
@@ -50,15 +51,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:gravity="center"
             android:background="@drawable/custom_border">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+                android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="10dp"
-                android:hint="Enter New Email"
+                android:hint="@string/enter_new_email"
                 style="@style/TextInputLayout"
                 android:padding="5dp"
                 android:textColorHint="@color/blue_shade_2"
@@ -75,12 +77,12 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+                android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="10dp"
-                android:hint="Confirm New Email"
+                android:hint="@string/confirm_new_email"
                 style="@style/TextInputLayout"
                 android:padding="5dp"
                 android:textColorHint="@color/blue_shade_2"
@@ -98,15 +100,15 @@
 
             <Button
                 android:id="@+id/idBtnUpdateEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="320dp"
+                android:layout_height="0dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:layout_weight="1"
                 android:background="@drawable/custom_button_back"
-                android:text="Update Email"
+                android:text="@string/update_email"
                 android:textAllCaps="false"
                 android:textColor="@color/white" />
 
@@ -115,12 +117,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
-                android:layout_below="@+id/idBtnUpdateEmail"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:textStyle="italic"
-                android:text="This operation is sensitive and requires recent authentication. Please log out and back in again before retrying this request."
-                android:textColor="@android:color/holo_red_light"/>
+                android:text="@string/authentication_required"
+                android:textColor="@android:color/holo_red_dark"/>
 
         </LinearLayout>
 
@@ -129,17 +130,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/updatePwdLL"
+            android:gravity="center"
             android:layout_below="@id/updateEmailLL"
             android:layout_margin="10dp"
             android:background="@drawable/custom_border">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+                android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="10dp"
-                android:hint="Enter New Password"
+                android:hint="@string/enter_new_password"
                 style="@style/TextInputLayout"
                 android:padding="5dp"
                 android:textColorHint="@color/blue_shade_2"
@@ -156,15 +158,14 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+                android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="10dp"
-                android:hint="Confirm New Password"
+                android:hint="@string/confirm_new_password"
                 style="@style/TextInputLayout"
                 android:padding="5dp"
-                android:textColorHint="@color/blue_shade_2"
                 app:hintTextColor="@color/blue_shade_2" >
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/idEdtConfirmNewPwdConfirmation"
@@ -172,22 +173,21 @@
                     android:layout_height="wrap_content"
                     android:importantForAutofill="no"
                     android:inputType="text"
-                    android:textColor="@color/blue_shade_2"
                     android:textColorHint="@color/blue_shade_2"
                     android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/idBtnUpdatePassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="320dp"
+                android:layout_height="0dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:layout_weight="1"
                 android:background="@drawable/custom_button_back"
-                android:text="Update Password"
+                android:text="@string/update_password"
                 android:textAllCaps="false"
                 android:textColor="@color/white" />
 
@@ -195,25 +195,23 @@
                 android:id="@+id/pwdHelpText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/idBtnUpdatePassword"
                 android:textAlignment="center"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:textStyle="italic"
-                android:text="Passwords must contain: An uppercase letter, a lowercase letter, a number, and a special character."
-                android:textColor="@android:color/holo_red_light"/>
+                android:text="@string/passwords_must_contain_an_uppercase_letter_a_lowercase_letter_a_number_and_a_special_character"
+                android:textColor="@android:color/holo_red_dark"/>
 
             <TextView
                 android:id="@+id/pwdHelpText2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
-                android:layout_below="@+id/idBtnUpdatePassword"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:textStyle="italic"
-                android:text="This operation is sensitive and requires recent authentication. Please log out and back in again before retrying this request."
-                android:textColor="@android:color/holo_red_light"/>
+                android:text="@string/authentication_required"
+                android:textColor="@android:color/holo_red_dark"/>
 
         </LinearLayout>
 
@@ -224,15 +222,16 @@
             android:id="@+id/deleteAccountLL"
             android:layout_below="@id/updatePwdLL"
             android:layout_margin="10dp"
+            android:gravity="center"
             android:background="@drawable/custom_border">
 
             <Button
                 android:id="@+id/idBtnDeleteAccount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="320dp"
+                android:layout_height="0dp"
                 android:layout_margin="8dp"
                 android:layout_weight="1"
-                android:text="Delete Account"
+                android:text="@string/delete_account"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:padding="14dp"
@@ -245,12 +244,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
-                android:layout_below="@+id/idBtnDeleteAccount"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:textStyle="italic"
-                android:text="This operation is sensitive and requires recent authentication. Please log out and back in again before retrying this request."
-                android:textColor="@android:color/holo_red_light"/>
+                android:text="@string/authentication_required"
+                android:textColor="@android:color/holo_red_dark"/>
 
         </LinearLayout>
 

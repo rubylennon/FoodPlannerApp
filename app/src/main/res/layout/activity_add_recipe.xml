@@ -32,7 +32,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/idEdtRecipeName"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:importantForAutofill="no"
                     android:inputType="text"
                     android:textColor="@color/blue_shade_2"
@@ -55,7 +55,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/idEdtRecipeCookingTime"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:importantForAutofill="no"
                     android:inputType="number"
                     android:maxWidth="488dp"
@@ -78,7 +78,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/idEdtRecipeServings"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:importantForAutofill="no"
                     android:inputType="number"
                     android:maxWidth="488dp"
@@ -103,7 +103,7 @@
             <TextView
                 android:id="@+id/selectCuisineTV"
                 android:layout_width="350dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="12dp"
                 android:layout_marginStart="12dp"
@@ -128,7 +128,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/idEdtRecipeImageLink"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:importantForAutofill="no"
                     android:inputType="text"
                     android:maxWidth="488dp"
@@ -152,7 +152,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/idEdtRecipeLink"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:importantForAutofill="no"
                     android:inputType="text"
                     android:maxWidth="488dp"
@@ -231,18 +231,12 @@
                 android:text="@string/add_ingredient"
                 android:textColor="#000000" />
 
-            <ScrollView
+            <LinearLayout
+                android:id="@+id/container"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scrollbars="none"
-                tools:ignore="NestedScrolling">
-                <LinearLayout
-                    android:id="@+id/container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                </LinearLayout>
-            </ScrollView>
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+            </LinearLayout>
 
             <Button
                 android:id="@+id/idBtnAddRecipe"

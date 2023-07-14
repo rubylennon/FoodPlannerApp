@@ -13,8 +13,9 @@
         android:id="@+id/image_view"
         android:layout_width="match_parent"
         android:layout_height="200dp"
+        android:contentDescription="@string/application_logo"
         app:srcCompat="@drawable/logo"
-        android:contentDescription="@string/selected_image_to_be_scanned" />
+        tools:ignore="ImageContrastCheck" />
 
     <ProgressBar
         android:id="@+id/idPBLoading"
@@ -27,7 +28,8 @@
     <LinearLayout
         android:id="@+id/idLLButtonsOne"
         android:orientation="horizontal"
-        android:layout_width="fill_parent"
+        android:layout_width="430dp"
+        android:layout_centerHorizontal="true"
         android:layout_height="wrap_content"
         android:layout_below="@+id/image_view"
         android:paddingLeft="4.0dip"
@@ -41,29 +43,32 @@
             android:layout_height="55dp"
             android:layout_margin="5dp"
             android:text="@string/capture_image"
-            android:drawableRight="@drawable/baseline_photo_camera_24"
-            android:layout_weight="1.0" />
+            android:drawableEnd="@drawable/baseline_photo_camera_24"
+            android:layout_weight="1.0"
+            tools:ignore="ButtonStyle" />
 
         <Button
             android:id="@+id/select_image"
-            android:layout_width="0.0dip"
+            android:layout_width="0dp"
             android:layout_height="55dp"
             android:layout_margin="5dp"
             android:text="@string/select_image"
-            android:drawableRight="@drawable/baseline_image_24"
-            android:layout_weight="1.0"/>
+            android:drawableEnd="@drawable/baseline_image_24"
+            android:layout_weight="1.0"
+            tools:ignore="ButtonStyle" />
 
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/idLLButtonsTwo"
         android:orientation="horizontal"
-        android:layout_width="fill_parent"
+        android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/idLLButtonsOne"
         android:paddingLeft="4.0dip"
         android:paddingTop="5.0dip"
         android:paddingRight="4.0dip"
+        android:layout_centerHorizontal="true"
         android:paddingBottom="1.0dip">
 
         <Button
@@ -71,8 +76,8 @@
             android:layout_width="0dp"
             android:layout_height="55dp"
             android:layout_margin="5dp"
-            android:text="@string/scan_ingredients"
-            android:layout_weight="1.0" />
+            android:layout_weight="1.0"
+            android:text="@string/scan_ingredients" />
 
     </LinearLayout>
 
@@ -88,11 +93,12 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="No matching ingredients found"
+        android:text="@string/no_matching_ingredients_found"
         android:id="@+id/no_matching_results"
         android:gravity="center"
         android:textSize="20sp"
-        android:layout_below="@+id/noSearchResultsIV"/>
+        android:layout_below="@+id/noSearchResultsIV"
+        tools:ignore="VisualLintOverlap" />
 
     <TextView
         android:id="@+id/no_matching_results_help"
@@ -100,9 +106,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/no_matching_results"
         android:gravity="center"
-        android:text="Try selecting a different image"
+        android:text="@string/try_selecting_a_different_image"
         android:textColor="#455A64"
-        android:textSize="11sp" />
+        android:textSize="11sp"
+        tools:ignore="VisualLintOverlap" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ingredientsRV"
