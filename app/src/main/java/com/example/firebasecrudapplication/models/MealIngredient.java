@@ -3,24 +3,24 @@ package com.example.firebasecrudapplication.models;
 /*
  * @Author: Ruby Lennon (x19128355)
  * 2nd July 2023
- * MealPlanIngredient.java
+ * MealIngredient.java
  * Description - Ingredient model class used by Meal Plan Activities
  */
 
 // imports
 import com.google.firebase.database.Exclude;
 
-public class MealPlanIngredient {
+public class MealIngredient {
     @Exclude
     public String key,
             ingredient,
             purchased;
 
     @SuppressWarnings("unused")
-    public MealPlanIngredient(){
+    public MealIngredient(){
     }
 
-    public MealPlanIngredient(String ingredient, String purchased) {
+    public MealIngredient(String ingredient, String purchased) {
         this.ingredient = ingredient;
         this.purchased = purchased;
     }

@@ -26,8 +26,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.firebasecrudapplication.R;
-import com.example.firebasecrudapplication.models.MealPlanIngredient;
-import com.example.firebasecrudapplication.models.MealPlanRVModal;
+import com.example.firebasecrudapplication.models.Meal;
+import com.example.firebasecrudapplication.models.MealIngredient;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -46,11 +46,11 @@ public class ViewMealPlanActivity extends AppCompatActivity {
             ingredientsDBRef;
     private String mealPlanID,
             mealPlanDate;
-    private MealPlanRVModal mealPlanRVModal;
-    private MealPlanIngredient mealPlanIngredient;
+    private Meal meal;
+    private MealIngredient mealIngredient;
     private LinearLayout layout;
     private final AtomicReference<Boolean> initialLoad = new AtomicReference<>(true);
-    private ArrayList<MealPlanIngredient> ingredientsList;
+    private ArrayList<MealIngredient> ingredientsList;
     private FirebaseAuth mAuth;
 
     public ViewMealPlanActivity() {
@@ -76,22 +76,22 @@ public class ViewMealPlanActivity extends AppCompatActivity {
         TextInputEditText recipeIngredientsEdt = findViewById(R.id.idEdtRecipeIngredients);
         recipePublicEdt = findViewById(R.id.idPublicSwitch);
         Button viewSourceRecipe = findViewById(R.id.idBtnViewSourceRecipe);
-        mealPlanRVModal = getIntent().getParcelableExtra("MealPlan");
+        meal = getIntent().getParcelableExtra("MealPlan");
         layout = findViewById(R.id.shopping_List_item);
 
         // populate the layout fields with the recipe details from the database
-        if (mealPlanRVModal != null) {
-            mealPlanDate = mealPlanRVModal.getDateShort();
-            recipeNameEdt.setText(mealPlanRVModal.getRecipeName());
-            recipeCookingTimeEdt.setText(mealPlanRVModal.getRecipeCookingTime());
-            recipeServingsEdt.setText(mealPlanRVModal.getRecipeServings());
-            recipeSuitedForEdt.setText(mealPlanRVModal.getRecipeSuitedFor());
-            recipeCuisineEdt.setText(mealPlanRVModal.getRecipeCuisine());
-            recipeDescEdt.setText(mealPlanRVModal.getRecipeDescription());
-            recipeMethodEdt.setText(mealPlanRVModal.getRecipeMethod());
-            recipeIngredientsEdt.setText(mealPlanRVModal.getRecipeIngredients());
-            recipePublicEdt.setChecked(mealPlanRVModal.getRecipePublic().equals(true));
-            mealPlanID = mealPlanRVModal.getMealPlanID();
+        if (meal != null) {
+            mealPlanDate = meal.getDateShort();
+            recipeNameEdt.setText(meal.getRecipeName());
+            recipeCookingTimeEdt.setText(meal.getRecipeCookingTime());
+            recipeServingsEdt.setText(meal.getRecipeServings());
+            recipeSuitedForEdt.setText(meal.getRecipeSuitedFor());
+            recipeCuisineEdt.setText(meal.getRecipeCuisine());
+            recipeDescEdt.setText(meal.getRecipeDescription());
+            recipeMethodEdt.setText(meal.getRecipeMethod());
+            recipeIngredientsEdt.setText(meal.getRecipeIngredients());
+            recipePublicEdt.setChecked(meal.getRecipePublic().equals(true));
+            mealPlanID = meal.getMealPlanID();
         }
 
         // set the actionbar title
@@ -137,7 +137,7 @@ public class ViewMealPlanActivity extends AppCompatActivity {
         // view recipe source page in browser using recipe link
         viewSourceRecipe.setOnClickListener(v -> {
             Intent i = new Intent(Intent.ACTION_VIEW);
-            i.setData(Uri.parse(mealPlanRVModal.getRecipeLink()));
+            i.setData(Uri.parse(meal.getRecipeLink()));
             startActivity(i);
         });
 
@@ -159,14 +159,14 @@ public class ViewMealPlanActivity extends AppCompatActivity {
                         ingredientsList = new ArrayList<>();
                         // store db ingredients to arraylist
                         for(DataSnapshot ds : dataSnapshot.getChildren()){
-                            mealPlanIngredient = ds.getValue(MealPlanIngredient.class);
-                            assert mealPlanIngredient != null;
-                            mealPlanIngredient.key = ds.getKey();
-                            ingredientsList.add(mealPlanIngredient);
+                            mealIngredient = ds.getValue(MealIngredient.class);
+                            assert mealIngredient != null;
+                            mealIngredient.key = ds.getKey();
+                            ingredientsList.add(mealIngredient);
                         }
 
                         if(initialLoad.get()){
-                            for(MealPlanIngredient ingredientListItem : ingredientsList){
+                            for(MealIngredient ingredientListItem : ingredientsList){
                                 addCard(ingredientListItem.getIngredient(),
                                         ingredientListItem.getPurchased(),
                                         ingredientListItem.getKey());

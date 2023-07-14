@@ -22,7 +22,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.firebasecrudapplication.models.MealPlanRVModal;
+import com.example.firebasecrudapplication.models.Meal;
 import com.example.firebasecrudapplication.R;
 import com.squareup.picasso.Picasso;
 
@@ -30,12 +30,12 @@ import java.util.ArrayList;
 
 public class MealPlanRVAdapter extends RecyclerView.Adapter<MealPlanRVAdapter.ViewHolder> {
     int lastPos = -1;
-    private final ArrayList<MealPlanRVModal> mealPlanRVModalArrayList;
+    private final ArrayList<Meal> mealArrayList;
     private final Context context;
     private final MealPlanClickInterface mealPlanClickInterface;
 
-    public MealPlanRVAdapter(ArrayList<MealPlanRVModal> mealPlanRVModalArrayList, Context context, MealPlanClickInterface mealPlanClickInterface) {
-        this.mealPlanRVModalArrayList = mealPlanRVModalArrayList;
+    public MealPlanRVAdapter(ArrayList<Meal> mealArrayList, Context context, MealPlanClickInterface mealPlanClickInterface) {
+        this.mealArrayList = mealArrayList;
         this.context = context;
         this.mealPlanClickInterface = mealPlanClickInterface;
     }
@@ -49,10 +49,10 @@ public class MealPlanRVAdapter extends RecyclerView.Adapter<MealPlanRVAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull MealPlanRVAdapter.ViewHolder holder, int position) {
-        MealPlanRVModal mealPlanRVModal = mealPlanRVModalArrayList.get(position);
-        holder.recipeNameTV.setText(mealPlanRVModal.getRecipeName());
-        holder.mealPlanDate.setText(mealPlanRVModal.getDateLong());
-        Picasso.get().load(mealPlanRVModal.getRecipeImg()).into(holder.recipeTV);
+        Meal meal = mealArrayList.get(position);
+        holder.recipeNameTV.setText(meal.getRecipeName());
+        holder.mealPlanDate.setText(meal.getDateLong());
+        Picasso.get().load(meal.getRecipeImg()).into(holder.recipeTV);
         setAnimation(holder.itemView, position);
         holder.itemView.setOnClickListener(v -> mealPlanClickInterface.onMealPlanClick(position));
     }
@@ -67,7 +67,7 @@ public class MealPlanRVAdapter extends RecyclerView.Adapter<MealPlanRVAdapter.Vi
 
     @Override
     public int getItemCount() {
-        return mealPlanRVModalArrayList.size();
+        return mealArrayList.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

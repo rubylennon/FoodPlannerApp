@@ -34,7 +34,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.firebasecrudapplication.R;
 import com.example.firebasecrudapplication.adapters.MealPlanRVAdapter;
-import com.example.firebasecrudapplication.models.MealPlanRVModal;
+import com.example.firebasecrudapplication.models.Meal;
 import com.example.firebasecrudapplication.interfaces.sortMeals;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
@@ -56,7 +56,7 @@ public class MealPlanActivity extends AppCompatActivity implements MealPlanRVAda
     private DatabaseReference databaseReference,
             databaseReferenceMealPlan;
     private Query query;
-    private ArrayList<MealPlanRVModal> mealPlanRVModalArrayList;
+    private ArrayList<Meal> mealArrayList;
     private RelativeLayout bottomSheetRL;
     private MealPlanRVAdapter mealPlanRVAdapter;
     private FirebaseAuth mAuth;
@@ -82,10 +82,10 @@ public class MealPlanActivity extends AppCompatActivity implements MealPlanRVAda
         bottomSheetRL = findViewById(R.id.idRLBSheetMealPlan);
 
         // initiate new meal plan arraylist
-        mealPlanRVModalArrayList = new ArrayList<>();
+        mealArrayList = new ArrayList<>();
 
         // update the meal plan recycler view adapter to display meal plans
-        mealPlanRVAdapter = new MealPlanRVAdapter(mealPlanRVModalArrayList, this, this);
+        mealPlanRVAdapter = new MealPlanRVAdapter(mealArrayList, this, this);
         recipeRV.setLayoutManager(new LinearLayoutManager(this));
         recipeRV.setAdapter(mealPlanRVAdapter);
         query = databaseReference.orderByChild("userID").equalTo(userID);
@@ -102,7 +102,7 @@ public class MealPlanActivity extends AppCompatActivity implements MealPlanRVAda
     private void getQueriedList(){
 
         // clear the meal plan arraylist
-        mealPlanRVModalArrayList.clear();
+        mealArrayList.clear();
 
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
@@ -114,7 +114,7 @@ public class MealPlanActivity extends AppCompatActivity implements MealPlanRVAda
 
                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
                         // add meal plan to arraylist
-                        mealPlanRVModalArrayList.add(ds.getValue(MealPlanRVModal.class));
+                        mealArrayList.add(ds.getValue(Meal.class));
                         mealPlanRVAdapter.notifyDataSetChanged();
                     }
 
@@ -132,7 +132,7 @@ public class MealPlanActivity extends AppCompatActivity implements MealPlanRVAda
     // get all meal plans from Firebase Realtime database
     private void getAllMealPlans() {
 
-        mealPlanRVModalArrayList.clear();
+        mealArrayList.clear();
 
         databaseReference.addChildEventListener(new ChildEventListener() {
             @SuppressLint("NotifyDataSetChanged")
@@ -173,18 +173,18 @@ public class MealPlanActivity extends AppCompatActivity implements MealPlanRVAda
     // sort the meal plans by date (ascending order)
     private void sortDates(){
         // sort meals using sortMeals() comparator class
-        mealPlanRVModalArrayList.sort(new sortMeals());
+        mealArrayList.sort(new sortMeals());
     }
 
     // if meal is clicked open the bottom sheet dialog for that meal
     @Override
     public void onMealPlanClick(int position) {
-        displayBottomSheet(mealPlanRVModalArrayList.get(position));
+        displayBottomSheet(mealArrayList.get(position));
     }
 
     // meal bottom sheet dialog builder and functionality
     @SuppressLint("SetTextI18n")
-    private void displayBottomSheet(MealPlanRVModal mealPlanRVModal){
+    private void displayBottomSheet(Meal meal){
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
         View layout = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_dialog_meal_plan,bottomSheetRL);
         bottomSheetDialog.setContentView(layout);
@@ -200,13 +200,13 @@ public class MealPlanActivity extends AppCompatActivity implements MealPlanRVAda
         Button deleteBtn = layout.findViewById(R.id.idBtnDelete);
         Button viewDetailsBtn = layout.findViewById(R.id.idBtnViewDetails);
 
-        recipeNameTV.setText(mealPlanRVModal.getRecipeName());
-        recipeDescTV.setText("Description: " + mealPlanRVModal.getRecipeDescription());
-        mealPlanDateTV.setText("Scheduled Date: " + mealPlanRVModal.getDateShort());
-        recipeCookingTimeTV.setText("Cooking Time: " + mealPlanRVModal.getRecipeCookingTime());
-        Picasso.get().load(mealPlanRVModal.getRecipeImg()).into(recipeIV);
+        recipeNameTV.setText(meal.getRecipeName());
+        recipeDescTV.setText("Description: " + meal.getRecipeDescription());
+        mealPlanDateTV.setText("Scheduled Date: " + meal.getDateShort());
+        recipeCookingTimeTV.setText("Cooking Time: " + meal.getRecipeCookingTime());
+        Picasso.get().load(meal.getRecipeImg()).into(recipeIV);
 
-        String mealPlanID = mealPlanRVModal.getMealPlanID();
+        String mealPlanID = meal.getMealPlanID();
 
         databaseReferenceMealPlan = firebaseDatabase.getReference("Meal Plans").child(mealPlanID);
 
@@ -257,7 +257,7 @@ public class MealPlanActivity extends AppCompatActivity implements MealPlanRVAda
         // if the meal plan view details button is clicked then redirect user to view meal plan page
         viewDetailsBtn.setOnClickListener(v -> {
             Intent i = new Intent(MealPlanActivity.this, ViewMealPlanActivity.class);
-            i.putExtra("MealPlan", mealPlanRVModal);
+            i.putExtra("MealPlan", meal);
             startActivity(i);
         });
 

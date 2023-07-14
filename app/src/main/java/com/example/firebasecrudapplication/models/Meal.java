@@ -3,7 +3,7 @@ package com.example.firebasecrudapplication.models;
 /*
  * @Author: Ruby Lennon (x19128355)
  * 1st July 2023
- * MealPlanRVModal.java
+ * Meal.java
  * Description - Meal Plan model class used by Meal Planner Activities
  */
 
@@ -14,7 +14,7 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
-public class MealPlanRVModal implements Parcelable {
+public class Meal implements Parcelable {
     // variables
     private String recipeName,
             recipeCookingTime,
@@ -34,10 +34,10 @@ public class MealPlanRVModal implements Parcelable {
     private Boolean recipePublic;
 
     @SuppressWarnings("unused")
-    public MealPlanRVModal(){
+    public Meal(){
     }
 
-    public MealPlanRVModal(String dateShort, String mealPlanID, String recipeName, String recipeCookingTime, String recipeServings, String recipeSuitedFor, String recipeCuisine, String recipeImg, String recipeLink, String recipeDescription, String recipeMethod, String recipeIngredients, Boolean recipePublic, String recipeID, String userID, String dateLong) {
+    public Meal(String dateShort, String mealPlanID, String recipeName, String recipeCookingTime, String recipeServings, String recipeSuitedFor, String recipeCuisine, String recipeImg, String recipeLink, String recipeDescription, String recipeMethod, String recipeIngredients, Boolean recipePublic, String recipeID, String userID, String dateLong) {
         this.dateShort = dateShort;
         this.mealPlanID = mealPlanID;
         this.recipeName = recipeName;
@@ -56,7 +56,7 @@ public class MealPlanRVModal implements Parcelable {
         this.dateLong = dateLong;
     }
 
-    protected MealPlanRVModal(Parcel in) {
+    protected Meal(Parcel in) {
         dateShort = in.readString();
         mealPlanID = in.readString();
         recipeName = in.readString();
@@ -77,15 +77,15 @@ public class MealPlanRVModal implements Parcelable {
         dateLong = in.readString();
     }
 
-    public static final Creator<MealPlanRVModal> CREATOR = new Creator<MealPlanRVModal>() {
+    public static final Creator<Meal> CREATOR = new Creator<Meal>() {
         @Override
-        public MealPlanRVModal createFromParcel(Parcel in) {
-            return new MealPlanRVModal(in);
+        public Meal createFromParcel(Parcel in) {
+            return new Meal(in);
         }
 
         @Override
-        public MealPlanRVModal[] newArray(int size) {
-            return new MealPlanRVModal[size];
+        public Meal[] newArray(int size) {
+            return new Meal[size];
         }
     };
 

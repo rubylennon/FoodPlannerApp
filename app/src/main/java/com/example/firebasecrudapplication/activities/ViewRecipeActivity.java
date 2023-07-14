@@ -29,8 +29,8 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.firebasecrudapplication.fragments.DatePickerFragment;
 import com.example.firebasecrudapplication.R;
-import com.example.firebasecrudapplication.models.MealPlanIngredient;
-import com.example.firebasecrudapplication.models.MealPlanRVModal;
+import com.example.firebasecrudapplication.models.Meal;
+import com.example.firebasecrudapplication.models.MealIngredient;
 import com.example.firebasecrudapplication.models.RecipeRVModal;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
@@ -184,16 +184,16 @@ public class ViewRecipeActivity extends AppCompatActivity implements DatePickerD
         Boolean recipePublic = recipePublicEdt.isChecked();
         String mealPlanID = databaseReferenceMealPlan.push().getKey();
 
-        MealPlanRVModal mealPlanRVModal = new MealPlanRVModal(currentDateStringShort, mealPlanID, recipeName, recipeCookingTime, recipeServings, recipeSuitedFor, recipeCuisine, recipeImg, recipeLink, recipeDesc, recipeMethod, recipeIngredients, recipePublic, recipeID, userID, currentDateStringLong);
+        Meal meal = new Meal(currentDateStringShort, mealPlanID, recipeName, recipeCookingTime, recipeServings, recipeSuitedFor, recipeCuisine, recipeImg, recipeLink, recipeDesc, recipeMethod, recipeIngredients, recipePublic, recipeID, userID, currentDateStringLong);
         assert mealPlanID != null;
         // create new meal plan object
-        databaseReferenceMealPlan.child(mealPlanID).setValue(mealPlanRVModal);
+        databaseReferenceMealPlan.child(mealPlanID).setValue(meal);
 
         // store ingredients to ingredients child object
         for (String ingredient : ingredientsArray) {
-            MealPlanIngredient mealPlanIngredient = new MealPlanIngredient(ingredient.trim(), "false");
+            MealIngredient mealIngredient = new MealIngredient(ingredient.trim(), "false");
             //databaseReferenceMealPlan.child(mealPlanID).child("ingredients").child(ingredient.trim()).setValue(false);
-            databaseReferenceMealPlan.child(mealPlanID).child("ingredients").push().setValue(mealPlanIngredient);
+            databaseReferenceMealPlan.child(mealPlanID).child("ingredients").push().setValue(mealIngredient);
         }
 
         Toast.makeText(ViewRecipeActivity.this, "Recipe Added to Meal Plan", Toast.LENGTH_SHORT).show();
