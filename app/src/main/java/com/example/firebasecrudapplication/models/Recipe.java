@@ -20,6 +20,7 @@ public class Recipe implements Parcelable {
     // variables
     private String recipeName,
             recipeCookingTime,
+            recipePrepTime,
             recipeServings,
             recipeSuitedFor,
             recipeCuisine,
@@ -37,13 +38,14 @@ public class Recipe implements Parcelable {
 
     }
 
-    public Recipe(String recipeName, String recipeCookingTime, String recipeServings,
-                  String recipeSuitedFor, String recipeCuisine, String recipeImg,
-                  String recipeLink, String recipeDescription, String recipeMethod,
-                  String recipeIngredients, Boolean recipePublic, String recipeID,
-                  String userID) {
+    public Recipe(String recipeName, String recipeCookingTime,String recipePrepTime,
+                  String recipeServings, String recipeSuitedFor, String recipeCuisine,
+                  String recipeImg, String recipeLink, String recipeDescription,
+                  String recipeMethod, String recipeIngredients, Boolean recipePublic,
+                  String recipeID, String userID) {
         this.recipeName = recipeName;
         this.recipeCookingTime = recipeCookingTime;
+        this.recipePrepTime = recipePrepTime;
         this.recipeServings = recipeServings;
         this.recipeSuitedFor = recipeSuitedFor;
         this.recipeCuisine = recipeCuisine;
@@ -60,6 +62,7 @@ public class Recipe implements Parcelable {
     protected Recipe(Parcel in) {
         recipeName = in.readString();
         recipeCookingTime = in.readString();
+        recipePrepTime = in.readString();
         recipeServings = in.readString();
         recipeSuitedFor = in.readString();
         recipeCuisine = in.readString();
@@ -93,6 +96,10 @@ public class Recipe implements Parcelable {
 
     public String getRecipeCookingTime() {
         return recipeCookingTime;
+    }
+
+    public String getRecipePrepTime() {
+        return recipePrepTime;
     }
 
     public String getRecipeServings() {
@@ -149,6 +156,7 @@ public class Recipe implements Parcelable {
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeString(recipeName);
         dest.writeString(recipeCookingTime);
+        dest.writeString(recipePrepTime);
         dest.writeString(recipeServings);
         dest.writeString(recipeSuitedFor);
         dest.writeString(recipeCuisine);

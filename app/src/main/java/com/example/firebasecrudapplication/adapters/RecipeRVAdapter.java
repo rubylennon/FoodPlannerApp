@@ -8,10 +8,13 @@ package com.example.firebasecrudapplication.adapters;
  */
 
 // @REF 1 - GeeksForGeeks Tutorial - https://www.youtube.com/watch?v=-Gvpf8tXpbc
+// @REF 2 - https://stackoverflow.com/questions/9891360/getting-activity-from-context-in-android
 
 // imports
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,8 +48,19 @@ public class RecipeRVAdapter extends RecyclerView.Adapter<RecipeRVAdapter.ViewHo
     @NonNull
     @Override
     public RecipeRVAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.recipe_rv_item, parent,
-                false);
+        String currentActivity = String.valueOf(getActivity(context));
+        View view;
+
+        if(currentActivity.contains("MainActivity")){
+            view = LayoutInflater.from(context).inflate(R.layout.recipe_user_rv_item, parent,
+                    false);
+        } else if(currentActivity.contains("PublicRecipesActivity")){
+            view = LayoutInflater.from(context).inflate(R.layout.recipe_public_rv_item, parent,
+                    false);
+        } else {
+            view = LayoutInflater.from(context).inflate(R.layout.recipe_search_rv_item, parent,
+                    false);
+        }
         return new ViewHolder(view);
     }
 
@@ -56,7 +70,7 @@ public class RecipeRVAdapter extends RecyclerView.Adapter<RecipeRVAdapter.ViewHo
                                  @SuppressLint("RecyclerView") int position) {
         Recipe recipe = recipeArrayList.get(position);
         holder.recipeNameTV.setText(recipe.getRecipeName());
-        holder.recipeCookingTimeTV.setText("Cooking Time: " + recipe.getRecipeCookingTime());
+        holder.recipeCookingTimeTV.setText("Cooking Time: " + recipe.getRecipeCookingTime() + "m");
         Picasso.get().load(recipe.getRecipeImg()).into(holder.recipeTV);
         setAnimation(holder.itemView, position);
 
@@ -92,5 +106,20 @@ public class RecipeRVAdapter extends RecyclerView.Adapter<RecipeRVAdapter.ViewHo
 
     public interface RecipeClickInterface{
         void onRecipeClick(int position);
+    }
+
+    public Activity getActivity(Context context) {
+        if (context == null) {
+            return null;
+        } else if (context instanceof ContextWrapper) {
+            if (context instanceof Activity) {
+                return (Activity) context;
+            }
+            else {
+                return getActivity(((ContextWrapper) context).getBaseContext());
+            }
+        }
+
+        return null;
     }
 }

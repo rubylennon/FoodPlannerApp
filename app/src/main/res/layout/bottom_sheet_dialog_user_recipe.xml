@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/idRLBSheetMealPlan"
-    android:background="@android:color/holo_purple">
+    android:id="@+id/idRLBSheet"
+    android:background="@color/blue_shade_3">
 
     <TextView
         android:id="@+id/idTVRecipeName"
@@ -14,7 +14,6 @@
         android:layout_marginTop="4dp"
         android:layout_marginEnd="4dp"
         android:layout_marginBottom="4dp"
-        android:gravity="center_vertical"
         android:padding="4dp"
         android:text="@string/recipe_name"
         android:textColor="@color/black"
@@ -26,26 +25,14 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_below="@id/idTVRecipeName"
+        android:layout_centerVertical="true"
+        android:contentDescription="@string/picture_of_recipe"
         android:padding="4dp"
         android:src="@mipmap/ic_launcher"
-        android:contentDescription="@string/picture_of_recipe" />
+        tools:ignore="ImageContrastCheck" />
 
     <TextView
-        android:id="@+id/idTVDateLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/idTVRecipeName"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
-        android:layout_toEndOf="@id/idIVRecipe"
-        android:padding="3dp"
-        android:text="@string/date_label"
-        android:textStyle="bold"
-        android:textColor="@color/black" />
-
-    <TextView
-        android:id="@+id/idTVDate"
+        android:id="@+id/idTVDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/idTVRecipeName"
@@ -53,87 +40,61 @@
         android:layout_marginTop="4dp"
         android:layout_marginEnd="4dp"
         android:layout_marginBottom="4dp"
-        android:layout_toEndOf="@id/idTVDateLabel"
-        android:padding="3dp"
-        android:text=""
-        android:textColor="@color/black" />
-
-    <TextView
-        android:id="@+id/idTVServesLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/idTVDate"
-        android:layout_marginStart="4dp"
         android:layout_toEndOf="@id/idIVRecipe"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
         android:padding="3dp"
-        android:textStyle="bold"
-        android:text="@string/serves_label"
+        android:text="@string/description"
         android:textColor="@color/black" />
 
     <TextView
-        android:id="@+id/idTVServes"
+        android:id="@+id/idTVSuitedFor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/idTVDate"
+        android:layout_below="@id/idTVDescription"
         android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="4dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
-        android:layout_toEndOf="@id/idTVServesLabel"
-        android:padding="3dp"
-        android:text=""
-        android:textColor="@color/black" />
-
-    <TextView
-        android:id="@+id/idTVCookingTimeLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/idTVServes"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"
         android:layout_toEndOf="@id/idIVRecipe"
         android:padding="3dp"
-        android:textStyle="bold"
-        android:text="@string/cooking_time_label"
-        android:textColor="@color/black"
-        android:textSize="14sp" />
+        android:text="@string/suitable_for"
+        android:textColor="@color/black" />
 
     <TextView
         android:id="@+id/idTVCookingTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/idTVServes"
+        android:layout_below="@id/idTVSuitedFor"
         android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="4dp"
         android:layout_marginBottom="4dp"
-        android:layout_toEndOf="@id/idTVCookingTimeLabel"
+        android:layout_toEndOf="@id/idIVRecipe"
         android:padding="3dp"
-        android:text=""
+        android:text="@string/cooking_time"
         android:textColor="@color/black"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:textStyle="bold" />
 
     <LinearLayout
         android:layout_width="wrap_content"
+        android:minWidth="410dp"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="horizontal"
         android:weightSum="2"
-        android:gravity="center"
         android:id="@+id/idBtnGroup1"
-        android:layout_below="@id/idIVRecipe">
+        android:layout_below="@id/idTVCookingTime">
 
         <Button
-            android:id="@+id/idBtnDelete"
+            android:id="@+id/idBtnEdit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_margin="4dp"
-            android:text="@string/remove_meal_from_plan"
-            android:backgroundTint="@android:color/holo_red_dark"
-            android:textColor="@color/white"
+            android:text="@string/edit_recipe"
+            android:textAllCaps="true"
+            android:backgroundTint="@android:color/holo_orange_light"
+            android:textColor="@color/black"
             tools:ignore="ButtonStyle" />
 
         <Button
@@ -142,7 +103,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_margin="4dp"
-            android:text="@string/recipe_details_shopping_list"
+            android:text="@string/view_details"
+            android:textAllCaps="true"
             android:textColor="@color/white"
             tools:ignore="ButtonStyle" />
 

@@ -44,6 +44,7 @@ import java.util.Objects;
 public class ViewRecipeActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     private TextInputEditText recipeNameEdt,
             recipeCookingTimeEdt,
+            recipePrepTimeEdt,
             recipeServingsEdt,
             recipeSuitedForEdt,
             recipeCuisineEdt,
@@ -77,6 +78,7 @@ public class ViewRecipeActivity extends AppCompatActivity implements DatePickerD
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         recipeNameEdt = findViewById(R.id.idEdtRecipeName);
         recipeCookingTimeEdt = findViewById(R.id.idEdtRecipeCookingTime);
+        recipePrepTimeEdt = findViewById(R.id.idEdtRecipePrepTime);
         recipeServingsEdt = findViewById(R.id.idEdtRecipeServings);
         recipeSuitedForEdt = findViewById(R.id.idEdtRecipeSuitedFor);
         recipeCuisineEdt = findViewById(R.id.idEdtRecipeCuisine);
@@ -98,6 +100,7 @@ public class ViewRecipeActivity extends AppCompatActivity implements DatePickerD
         if (recipe != null){
             recipeNameEdt.setText(recipe.getRecipeName());
             recipeCookingTimeEdt.setText(recipe.getRecipeCookingTime());
+            recipePrepTimeEdt.setText(recipe.getRecipePrepTime());
             recipeServingsEdt.setText(recipe.getRecipeServings());
             recipeSuitedForEdt.setText(recipe.getRecipeSuitedFor());
             recipeCuisineEdt.setText(recipe.getRecipeCuisine());
@@ -113,6 +116,7 @@ public class ViewRecipeActivity extends AppCompatActivity implements DatePickerD
         // set input fields to non focusable
         recipeNameEdt.setFocusable(false);
         recipeCookingTimeEdt.setFocusable(false);
+        recipePrepTimeEdt.setFocusable(false);
         recipeServingsEdt.setFocusable(false);
         recipeSuitedForEdt.setFocusable(false);
         recipeCuisineEdt.setFocusable(false);
@@ -123,6 +127,7 @@ public class ViewRecipeActivity extends AppCompatActivity implements DatePickerD
         // disable input fields
         recipeNameEdt.setEnabled(false);
         recipeCookingTimeEdt.setEnabled(false);
+        recipePrepTimeEdt.setEnabled(false);
         recipeServingsEdt.setEnabled(false);
         recipeSuitedForEdt.setEnabled(false);
         recipeCuisineEdt.setEnabled(false);
@@ -133,6 +138,7 @@ public class ViewRecipeActivity extends AppCompatActivity implements DatePickerD
         // disable input fields cursor visibility
         recipeNameEdt.setCursorVisible(false);
         recipeCookingTimeEdt.setCursorVisible(false);
+        recipePrepTimeEdt.setCursorVisible(false);
         recipeServingsEdt.setCursorVisible(false);
         recipeSuitedForEdt.setCursorVisible(false);
         recipeCuisineEdt.setCursorVisible(false);
@@ -172,6 +178,7 @@ public class ViewRecipeActivity extends AppCompatActivity implements DatePickerD
         String currentDateStringLong = DateFormat.getDateInstance(DateFormat.FULL).format(calendar.getTime());
         String recipeName = Objects.requireNonNull(recipeNameEdt.getText()).toString();
         String recipeCookingTime = Objects.requireNonNull(recipeCookingTimeEdt.getText()).toString();
+        String recipePrepTime = Objects.requireNonNull(recipePrepTimeEdt.getText()).toString();
         String recipeServings = Objects.requireNonNull(recipeServingsEdt.getText()).toString();
         String recipeSuitedFor = Objects.requireNonNull(recipeSuitedForEdt.getText()).toString();
         String recipeCuisine = Objects.requireNonNull(recipeCuisineEdt.getText()).toString();

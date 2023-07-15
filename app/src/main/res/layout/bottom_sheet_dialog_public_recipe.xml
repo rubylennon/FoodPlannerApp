@@ -2,8 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/idRLBSheet"
-    android:background="@color/blue_shade_3">
+    android:id="@+id/idRLBSheet_Public"
+    android:background="@color/green_shade_3">
 
     <TextView
         android:id="@+id/idTVRecipeName"
@@ -13,9 +13,10 @@
         android:layout_marginTop="4dp"
         android:layout_marginEnd="4dp"
         android:layout_marginBottom="4dp"
+        android:gravity="center_vertical"
         android:padding="4dp"
         android:text="@string/recipe_name"
-        android:textColor="@color/blue_shade_2"
+        android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold" />
 
@@ -26,7 +27,22 @@
         android:layout_below="@id/idTVRecipeName"
         android:src="@mipmap/ic_launcher"
         android:padding="4dp"
-        android:layout_centerVertical="true" />
+        android:layout_centerVertical="true"
+        android:contentDescription="@string/picture_of_recipe" />
+
+    <TextView
+        android:id="@+id/idTVDescriptionLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/idTVRecipeName"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="4dp"
+        android:layout_toEndOf="@id/idIVRecipe"
+        android:padding="3dp"
+        android:text="Description:"
+        android:textColor="@color/black" />
 
     <TextView
         android:id="@+id/idTVDescription"
@@ -37,10 +53,10 @@
         android:layout_marginTop="4dp"
         android:layout_marginEnd="4dp"
         android:layout_marginBottom="4dp"
-        android:layout_toRightOf="@id/idIVRecipe"
+        android:layout_toEndOf="@id/idIVRecipe"
         android:padding="3dp"
         android:text="@string/description"
-        android:textColor="@color/blue_shade_2" />
+        android:textColor="@color/black" />
 
     <TextView
         android:id="@+id/idTVSuitedFor"
@@ -51,10 +67,10 @@
         android:layout_marginTop="4dp"
         android:layout_marginEnd="4dp"
         android:layout_marginBottom="4dp"
-        android:layout_toRightOf="@id/idIVRecipe"
+        android:layout_toEndOf="@id/idIVRecipe"
         android:padding="3dp"
         android:text="Suitable For"
-        android:textColor="@color/blue_shade_2" />
+        android:textColor="@color/black" />
 
     <TextView
         android:id="@+id/idTVCookingTime"
@@ -68,37 +84,25 @@
         android:layout_toRightOf="@id/idIVRecipe"
         android:padding="3dp"
         android:text="@string/cooking_time"
-        android:textColor="@color/blue_shade_2"
-        android:textSize="14sp"
-        android:textStyle="bold" />
+        android:textColor="@color/black"
+        android:textSize="14sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:weightSum="2"
         android:id="@+id/idBtnGroup1"
+        android:gravity="center"
         android:layout_below="@id/idTVCookingTime">
 
         <Button
-            android:id="@+id/idBtnEdit"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_margin="4dp"
-            android:text="@string/edit_recipe"
-            android:textAllCaps="false"
-            android:backgroundTint="@android:color/holo_red_light"
-            android:textColor="@color/white" />
-
-        <Button
             android:id="@+id/idBtnViewDetails"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:gravity="center"
             android:layout_margin="4dp"
-            android:text="@string/view_details"
-            android:textAllCaps="false"
+            android:text="@string/view_recipe_details"
+            android:textAllCaps="true"
             android:textColor="@color/white" />
 
     </LinearLayout>

@@ -21,7 +21,7 @@
 
     <LinearLayout
         android:id="@+id/buttonSetOne"
-        android:layout_width="420dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/searchView"
         android:layout_centerHorizontal="true"
@@ -32,17 +32,17 @@
             android:id="@+id/BtnIngredientsFilter"
             android:layout_width="0dp"
             android:minWidth="320dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="9dp"
+            android:layout_height="match_parent"
+            android:layout_margin="3.5dp"
             android:layout_weight="1"
-            android:text="@string/ingredients_search"
+            android:text="@string/ingredient_search"
             tools:ignore="ButtonStyle" />
 
         <Button
             android:id="@+id/BtnSuitabilityFilter"
             android:layout_width="0dp"
-            android:layout_margin="9dp"
-            android:layout_height="wrap_content"
+            android:layout_margin="3.5dp"
+            android:layout_height="match_parent"
             android:minWidth="320dp"
             android:layout_weight="1"
             android:text="@string/suitability_search"
@@ -51,17 +51,18 @@
 
     <LinearLayout
         android:id="@+id/buttonSetTwo"
-        android:layout_width="420dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/buttonSetOne"
+        android:layout_centerHorizontal="true"
         android:weightSum="2"
         android:orientation="horizontal" >
 
         <Button
             android:id="@+id/BtnCuisineFilter"
             android:layout_width="0dp"
-            android:layout_height="52dp"
-            android:layout_margin="5dp"
+            android:layout_height="match_parent"
+            android:layout_margin="3.5dp"
             android:minWidth="320dp"
             android:layout_weight="1"
             android:text="@string/cuisine_search"
@@ -70,8 +71,8 @@
         <Button
             android:id="@+id/clearSearch"
             android:layout_width="0dp"
-            android:layout_height="52dp"
-            android:layout_margin="5dp"
+            android:layout_height="match_parent"
+            android:layout_margin="3.5dp"
             android:layout_weight="1"
             android:minWidth="320dp"
             android:backgroundTint="@android:color/holo_purple"
@@ -87,7 +88,7 @@
         android:layout_below="@id/buttonSetTwo"
         android:layout_margin="5dp"
         app:cardCornerRadius="10dp"
-        android:backgroundTint="@color/green_shade_1">
+        android:backgroundTint="@color/white">
 
         <TextView
             android:id="@+id/appliedSearchInfoTV"
@@ -96,7 +97,7 @@
             android:layout_below="@id/buttonSetTwo"
             android:padding="5dp"
             android:text=""
-            android:background="@android:color/holo_orange_light"/>
+            android:background="@color/white"/>
 
     </androidx.cardview.widget.CardView>
 

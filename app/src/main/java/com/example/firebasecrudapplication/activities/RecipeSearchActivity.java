@@ -120,7 +120,7 @@ public class RecipeSearchActivity extends AppCompatActivity
         ingredientsFilteredRecipesList = new ArrayList<>();
         suitabilityFilteredRecipesList = new ArrayList<>();
         nameFilteredRecipesList = new ArrayList<>();
-        bottomSheetRL = findViewById(R.id.idRLBSheet);
+        bottomSheetRL = findViewById(R.id.idRLBSheet_Search);
 
         // recipe RV adapter config
         recipeRVAdapter = new RecipeRVAdapter(originalRecipesList, this,
@@ -703,7 +703,7 @@ public class RecipeSearchActivity extends AppCompatActivity
     @SuppressLint("SetTextI18n")
     private void displayBottomSheet(Recipe recipe){
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
-        View layout = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_dialog,bottomSheetRL);
+        View layout = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_dialog_recipe_search,bottomSheetRL);
         bottomSheetDialog.setContentView(layout);
         bottomSheetDialog.setCancelable(false);
         bottomSheetDialog.setCanceledOnTouchOutside(true);
@@ -712,22 +712,19 @@ public class RecipeSearchActivity extends AppCompatActivity
         TextView recipeNameTV = layout.findViewById(R.id.idTVRecipeName);
         TextView recipeDescTV = layout.findViewById(R.id.idTVDescription);
         TextView recipeSuitedForTV = layout.findViewById(R.id.idTVSuitedFor);
+        TextView recipeIngredientsTV = layout.findViewById(R.id.idTVIngredients);
+        TextView recipeCuisineTV = layout.findViewById(R.id.idTVCuisine);
         TextView recipeCookingTimeTV = layout.findViewById(R.id.idTVCookingTime);
         ImageView recipeIV = layout.findViewById(R.id.idIVRecipe);
-        Button editBtn = layout.findViewById(R.id.idBtnEdit);
         Button viewDetailsBtn = layout.findViewById(R.id.idBtnViewDetails);
 
         recipeNameTV.setText(recipe.getRecipeName());
         recipeDescTV.setText(recipe.getRecipeDescription());
         recipeSuitedForTV.setText("Suitable For: " + recipe.getRecipeSuitedFor());
+        recipeIngredientsTV.setText("Ingredients: " + recipe.getRecipeIngredients());
+        recipeCuisineTV.setText("Cuisine: " + recipe.getRecipeCuisine());
         recipeCookingTimeTV.setText("Cooking Time: " + recipe.getRecipeCookingTime());
         Picasso.get().load(recipe.getRecipeImg()).into(recipeIV);
-
-        editBtn.setOnClickListener(v -> {
-            Intent i = new Intent(RecipeSearchActivity.this, EditRecipeActivity.class);
-            i.putExtra("recipe", recipe);
-            startActivity(i);
-        });
 
         viewDetailsBtn.setOnClickListener(v -> {
             Intent i = new Intent(RecipeSearchActivity.this, ViewRecipeActivity.class);

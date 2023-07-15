@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements RecipeRVAdapter.R
     @SuppressLint("SetTextI18n")
     private void displayBottomSheet(Recipe recipe){
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
-        View layout = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_dialog,bottomSheetRL);
+        View layout = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_dialog_user_recipe,bottomSheetRL);
         bottomSheetDialog.setContentView(layout);
         bottomSheetDialog.setCancelable(false);
         bottomSheetDialog.setCanceledOnTouchOutside(true);

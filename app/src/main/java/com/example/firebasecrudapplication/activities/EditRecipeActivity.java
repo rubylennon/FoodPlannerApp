@@ -54,6 +54,7 @@ public class EditRecipeActivity extends AppCompatActivity {
     // text input variables
     private TextInputEditText recipeNameEdt,
             recipeCookingTimeEdt,
+            recipePrepTimeEdt,
             recipeServingsEdt,
             recipeImgEdt,
             recipeLinkEdt,
@@ -97,6 +98,7 @@ public class EditRecipeActivity extends AppCompatActivity {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         recipeNameEdt = findViewById(R.id.idEdtRecipeName);
         recipeCookingTimeEdt = findViewById(R.id.idEdtRecipeCookingTime);
+        recipePrepTimeEdt = findViewById(R.id.idEdtRecipePrepTime);
         recipeServingsEdt = findViewById(R.id.idEdtRecipeServings);
         recipeCuisineEdt = findViewById(R.id.selectCuisineTV);
         recipeSuitabilityEdt = findViewById(R.id.selectSuitabilityTV);
@@ -127,6 +129,7 @@ public class EditRecipeActivity extends AppCompatActivity {
         if (recipe != null){
             recipeNameEdt.setText(recipe.getRecipeName());
             recipeCookingTimeEdt.setText(recipe.getRecipeCookingTime());
+            recipePrepTimeEdt.setText(recipe.getRecipePrepTime());
             recipeServingsEdt.setText(recipe.getRecipeServings());
             recipeSuitabilityEdt.setText(recipe.getRecipeSuitedFor());
             String previouslySelectedSuitability = recipe.getRecipeSuitedFor();
@@ -401,6 +404,8 @@ public class EditRecipeActivity extends AppCompatActivity {
                 Toast.makeText(EditRecipeActivity.this, "Please add a Recipe Name", Toast.LENGTH_SHORT).show();
             }else if(Objects.requireNonNull(recipeCookingTimeEdt.getText()).toString().equals("")){
                 Toast.makeText(EditRecipeActivity.this, "Please add a Cooking Time", Toast.LENGTH_SHORT).show();
+            }else if(Objects.requireNonNull(recipePrepTimeEdt.getText()).toString().equals("")){
+                Toast.makeText(EditRecipeActivity.this, "Please add a Preparation Time", Toast.LENGTH_SHORT).show();
             }else if(Objects.requireNonNull(recipeServingsEdt.getText()).toString().equals("")){
                 Toast.makeText(EditRecipeActivity.this, "Please add Recipe Total Servings", Toast.LENGTH_SHORT).show();
             }else if(recipeSuitabilityEdt.getText().toString().equals("")){
@@ -439,6 +444,7 @@ public class EditRecipeActivity extends AppCompatActivity {
                 // assign values to variable which will be used to update recipe object
                 String recipeName = Objects.requireNonNull(recipeNameEdt.getText()).toString();
                 String recipeCookingTime = Objects.requireNonNull(recipeCookingTimeEdt.getText()).toString();
+                String recipePrepTime = Objects.requireNonNull(recipePrepTimeEdt.getText()).toString();
                 String recipeServings = Objects.requireNonNull(recipeServingsEdt.getText()).toString();
                 String recipeSuitedFor = recipeSuitabilityEdt.getText().toString();
                 String recipeCuisine = recipeCuisineEdt.getText().toString();
@@ -453,6 +459,7 @@ public class EditRecipeActivity extends AppCompatActivity {
                 Map<String,Object> map = new HashMap<>();
                 map.put("recipeName",recipeName);
                 map.put("recipeCookingTime",recipeCookingTime);
+                map.put("recipePrepTime",recipePrepTime);
                 map.put("recipeServings",recipeServings);
                 map.put("recipeSuitedFor",recipeSuitedFor);
                 map.put("recipeCuisine",recipeCuisine);
@@ -498,7 +505,7 @@ public class EditRecipeActivity extends AppCompatActivity {
     // Ingredient list alert dialog builder for adding ingredients to recipe
     private void buildDialogAddIngredient() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        View view = getLayoutInflater().inflate(R.layout.dialog, null);
+        View view = getLayoutInflater().inflate(R.layout.new_ingredient_dialog, null);
 
         // variable for storing the user input ingredient value from the alert dialog
         final EditText name = view.findViewById(R.id.nameEdit);

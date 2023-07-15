@@ -49,6 +49,7 @@ public class AddRecipeActivity extends AppCompatActivity {
     // variables
     private TextInputEditText recipeNameEdt,
             recipeCookingTimeEdt,
+            recipePrepTimeEdt,
             recipeServingsEdt,
             recipeImgEdt,
             recipeLinkEdt,
@@ -86,6 +87,7 @@ public class AddRecipeActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         recipeNameEdt = findViewById(R.id.idEdtRecipeName);
         recipeCookingTimeEdt = findViewById(R.id.idEdtRecipeCookingTime);
+        recipePrepTimeEdt = findViewById(R.id.idEdtRecipePrepTime);
         recipeServingsEdt = findViewById(R.id.idEdtRecipeServings);
         recipeCuisineEdt = findViewById(R.id.selectCuisineTV);
         recipeSuitabilityEdt = findViewById(R.id.selectSuitabilityTV);
@@ -260,6 +262,8 @@ public class AddRecipeActivity extends AppCompatActivity {
                 Toast.makeText(AddRecipeActivity.this, "Please add a Recipe Name", Toast.LENGTH_SHORT).show();
             }else if(Objects.requireNonNull(recipeCookingTimeEdt.getText()).toString().equals("")){
                 Toast.makeText(AddRecipeActivity.this, "Please add a Cooking Time", Toast.LENGTH_SHORT).show();
+            }else if(Objects.requireNonNull(recipePrepTimeEdt.getText()).toString().equals("")){
+                Toast.makeText(AddRecipeActivity.this, "Please add a Preparation Time", Toast.LENGTH_SHORT).show();
             }else if(Objects.requireNonNull(recipeServingsEdt.getText()).toString().equals("")){
                 Toast.makeText(AddRecipeActivity.this, "Please add Recipe Total Servings", Toast.LENGTH_SHORT).show();
             }else if(recipeSuitabilityEdt.getText().toString().equals("")){
@@ -301,6 +305,7 @@ public class AddRecipeActivity extends AppCompatActivity {
                 // get user input text from fields
                 String recipeName = recipeNameEdt.getText().toString();
                 String recipeCookingTime = recipeCookingTimeEdt.getText().toString();
+                String recipePrepTime = recipePrepTimeEdt.getText().toString();
                 String recipeServings = recipeServingsEdt.getText().toString();
                 String recipeSuitedFor = recipeSuitabilityEdt.getText().toString();
                 String recipeCuisine = recipeCuisineEdt.getText().toString();
@@ -336,7 +341,7 @@ public class AddRecipeActivity extends AppCompatActivity {
 
     private void buildDialogAddIngredient() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        View view = getLayoutInflater().inflate(R.layout.dialog, null);
+        View view = getLayoutInflater().inflate(R.layout.new_ingredient_dialog, null);
 
         final EditText name = view.findViewById(R.id.nameEdit);
 

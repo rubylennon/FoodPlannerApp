@@ -72,7 +72,7 @@ public class PublicRecipesActivity extends AppCompatActivity implements RecipeRV
         DatabaseReference databaseReference = firebaseDatabase.getReference("Recipes");
         query = databaseReference.orderByChild("recipePublic").equalTo(true);
         recipeArrayList = new ArrayList<>();
-        bottomSheetRL = findViewById(R.id.idRLBSheet);
+        bottomSheetRL = findViewById(R.id.idRLBSheet_Public);
         mAuth = FirebaseAuth.getInstance();
         recipeRVAdapter = new RecipeRVAdapter(recipeArrayList, this, this);
         recipeRV.setLayoutManager(new LinearLayoutManager(this));
@@ -123,7 +123,7 @@ public class PublicRecipesActivity extends AppCompatActivity implements RecipeRV
     @SuppressLint("SetTextI18n")
     private void displayBottomSheet(Recipe recipe){
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
-        View layout = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_dialog_without_edit,bottomSheetRL);
+        View layout = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_dialog_public_recipe,bottomSheetRL);
         bottomSheetDialog.setContentView(layout);
         bottomSheetDialog.setCancelable(false);
         bottomSheetDialog.setCanceledOnTouchOutside(true);
