@@ -28,7 +28,6 @@
                     android:layout_height="match_parent"
                     android:text="@string/ingredient"
                     android:gravity="center_vertical"
-                    android:textStyle="italic"
                     android:textColor="@color/black"
                     android:textSize="20sp"/>
 

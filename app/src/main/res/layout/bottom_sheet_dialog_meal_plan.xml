@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/idRLBSheetMealPlan"
-    android:background="@color/blue_shade_3">
+    android:background="@android:color/holo_purple">
 
     <TextView
         android:id="@+id/idTVRecipeName"
@@ -16,7 +17,7 @@
         android:gravity="center_vertical"
         android:padding="4dp"
         android:text="@string/recipe_name"
-        android:textColor="@color/blue_shade_2"
+        android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold" />
 
@@ -26,7 +27,21 @@
         android:layout_height="100dp"
         android:layout_below="@id/idTVRecipeName"
         android:padding="4dp"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@mipmap/ic_launcher"
+        android:contentDescription="@string/picture_of_recipe" />
+
+    <TextView
+        android:id="@+id/idTVDateLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/idTVRecipeName"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_toEndOf="@id/idIVRecipe"
+        android:padding="3dp"
+        android:text="@string/date_label"
+        android:textStyle="bold"
+        android:textColor="@color/black" />
 
     <TextView
         android:id="@+id/idTVDate"
@@ -36,49 +51,101 @@
         android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="4dp"
-        android:layout_marginBottom="4dp"
-        android:layout_toRightOf="@id/idIVRecipe"
+        android:layout_toEndOf="@id/idTVDateLabel"
         android:padding="3dp"
-        android:text="Date"
-        android:textColor="@color/blue_shade_2" />
+        android:text=""
+        android:textColor="@color/black" />
 
     <TextView
-        android:id="@+id/idTVDescription"
+        android:id="@+id/idTVServesLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/idTVDate"
+        android:layout_marginStart="4dp"
+        android:layout_toEndOf="@id/idIVRecipe"
+        android:layout_marginTop="4dp"
+        android:padding="3dp"
+        android:textStyle="bold"
+        android:text="@string/serves_label"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/idTVServes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/idTVDate"
         android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_toEndOf="@id/idTVServesLabel"
+        android:padding="3dp"
+        android:text=""
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/idTVPrepTimeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/idTVServes"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_toEndOf="@id/idIVRecipe"
+        android:padding="3dp"
+        android:textStyle="bold"
+        android:text="@string/preparation_time_label"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/idTVPreparationTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/idTVServes"
+        android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="4dp"
-        android:layout_marginBottom="4dp"
-        android:layout_toRightOf="@id/idIVRecipe"
+        android:layout_toEndOf="@id/idTVPrepTimeLabel"
         android:padding="3dp"
-        android:text="@string/description"
-        android:textColor="@color/blue_shade_2" />
+        android:text=""
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/idTVCookingTimeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/idTVPreparationTime"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_toEndOf="@id/idIVRecipe"
+        android:padding="3dp"
+        android:textStyle="bold"
+        android:text="@string/cooking_time_label"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/idTVCookingTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/idTVDescription"
+        android:layout_below="@id/idTVPreparationTime"
         android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="4dp"
-        android:layout_marginBottom="4dp"
-        android:layout_toRightOf="@id/idIVRecipe"
+        android:layout_toEndOf="@id/idTVCookingTimeLabel"
         android:padding="3dp"
-        android:text="@string/cooking_time"
-        android:textColor="@color/blue_shade_2"
-        android:textSize="14sp"
-        android:textStyle="bold" />
+        android:text=""
+        android:textColor="@color/black"
+        android:textSize="14sp" />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:weightSum="2"
+        android:gravity="center"
         android:id="@+id/idBtnGroup1"
-        android:layout_below="@id/idTVCookingTime">
+        android:layout_below="@id/idTVCookingTimeLabel">
 
         <Button
             android:id="@+id/idBtnDelete"
@@ -86,10 +153,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_margin="4dp"
-            android:text="Remove Meal From Plan"
-            android:textAllCaps="false"
-            android:backgroundTint="@android:color/holo_red_light"
-            android:textColor="@color/white" />
+            android:text="@string/remove_meal_from_plan"
+            android:backgroundTint="@android:color/holo_red_dark"
+            android:textColor="@color/white"
+            tools:ignore="ButtonStyle" />
 
         <Button
             android:id="@+id/idBtnViewDetails"
@@ -98,8 +165,8 @@
             android:layout_weight="1"
             android:layout_margin="4dp"
             android:text="@string/recipe_details_shopping_list"
-            android:textAllCaps="false"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            tools:ignore="ButtonStyle" />
 
     </LinearLayout>
 

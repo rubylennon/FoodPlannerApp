@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blue_shade_1"
-    tools:context=".ViewRecipeActivity" >
+    tools:context=".activities.ViewRecipeActivity" >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -14,16 +14,18 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:gravity="center"
             android:orientation="vertical" >
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+                android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="10dp"
                 android:inputType="none"
-                android:hint="Name"
+                android:hint="@string/name"
                 style="@style/TextInputLayout"
                 android:padding="5dp"
                 android:textColorHint="@color/blue_shade_2"
@@ -40,13 +42,13 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+                android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:inputType="none"
-                android:hint="Cooking Time"
+                android:hint="@string/cooking_time"
                 style="@style/TextInputLayout"
                 android:padding="5dp"
                 android:textColorHint="@color/blue_shade_2"
@@ -63,13 +65,36 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+                android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:inputType="none"
-                android:hint="Serves"
+                android:hint="@string/preparation_time"
+                style="@style/TextInputLayout"
+                android:padding="5dp"
+                android:textColorHint="@color/blue_shade_2"
+                app:hintTextColor="@color/blue_shade_2" >
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/idEdtRecipePrepTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:importantForAutofill="no"
+                    android:inputType="none"
+                    android:textColor="@color/blue_shade_2"
+                    android:textColorHint="@color/blue_shade_2"
+                    android:textSize="14sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:inputType="none"
+                android:hint="@string/serves"
                 style="@style/TextInputLayout"
                 android:padding="5dp"
                 android:textColorHint="@color/blue_shade_2"
@@ -86,13 +111,13 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+                android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:inputType="none"
-                android:hint="Suitable For"
+                android:hint="@string/suitable_for"
                 style="@style/TextInputLayout"
                 android:padding="5dp"
                 android:textColorHint="@color/blue_shade_2"
@@ -109,13 +134,13 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+                android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:inputType="none"
-                android:hint="Cuisine"
+                android:hint="@string/cuisine"
                 style="@style/TextInputLayout"
                 android:padding="5dp"
                 android:textColorHint="@color/blue_shade_2"
@@ -132,13 +157,13 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:inputType="none"
-                android:hint="Description"
+                android:hint="@string/description"
                 style="@style/TextInputLayout"
                 android:padding="5dp"
                 android:textColorHint="@color/blue_shade_2"
@@ -155,8 +180,8 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
@@ -178,8 +203,8 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
@@ -202,7 +227,7 @@
 
             <Switch
                 android:id="@+id/idPublicSwitch"
-                android:layout_width="match_parent"
+                android:layout_width="320dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
@@ -211,40 +236,35 @@
                 android:text="@string/recipe_public"
                 tools:ignore="UseSwitchCompatOrMaterialXml" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
+            <Button
+                android:id="@+id/idBtnAddToMealPlan"
+                android:layout_width="320dp"
+                android:layout_height="55dp"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
                 android:layout_marginTop="20dp"
-                android:gravity="center"
-                android:layout_marginBottom="20dp"
-                android:weightSum="2"
-                android:orientation="horizontal" >
+                android:text="@string/add_recipe_to_meal_plan"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                app:shapeAppearance="@style/ShapeAppearance.MyApp.LargeComponent"
+                app:drawableEndCompat="@drawable/baseline_calendar_month_24"
+                android:backgroundTint="@android:color/holo_purple" />
 
-                <Button
-                    android:id="@+id/idBtnViewSourceRecipe"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:layout_weight="1"
-                    android:text="@string/view_source_recipe_in_browser"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:background="@drawable/custom_button_back" />
+            <Button
+                android:id="@+id/idBtnViewSourceRecipe"
+                android:layout_width="320dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="40dp"
+                android:text="@string/view_recipe_in_browser"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                app:drawableEndCompat="@drawable/baseline_open_in_browser_24"
+                android:background="@drawable/custom_button_back" />
 
-                <Button
-                    android:id="@+id/idBtnAddToMealPlan"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:layout_weight="1"
-                    android:text="Add Recipe to Meal Plan"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:background="@drawable/custom_button_purple"/>
-
-            </LinearLayout>
         </LinearLayout>
 
         <ProgressBar
