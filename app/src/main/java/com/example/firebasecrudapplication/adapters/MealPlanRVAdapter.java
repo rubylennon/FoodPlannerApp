@@ -34,7 +34,8 @@ public class MealPlanRVAdapter extends RecyclerView.Adapter<MealPlanRVAdapter.Vi
     private final Context context;
     private final MealPlanClickInterface mealPlanClickInterface;
 
-    public MealPlanRVAdapter(ArrayList<Meal> mealArrayList, Context context, MealPlanClickInterface mealPlanClickInterface) {
+    public MealPlanRVAdapter(ArrayList<Meal> mealArrayList, Context context,
+                             MealPlanClickInterface mealPlanClickInterface) {
         this.mealArrayList = mealArrayList;
         this.context = context;
         this.mealPlanClickInterface = mealPlanClickInterface;
@@ -42,8 +43,10 @@ public class MealPlanRVAdapter extends RecyclerView.Adapter<MealPlanRVAdapter.Vi
 
     @NonNull
     @Override
-    public MealPlanRVAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.meal_rv_item,parent, false);
+    public MealPlanRVAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
+                                                           int viewType) {
+        View view = LayoutInflater.from(context)
+                .inflate(R.layout.meal_rv_item,parent, false);
         return new ViewHolder(view);
     }
 
@@ -59,7 +62,8 @@ public class MealPlanRVAdapter extends RecyclerView.Adapter<MealPlanRVAdapter.Vi
 
     private void setAnimation(View itemView, int position){
         if(position > lastPos){
-            Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left);
+            Animation animation = AnimationUtils.loadAnimation(context,
+                    android.R.anim.slide_in_left);
             itemView.setAnimation(animation);
             lastPos = position;
         }

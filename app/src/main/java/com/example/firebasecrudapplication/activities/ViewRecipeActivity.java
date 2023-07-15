@@ -191,7 +191,7 @@ public class ViewRecipeActivity extends AppCompatActivity implements DatePickerD
         Boolean recipePublic = recipePublicEdt.isChecked();
         String mealPlanID = databaseReferenceMealPlan.push().getKey();
 
-        Meal meal = new Meal(currentDateStringShort, mealPlanID, recipeName, recipeCookingTime, recipeServings, recipeSuitedFor, recipeCuisine, recipeImg, recipeLink, recipeDesc, recipeMethod, recipeIngredients, recipePublic, recipeID, userID, currentDateStringLong);
+        Meal meal = new Meal(currentDateStringShort, mealPlanID, recipeName, recipeCookingTime, recipePrepTime, recipeServings, recipeSuitedFor, recipeCuisine, recipeImg, recipeLink, recipeDesc, recipeMethod, recipeIngredients, recipePublic, recipeID, userID, currentDateStringLong);
         assert mealPlanID != null;
         // create new meal plan object
         databaseReferenceMealPlan.child(mealPlanID).setValue(meal);

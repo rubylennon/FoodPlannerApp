@@ -318,7 +318,7 @@ public class AddRecipeActivity extends AppCompatActivity {
                 recipeID = databaseReference.push().getKey();
 
                 // build the object using the above variables
-                Recipe recipe = new Recipe(recipeName,recipeCookingTime,recipeServings,recipeSuitedFor,recipeCuisine,recipeImg,recipeLink,recipeDesc,recipeMethod,recipeIngredients,recipePublic,recipeID,userID);
+                Recipe recipe = new Recipe(recipeName,recipeCookingTime,recipePrepTime,recipeServings,recipeSuitedFor,recipeCuisine,recipeImg,recipeLink,recipeDesc,recipeMethod,recipeIngredients,recipePublic,recipeID,userID);
 
                 // add the new recipe to the database
                 databaseReference.addValueEventListener(new ValueEventListener() {

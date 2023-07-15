@@ -18,6 +18,7 @@ public class Meal implements Parcelable {
     // variables
     private String recipeName,
             recipeCookingTime,
+            recipePrepTime,
             recipeServings,
             recipeSuitedFor,
             recipeCuisine,
@@ -37,11 +38,16 @@ public class Meal implements Parcelable {
     public Meal(){
     }
 
-    public Meal(String dateShort, String mealPlanID, String recipeName, String recipeCookingTime, String recipeServings, String recipeSuitedFor, String recipeCuisine, String recipeImg, String recipeLink, String recipeDescription, String recipeMethod, String recipeIngredients, Boolean recipePublic, String recipeID, String userID, String dateLong) {
+    public Meal(String dateShort, String mealPlanID, String recipeName, String recipeCookingTime,
+                String recipePrepTime, String recipeServings, String recipeSuitedFor,
+                String recipeCuisine, String recipeImg, String recipeLink, String recipeDescription,
+                String recipeMethod, String recipeIngredients, Boolean recipePublic,
+                String recipeID, String userID, String dateLong) {
         this.dateShort = dateShort;
         this.mealPlanID = mealPlanID;
         this.recipeName = recipeName;
         this.recipeCookingTime = recipeCookingTime;
+        this.recipePrepTime = recipePrepTime;
         this.recipeServings = recipeServings;
         this.recipeSuitedFor = recipeSuitedFor;
         this.recipeCuisine = recipeCuisine;
@@ -61,6 +67,7 @@ public class Meal implements Parcelable {
         mealPlanID = in.readString();
         recipeName = in.readString();
         recipeCookingTime = in.readString();
+        recipePrepTime = in.readString();
         recipeServings = in.readString();
         recipeSuitedFor = in.readString();
         recipeCuisine = in.readString();
@@ -99,6 +106,10 @@ public class Meal implements Parcelable {
 
     public String getRecipeCookingTime() {
         return recipeCookingTime;
+    }
+
+    public String getRecipePrepTime() {
+        return recipePrepTime;
     }
 
     public String getRecipeServings() {
@@ -166,6 +177,7 @@ public class Meal implements Parcelable {
         dest.writeString(mealPlanID);
         dest.writeString(recipeName);
         dest.writeString(recipeCookingTime);
+        dest.writeString(recipePrepTime);
         dest.writeString(recipeServings);
         dest.writeString(recipeSuitedFor);
         dest.writeString(recipeCuisine);

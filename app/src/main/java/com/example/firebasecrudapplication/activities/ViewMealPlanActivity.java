@@ -68,6 +68,7 @@ public class ViewMealPlanActivity extends AppCompatActivity {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         TextInputEditText recipeNameEdt = findViewById(R.id.idEdtRecipeName);
         TextInputEditText recipeCookingTimeEdt = findViewById(R.id.idEdtRecipeCookingTime);
+        TextInputEditText recipePrepTimeEdt = findViewById(R.id.idEdtRecipePrepTime);
         TextInputEditText recipeServingsEdt = findViewById(R.id.idEdtRecipeServings);
         TextInputEditText recipeSuitedForEdt = findViewById(R.id.idEdtRecipeSuitedFor);
         TextInputEditText recipeCuisineEdt = findViewById(R.id.idEdtRecipeCuisine);
@@ -84,6 +85,7 @@ public class ViewMealPlanActivity extends AppCompatActivity {
             mealPlanDate = meal.getDateShort();
             recipeNameEdt.setText(meal.getRecipeName());
             recipeCookingTimeEdt.setText(meal.getRecipeCookingTime());
+            recipePrepTimeEdt.setText(meal.getRecipePrepTime());
             recipeServingsEdt.setText(meal.getRecipeServings());
             recipeSuitedForEdt.setText(meal.getRecipeSuitedFor());
             recipeCuisineEdt.setText(meal.getRecipeCuisine());
@@ -100,6 +102,7 @@ public class ViewMealPlanActivity extends AppCompatActivity {
         // set input fields to non focusable
         recipeNameEdt.setFocusable(false);
         recipeCookingTimeEdt.setFocusable(false);
+        recipePrepTimeEdt.setFocusable(false);
         recipeServingsEdt.setFocusable(false);
         recipeSuitedForEdt.setFocusable(false);
         recipeCuisineEdt.setFocusable(false);
@@ -110,6 +113,7 @@ public class ViewMealPlanActivity extends AppCompatActivity {
         // disable input fields
         recipeNameEdt.setEnabled(false);
         recipeCookingTimeEdt.setEnabled(false);
+        recipePrepTimeEdt.setEnabled(false);
         recipeServingsEdt.setEnabled(false);
         recipeSuitedForEdt.setEnabled(false);
         recipeCuisineEdt.setEnabled(false);
@@ -120,6 +124,7 @@ public class ViewMealPlanActivity extends AppCompatActivity {
         // disable input fields cursor visibility
         recipeNameEdt.setCursorVisible(false);
         recipeCookingTimeEdt.setCursorVisible(false);
+        recipePrepTimeEdt.setCursorVisible(false);
         recipeServingsEdt.setCursorVisible(false);
         recipeSuitedForEdt.setCursorVisible(false);
         recipeCuisineEdt.setCursorVisible(false);
