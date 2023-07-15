@@ -14,6 +14,7 @@ package com.example.firebasecrudapplication.activities;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.SpannableString;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -129,19 +130,31 @@ public class PublicRecipesActivity extends AppCompatActivity implements RecipeRV
         bottomSheetDialog.setCanceledOnTouchOutside(true);
         bottomSheetDialog.show();
 
+        // get the bottom sheet dialog elements by ID and assign to local variables
         TextView recipeNameTV = layout.findViewById(R.id.idTVRecipeName);
         TextView recipeDescTV = layout.findViewById(R.id.idTVDescription);
-        TextView recipeSuitedForTV = layout.findViewById(R.id.idTVSuitedFor);
         TextView recipeCookingTimeTV = layout.findViewById(R.id.idTVCookingTime);
+        TextView recipePrepTimeTV = layout.findViewById(R.id.idTVPreparationTime);
+        TextView recipeServesTV = layout.findViewById(R.id.idTVServes);
         ImageView recipeIV = layout.findViewById(R.id.idIVRecipe);
         Button viewDetailsBtn = layout.findViewById(R.id.idBtnViewDetails);
 
-        // update the bottom sheet dialog with selected recipe details
+        // set text in bottom sheet dialog using selected recipe values
         recipeNameTV.setText(recipe.getRecipeName());
-        recipeDescTV.setText(recipe.getRecipeDescription());
-        recipeSuitedForTV.setText("Suitable For: " + recipe.getRecipeSuitedFor());
-        recipeCookingTimeTV.setText("Cooking Time: " + recipe.getRecipeCookingTime());
+        recipePrepTimeTV.setText(recipe.getRecipePrepTime() + "m");
+        recipeCookingTimeTV.setText(recipe.getRecipeCookingTime() + "m");
+        recipeServesTV.setText(recipe.getRecipeServings());
+
+        // load and display the recipe image using the recipe URL
         Picasso.get().load(recipe.getRecipeImg()).into(recipeIV);
+
+        // set recipe description and use spannable to partially style the text view
+        String DescriptionLabel = "Description: ";
+        String Description = DescriptionLabel + recipe.getRecipeDescription();
+        SpannableString content = new SpannableString(Description);
+        content.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), 0,
+                DescriptionLabel.length(), 0);
+        recipeDescTV.setText(content);
 
         // view recipe details button
         viewDetailsBtn.setOnClickListener(v -> {

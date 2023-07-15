@@ -15,6 +15,7 @@ package com.example.firebasecrudapplication.activities;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -715,17 +716,51 @@ public class RecipeSearchActivity extends AppCompatActivity
         TextView recipeIngredientsTV = layout.findViewById(R.id.idTVIngredients);
         TextView recipeCuisineTV = layout.findViewById(R.id.idTVCuisine);
         TextView recipeCookingTimeTV = layout.findViewById(R.id.idTVCookingTime);
+        TextView recipeServesTV = layout.findViewById(R.id.idTVServes);
+        TextView recipePrepTimeTV = layout.findViewById(R.id.idTVPreparationTime);
         ImageView recipeIV = layout.findViewById(R.id.idIVRecipe);
         Button viewDetailsBtn = layout.findViewById(R.id.idBtnViewDetails);
 
         recipeNameTV.setText(recipe.getRecipeName());
         recipeDescTV.setText(recipe.getRecipeDescription());
-        recipeSuitedForTV.setText("Suitable For: " + recipe.getRecipeSuitedFor());
-        recipeIngredientsTV.setText("Ingredients: " + recipe.getRecipeIngredients());
-        recipeCuisineTV.setText("Cuisine: " + recipe.getRecipeCuisine());
-        recipeCookingTimeTV.setText("Cooking Time: " + recipe.getRecipeCookingTime());
+        recipeCookingTimeTV.setText(recipe.getRecipeCookingTime());
+        recipeServesTV.setText(recipe.getRecipeServings());
+        recipePrepTimeTV.setText(recipe.getRecipeCookingTime());
         Picasso.get().load(recipe.getRecipeImg()).into(recipeIV);
 
+        // set recipe description and use spannable to partially style the text view
+        String descriptionLabel = "Description: ";
+        String description = descriptionLabel + recipe.getRecipeDescription();
+        SpannableString content_description = new SpannableString(description);
+        content_description.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), 0,
+                descriptionLabel.length(), 0);
+        recipeDescTV.setText(content_description);
+
+        // set recipe description and use spannable to partially style the text view
+        String CuisineLabel = "Cuisine: ";
+        String cuisine = CuisineLabel + recipe.getRecipeCuisine();
+        SpannableString content_cuisine = new SpannableString(cuisine);
+        content_cuisine.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), 0,
+                CuisineLabel.length(), 0);
+        recipeCuisineTV.setText(content_cuisine);
+
+        // set recipe description and use spannable to partially style the text view
+        String suitabilityLabel = "Suitable For: ";
+        String suitability = suitabilityLabel + recipe.getRecipeSuitedFor();
+        SpannableString content_suitability = new SpannableString(suitability);
+        content_suitability.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), 0,
+                suitabilityLabel.length(), 0);
+        recipeSuitedForTV.setText(content_suitability);
+
+        // set recipe description and use spannable to partially style the text view
+        String ingredientsLabel = "Ingredients: ";
+        String ingredients = ingredientsLabel + recipe.getRecipeIngredients();
+        SpannableString content_ingredients = new SpannableString(ingredients);
+        content_ingredients.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), 0,
+                ingredientsLabel.length(), 0);
+        recipeIngredientsTV.setText(content_ingredients);
+
+        // view recipe details button on click listener
         viewDetailsBtn.setOnClickListener(v -> {
             Intent i = new Intent(RecipeSearchActivity.this, ViewRecipeActivity.class);
             i.putExtra("recipe", recipe);
