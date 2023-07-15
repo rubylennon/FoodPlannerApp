@@ -14,6 +14,9 @@ package com.example.firebasecrudapplication.activities;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -196,6 +199,7 @@ public class MealPlanActivity extends AppCompatActivity implements MealPlanRVAda
         TextView recipeServesTV = layout.findViewById(R.id.idTVServes);
         TextView mealPlanDateTV = layout.findViewById(R.id.idTVDate);
         TextView recipeCookingTimeTV = layout.findViewById(R.id.idTVCookingTime);
+        TextView recipeDescriptionTV = layout.findViewById(R.id.idTVDescription);
         TextView recipePrepTimeTV = layout.findViewById(R.id.idTVPreparationTime);
         ImageView recipeIV = layout.findViewById(R.id.idIVRecipe);
         Button deleteBtn = layout.findViewById(R.id.idBtnDelete);
@@ -203,6 +207,14 @@ public class MealPlanActivity extends AppCompatActivity implements MealPlanRVAda
 
         recipeNameTV.setText(meal.getRecipeName());
         recipeServesTV.setText(meal.getRecipeServings());
+        String s = getString(R.string.styled_welcome_message);
+        // recipeDescriptionTV.setText(Html.fromHtml(s,Html.FROM_HTML_MODE_LEGACY) + meal.getRecipeDescription());
+        String Description = "Description: " + meal.getRecipeDescription();
+        SpannableString content = new SpannableString(Description);
+        content.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), 0, Description.length(), 0);
+
+        recipeDescriptionTV.setText(content);
+
         mealPlanDateTV.setText(meal.getDateShort());
         recipeCookingTimeTV.setText(meal.getRecipeCookingTime() + "m");
         recipePrepTimeTV.setText(meal.getRecipePrepTime() + "m");

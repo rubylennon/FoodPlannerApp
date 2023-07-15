@@ -107,6 +107,7 @@
     <string name="enter_recipe_preparation_time">Enter Recipe Preparation Time</string>
     <string name="preparation_time">Preparation Time</string>
     <string name="preparation_time_label">Preparation Time:</string>
+    <string name="styled_welcome_message"><b><i>Description: </i></b></string>
     <string-array name="cuisine_array">
         <item>Chinese</item>
         <item>Thai</item>
