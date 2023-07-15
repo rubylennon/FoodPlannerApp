@@ -196,6 +196,7 @@ public class MealPlanActivity extends AppCompatActivity implements MealPlanRVAda
         TextView recipeServesTV = layout.findViewById(R.id.idTVServes);
         TextView mealPlanDateTV = layout.findViewById(R.id.idTVDate);
         TextView recipeCookingTimeTV = layout.findViewById(R.id.idTVCookingTime);
+        TextView recipePrepTimeTV = layout.findViewById(R.id.idTVPreparationTime);
         ImageView recipeIV = layout.findViewById(R.id.idIVRecipe);
         Button deleteBtn = layout.findViewById(R.id.idBtnDelete);
         Button viewDetailsBtn = layout.findViewById(R.id.idBtnViewDetails);
@@ -203,7 +204,8 @@ public class MealPlanActivity extends AppCompatActivity implements MealPlanRVAda
         recipeNameTV.setText(meal.getRecipeName());
         recipeServesTV.setText(meal.getRecipeServings());
         mealPlanDateTV.setText(meal.getDateShort());
-        recipeCookingTimeTV.setText(meal.getRecipeCookingTime());
+        recipeCookingTimeTV.setText(meal.getRecipeCookingTime() + "m");
+        recipePrepTimeTV.setText(meal.getRecipePrepTime() + "m");
         Picasso.get().load(meal.getRecipeImg()).into(recipeIV);
 
         String mealPlanID = meal.getMealPlanID();

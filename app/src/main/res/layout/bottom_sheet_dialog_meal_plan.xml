@@ -37,7 +37,6 @@
         android:layout_below="@id/idTVRecipeName"
         android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
         android:layout_toEndOf="@id/idIVRecipe"
         android:padding="3dp"
         android:text="@string/date_label"
@@ -52,7 +51,6 @@
         android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="4dp"
-        android:layout_marginBottom="4dp"
         android:layout_toEndOf="@id/idTVDateLabel"
         android:padding="3dp"
         android:text=""
@@ -66,7 +64,6 @@
         android:layout_marginStart="4dp"
         android:layout_toEndOf="@id/idIVRecipe"
         android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
         android:padding="3dp"
         android:textStyle="bold"
         android:text="@string/serves_label"
@@ -80,20 +77,46 @@
         android:layout_marginStart="4dp"
         android:layout_marginEnd="4dp"
         android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
         android:layout_toEndOf="@id/idTVServesLabel"
         android:padding="3dp"
         android:text=""
         android:textColor="@color/black" />
 
     <TextView
-        android:id="@+id/idTVCookingTimeLabel"
+        android:id="@+id/idTVPrepTimeLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/idTVServes"
         android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
+        android:layout_toEndOf="@id/idIVRecipe"
+        android:padding="3dp"
+        android:textStyle="bold"
+        android:text="@string/preparation_time_label"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/idTVPreparationTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/idTVServes"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_toEndOf="@id/idTVPrepTimeLabel"
+        android:padding="3dp"
+        android:text=""
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/idTVCookingTimeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/idTVPreparationTime"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
         android:layout_toEndOf="@id/idIVRecipe"
         android:padding="3dp"
         android:textStyle="bold"
@@ -105,11 +128,10 @@
         android:id="@+id/idTVCookingTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/idTVServes"
+        android:layout_below="@id/idTVPreparationTime"
         android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="4dp"
-        android:layout_marginBottom="4dp"
         android:layout_toEndOf="@id/idTVCookingTimeLabel"
         android:padding="3dp"
         android:text=""
@@ -123,7 +145,7 @@
         android:weightSum="2"
         android:gravity="center"
         android:id="@+id/idBtnGroup1"
-        android:layout_below="@id/idIVRecipe">
+        android:layout_below="@id/idTVCookingTimeLabel">
 
         <Button
             android:id="@+id/idBtnDelete"
