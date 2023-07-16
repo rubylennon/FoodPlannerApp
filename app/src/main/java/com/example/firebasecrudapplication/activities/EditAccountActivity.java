@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.firebasecrudapplication.R;
@@ -91,6 +92,7 @@ public class EditAccountActivity extends AppCompatActivity {
         idBtnUpdateEmail.setOnClickListener(view -> {
             // set progress bar to visible
             idPBLoading.setVisibility(View.VISIBLE);
+
             // hide email update help text
             emailHelpText.setVisibility(View.GONE);
 
@@ -112,9 +114,24 @@ public class EditAccountActivity extends AppCompatActivity {
                 Toast.makeText(EditAccountActivity.this, "Email addresses do not match", Toast.LENGTH_SHORT).show();
                 idPBLoading.setVisibility(View.GONE);
             } else {
-                //update email of signed in user using new email value
-                user.updateEmail(idEdtEmail.getText().toString().trim())
-                        .addOnCompleteListener(task -> {
+
+                // Create the object of AlertDialog Builder class
+                AlertDialog.Builder builder = new AlertDialog.Builder(EditAccountActivity.this);
+
+                // Set the message show for the Alert time
+                builder.setMessage("Do you want to update your email address?");
+
+                // Set Alert Title
+                builder.setTitle("Update Email Confirmation");
+
+                // Set Cancelable false for when the user clicks on the outside the Dialog Box then it will remain show
+                builder.setCancelable(false);
+
+                // Set the positive button with yes name Lambda OnClickListener method is use of DialogInterface interface.
+                builder.setPositiveButton("Yes", (dialog, which) -> {
+                    //update email of signed in user using new email value
+                    user.updateEmail(idEdtEmail.getText().toString().trim())
+                            .addOnCompleteListener(task -> {
 
                             if(task.isSuccessful()){
                                 Toast.makeText(EditAccountActivity.this, "Email updated", Toast.LENGTH_SHORT).show();
@@ -135,7 +152,22 @@ public class EditAccountActivity extends AppCompatActivity {
                                 }
                             }
                         });
-                }
+                });
+
+                // Set the Negative button with No name Lambda OnClickListener method is use of DialogInterface interface.
+                builder.setNegativeButton("No", (dialog, which) -> {
+                    // If user click no then dialog box is canceled.
+                    dialog.cancel();
+                    idPBLoading.setVisibility(View.GONE);
+                });
+
+                // Create the Alert dialog
+                AlertDialog alertDialog = builder.create();
+
+                // Show the Alert Dialog box
+                alertDialog.show();
+
+            }
         });
 
         // update password button functionality
@@ -173,55 +205,120 @@ public class EditAccountActivity extends AppCompatActivity {
                 Toast.makeText(EditAccountActivity.this, "Invalid password.", Toast.LENGTH_SHORT).show();
                 pwdHelpText.setVisibility(View.VISIBLE);
             } else{
-                //update the users password
-                user.updatePassword(pwd).addOnCompleteListener(task -> {
-                    if(task.isSuccessful()){
-                        Toast.makeText(EditAccountActivity.this, "Password updated", Toast.LENGTH_SHORT).show();
-                        idPBLoading.setVisibility(View.GONE);
-                        pwdHelpText.setVisibility(View.GONE);
-                    }else{
-                        pwdHelpText.setVisibility(View.GONE);
-                        if(Objects.requireNonNull(task.getException()).toString().contains("The given password is invalid. [ Password should be at least 6 characters ]")){
-                            Toast.makeText(EditAccountActivity.this, "Registration failed. Password should be at least 6 characters.", Toast.LENGTH_SHORT).show();
-                        } else if(Objects.requireNonNull(task.getException()).toString().contains("This operation is sensitive and requires recent authentication. Log in again before retrying this request.")){
-                            Toast.makeText(EditAccountActivity.this, "Email update failed. Please log in again before retrying this request.", Toast.LENGTH_SHORT).show();
-                            pwdHelpText2.setVisibility(View.VISIBLE);
-                        } else {
-                            Toast.makeText(EditAccountActivity.this, "Password update failed. Please try again...", Toast.LENGTH_SHORT).show();
+
+                // Create the object of AlertDialog Builder class
+                AlertDialog.Builder builder2 = new AlertDialog.Builder(EditAccountActivity.this);
+
+                // Set the message show for the Alert time
+                builder2.setMessage("Do you want to update your password?");
+
+                // Set Alert Title
+                builder2.setTitle("Update Password Confirmation");
+
+                // Set Cancelable false for when the user clicks on the outside the Dialog Box then it will remain show
+                builder2.setCancelable(false);
+
+                // Set the positive button with yes name Lambda OnClickListener method is use of DialogInterface interface.
+                builder2.setPositiveButton("Yes", (dialog, which) -> {
+
+                    //update the users password
+                    user.updatePassword(pwd).addOnCompleteListener(task -> {
+                        if(task.isSuccessful()){
+                            Toast.makeText(EditAccountActivity.this, "Password updated", Toast.LENGTH_SHORT).show();
+                            idPBLoading.setVisibility(View.GONE);
+                            pwdHelpText.setVisibility(View.GONE);
+                        }else{
+                            pwdHelpText.setVisibility(View.GONE);
+                            if(Objects.requireNonNull(task.getException()).toString().contains("The given password is invalid. [ Password should be at least 6 characters ]")){
+                                Toast.makeText(EditAccountActivity.this, "Registration failed. Password should be at least 6 characters.", Toast.LENGTH_SHORT).show();
+                            } else if(Objects.requireNonNull(task.getException()).toString().contains("This operation is sensitive and requires recent authentication. Log in again before retrying this request.")){
+                                Toast.makeText(EditAccountActivity.this, "Email update failed. Please log in again before retrying this request.", Toast.LENGTH_SHORT).show();
+                                pwdHelpText2.setVisibility(View.VISIBLE);
+                            } else {
+                                Toast.makeText(EditAccountActivity.this, "Password update failed. Please try again...", Toast.LENGTH_SHORT).show();
+                            }
+                            idPBLoading.setVisibility(View.GONE);
                         }
-                        idPBLoading.setVisibility(View.GONE);
-                    }
+                    });
+
                 });
+
+                // Set the Negative button with No name Lambda OnClickListener method is use of DialogInterface interface.
+                builder2.setNegativeButton("No", (dialog, which) -> {
+                    // If user click no then dialog box is canceled.
+                    dialog.cancel();
+                    // hide the progress bar
+                    idPBLoading.setVisibility(View.GONE);
+                });
+
+                // Create the Alert dialog
+                AlertDialog alertDialog = builder2.create();
+
+                // Show the Alert Dialog box
+                alertDialog.show();
 
             }
         });
 
         // delete account button functionality
         idBtnDeleteAccount.setOnClickListener(view -> {
-            idPBLoading.setVisibility(View.VISIBLE);
-            deleteHelpText.setVisibility(View.GONE);
 
-            user.delete().addOnCompleteListener(task -> {
+            // Create the object of AlertDialog Builder class
+            AlertDialog.Builder builder = new AlertDialog.Builder(EditAccountActivity.this);
 
-                if(task.isSuccessful()){
-                    // display the following toast notification
-                    Toast.makeText(EditAccountActivity.this, "Account Successfully Deleted", Toast.LENGTH_SHORT).show();
-                    idPBLoading.setVisibility(View.GONE);
+            // Set the message show for the Alert time
+            builder.setMessage("Do you want to delete your account? This action cannot be undone. " +
+                    "Any public recipes you own will still be visible to other users.");
 
-                    //navigate to login page
-                    Intent i = new Intent(EditAccountActivity.this, LoginActivity.class);
-                    startActivity(i);
-                    finish();
-                }else if(Objects.requireNonNull(task.getException()).toString().contains("This operation is sensitive and requires recent authentication. Log in again before retrying this request.")){
-                    Toast.makeText(EditAccountActivity.this, "Account deletion failed. Please log in again before retrying this request.", Toast.LENGTH_SHORT).show();
-                    deleteHelpText.setVisibility(View.VISIBLE);
-                    idPBLoading.setVisibility(View.GONE);
-                } else{
-                    Toast.makeText(EditAccountActivity.this, "Account Deletion Failed", Toast.LENGTH_SHORT).show();
-                    idPBLoading.setVisibility(View.GONE);
-                }
+            // Set Alert Title
+            builder.setTitle("Delete Account Confirmation");
+
+            // Set Cancelable false for when the user clicks on the outside the Dialog Box then it will remain show
+            builder.setCancelable(false);
+
+            // Set the positive button with yes name Lambda OnClickListener method is use of DialogInterface interface.
+            builder.setPositiveButton("Yes", (dialog, which) -> {
+
+                idPBLoading.setVisibility(View.VISIBLE);
+                deleteHelpText.setVisibility(View.GONE);
+
+                user.delete().addOnCompleteListener(task -> {
+
+                    if(task.isSuccessful()){
+                        // display the following toast notification
+                        Toast.makeText(EditAccountActivity.this, "Account Successfully Deleted", Toast.LENGTH_SHORT).show();
+                        idPBLoading.setVisibility(View.GONE);
+
+                        //navigate to login page
+                        Intent i = new Intent(EditAccountActivity.this, LoginActivity.class);
+                        startActivity(i);
+                        finish();
+                    }else if(Objects.requireNonNull(task.getException()).toString().contains("This operation is sensitive and requires recent authentication. Log in again before retrying this request.")){
+                        Toast.makeText(EditAccountActivity.this, "Account deletion failed. Please log in again before retrying this request.", Toast.LENGTH_SHORT).show();
+                        deleteHelpText.setVisibility(View.VISIBLE);
+                        idPBLoading.setVisibility(View.GONE);
+                    } else{
+                        Toast.makeText(EditAccountActivity.this, "Account Deletion Failed", Toast.LENGTH_SHORT).show();
+                        idPBLoading.setVisibility(View.GONE);
+                    }
+
+                });
 
             });
+
+            // Set the Negative button with No name Lambda OnClickListener method is use of DialogInterface interface.
+            builder.setNegativeButton("No", (dialog, which) -> {
+                // If user click no then dialog box is canceled.
+                dialog.cancel();
+                // hide the progress loading bar
+                idPBLoading.setVisibility(View.GONE);
+            });
+
+            // Create the Alert dialog
+            AlertDialog alertDialog = builder.create();
+            // Show the Alert Dialog box
+            alertDialog.show();
+
         });
     }
 
