@@ -57,10 +57,23 @@
         android:textColor="@color/black" />
 
     <TextView
+        android:id="@+id/idTVDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/idTVDateLabel"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_toEndOf="@id/idIVRecipe"
+        android:padding="3dp"
+        android:text=""
+        android:textColor="@color/black" />
+
+    <TextView
         android:id="@+id/idTVServesLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/idTVDate"
+        android:layout_below="@id/idTVDescription"
         android:layout_marginStart="4dp"
         android:layout_toEndOf="@id/idIVRecipe"
         android:layout_marginTop="4dp"
@@ -73,7 +86,7 @@
         android:id="@+id/idTVServes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/idTVDate"
+        android:layout_below="@id/idTVDescription"
         android:layout_marginStart="4dp"
         android:layout_marginEnd="4dp"
         android:layout_marginTop="4dp"

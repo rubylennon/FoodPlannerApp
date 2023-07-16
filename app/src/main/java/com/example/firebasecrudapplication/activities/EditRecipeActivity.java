@@ -399,6 +399,7 @@ public class EditRecipeActivity extends AppCompatActivity {
 
         // update button functionality
         updateRecipeBtn.setOnClickListener(v -> {
+
             // if statements to validate that all required fields are populated before adding recipe
             if(Objects.requireNonNull(recipeNameEdt.getText()).toString().equals("")){
                 Toast.makeText(EditRecipeActivity.this, "Please add a Recipe Name", Toast.LENGTH_SHORT).show();
@@ -423,76 +424,133 @@ public class EditRecipeActivity extends AppCompatActivity {
             }else if(ingredientList.isEmpty()){
                 Toast.makeText(EditRecipeActivity.this, "Please add Recipe Ingredients", Toast.LENGTH_SHORT).show();
             }else {
-                loadingPB.setVisibility(View.VISIBLE);
 
-                // build a string with selected ingredients
-                StringBuilder stringBuilder3 = new StringBuilder();
-                // use for loop
-                for (int j = 0; j < ingredientList.size(); j++) {
-                    // concat array value
-                    stringBuilder3.append(ingredientList.get(j));
-                    // check condition
-                    if (j != ingredientList.size() - 1) {
-                        // When j value  not equal
-                        // to lang list size - 1
-                        // add comma
-                        stringBuilder3.append(", ");
+                // Create the object of AlertDialog Builder class
+                AlertDialog.Builder builder4 = new AlertDialog.Builder(EditRecipeActivity.this);
+
+                // Set the message show for the Alert time
+                builder4.setMessage("Are you sure you to update this recipe?");
+
+                // Set Alert Title
+                builder4.setTitle("Update Recipe Confirmation");
+
+                // Set Cancelable false for when the user clicks on the outside the Dialog Box then it will remain show
+                builder4.setCancelable(false);
+
+                // Set the positive button with yes name Lambda OnClickListener method is use of DialogInterface interface.
+                builder4.setPositiveButton("Yes", (dialog, which) -> {
+
+                    loadingPB.setVisibility(View.VISIBLE);
+
+                    // build a string with selected ingredients
+                    StringBuilder stringBuilder3 = new StringBuilder();
+                    // use for loop
+                    for (int j = 0; j < ingredientList.size(); j++) {
+                        // concat array value
+                        stringBuilder3.append(ingredientList.get(j));
+                        // check condition
+                        if (j != ingredientList.size() - 1) {
+                            // When j value  not equal
+                            // to lang list size - 1
+                            // add comma
+                            stringBuilder3.append(", ");
+                        }
                     }
-                }
-                ingredientsSelectionString = stringBuilder3.toString();
+                    ingredientsSelectionString = stringBuilder3.toString();
 
-                // assign values to variable which will be used to update recipe object
-                String recipeName = Objects.requireNonNull(recipeNameEdt.getText()).toString();
-                String recipeCookingTime = Objects.requireNonNull(recipeCookingTimeEdt.getText()).toString();
-                String recipePrepTime = Objects.requireNonNull(recipePrepTimeEdt.getText()).toString();
-                String recipeServings = Objects.requireNonNull(recipeServingsEdt.getText()).toString();
-                String recipeSuitedFor = recipeSuitabilityEdt.getText().toString();
-                String recipeCuisine = recipeCuisineEdt.getText().toString();
-                String recipeImg = Objects.requireNonNull(recipeImgEdt.getText()).toString();
-                String recipeLink = Objects.requireNonNull(recipeLinkEdt.getText()).toString();
-                String recipeDesc = Objects.requireNonNull(recipeDescEdt.getText()).toString();
-                String recipeMethod = Objects.requireNonNull(recipeMethodEdt.getText()).toString();
-                String recipeIngredients = Objects.requireNonNull(ingredientsSelectionString);
-                Boolean recipePublic = recipePublicEdt.isChecked();
+                    // assign values to variable which will be used to update recipe object
+                    String recipeName = Objects.requireNonNull(recipeNameEdt.getText()).toString();
+                    String recipeCookingTime = Objects.requireNonNull(recipeCookingTimeEdt.getText()).toString();
+                    String recipePrepTime = Objects.requireNonNull(recipePrepTimeEdt.getText()).toString();
+                    String recipeServings = Objects.requireNonNull(recipeServingsEdt.getText()).toString();
+                    String recipeSuitedFor = recipeSuitabilityEdt.getText().toString();
+                    String recipeCuisine = recipeCuisineEdt.getText().toString();
+                    String recipeImg = Objects.requireNonNull(recipeImgEdt.getText()).toString();
+                    String recipeLink = Objects.requireNonNull(recipeLinkEdt.getText()).toString();
+                    String recipeDesc = Objects.requireNonNull(recipeDescEdt.getText()).toString();
+                    String recipeMethod = Objects.requireNonNull(recipeMethodEdt.getText()).toString();
+                    String recipeIngredients = Objects.requireNonNull(ingredientsSelectionString);
+                    Boolean recipePublic = recipePublicEdt.isChecked();
 
-                // map the values to the object variables
-                Map<String,Object> map = new HashMap<>();
-                map.put("recipeName",recipeName);
-                map.put("recipeCookingTime",recipeCookingTime);
-                map.put("recipePrepTime",recipePrepTime);
-                map.put("recipeServings",recipeServings);
-                map.put("recipeSuitedFor",recipeSuitedFor);
-                map.put("recipeCuisine",recipeCuisine);
-                map.put("recipeImg",recipeImg);
-                map.put("recipeLink",recipeLink);
-                map.put("recipeDescription",recipeDesc);
-                map.put("recipeMethod",recipeMethod);
-                map.put("recipeIngredients",recipeIngredients);
-                map.put("recipePublic",recipePublic);
-                map.put("recipeID",recipeID);
+                    // map the values to the object variables
+                    Map<String,Object> map = new HashMap<>();
+                    map.put("recipeName",recipeName);
+                    map.put("recipeCookingTime",recipeCookingTime);
+                    map.put("recipePrepTime",recipePrepTime);
+                    map.put("recipeServings",recipeServings);
+                    map.put("recipeSuitedFor",recipeSuitedFor);
+                    map.put("recipeCuisine",recipeCuisine);
+                    map.put("recipeImg",recipeImg);
+                    map.put("recipeLink",recipeLink);
+                    map.put("recipeDescription",recipeDesc);
+                    map.put("recipeMethod",recipeMethod);
+                    map.put("recipeIngredients",recipeIngredients);
+                    map.put("recipePublic",recipePublic);
+                    map.put("recipeID",recipeID);
 
-                // database reference value event lister
-                databaseReference.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        loadingPB.setVisibility(View.GONE);
-                        // update the recipe object using the mapped values defined above
-                        databaseReference.updateChildren(map);
-                        Toast.makeText(EditRecipeActivity.this, "Recipe Updated", Toast.LENGTH_SHORT).show();
-                        // redirect the user to the main activity screen (My Recipes)
-                        startActivity(new Intent(EditRecipeActivity.this, MainActivity.class));
-                    }
+                    // database reference value event lister
+                    databaseReference.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            loadingPB.setVisibility(View.GONE);
+                            // update the recipe object using the mapped values defined above
+                            databaseReference.updateChildren(map);
+                            Toast.makeText(EditRecipeActivity.this, "Recipe Updated", Toast.LENGTH_SHORT).show();
+                            // redirect the user to the main activity screen (My Recipes)
+                            startActivity(new Intent(EditRecipeActivity.this, MainActivity.class));
+                        }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(EditRecipeActivity.this, "Failed to update recipe", Toast.LENGTH_SHORT).show();
-                    }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Toast.makeText(EditRecipeActivity.this, "Failed to update recipe", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
                 });
+
+                // Set the Negative button with No name Lambda OnClickListener method is use of DialogInterface interface.
+                builder4.setNegativeButton("No", (dialog, which) -> {
+                    // If user click no then dialog box is canceled.
+                    dialog.cancel();
+                });
+
+                // Create the Alert dialog
+                AlertDialog alertDialog = builder4.create();
+
+                // Show the Alert Dialog box
+                alertDialog.show();
             }
         });
 
         // delete recipe button action
-        deleteRecipeBtn.setOnClickListener(v -> deleteRecipe());
+        deleteRecipeBtn.setOnClickListener(v -> {
+            // Create the object of AlertDialog Builder class
+            AlertDialog.Builder builder3 = new AlertDialog.Builder(EditRecipeActivity.this);
+
+            // Set the message show for the Alert time
+            builder3.setMessage("Are you sure you want to delete this recipe? This action cannot be undone.");
+
+            // Set Alert Title
+            builder3.setTitle("Delete Recipe Confirmation");
+
+            // Set Cancelable false for when the user clicks on the outside the Dialog Box then it will remain show
+            builder3.setCancelable(false);
+
+            // Set the positive button with yes name Lambda OnClickListener method is use of DialogInterface interface.
+            builder3.setPositiveButton("Yes", (dialog, which) -> deleteRecipe());
+
+            // Set the Negative button with No name Lambda OnClickListener method is use of DialogInterface interface.
+            builder3.setNegativeButton("No", (dialog, which) -> {
+                // If user click no then dialog box is canceled.
+                dialog.cancel();
+            });
+
+            // Create the Alert dialog
+            AlertDialog alertDialog = builder3.create();
+
+            // Show the Alert Dialog box
+            alertDialog.show();
+        });
     }
 
     // method for deleting recipe from Firebase Realtime database
