@@ -438,7 +438,75 @@ public class EditRecipeActivity extends AppCompatActivity {
                 builder4.setCancelable(false);
 
                 // Set the positive button with yes name Lambda OnClickListener method is use of DialogInterface interface.
-                builder4.setPositiveButton("Yes", (dialog, which) -> deleteRecipe());
+                builder4.setPositiveButton("Yes", (dialog, which) -> {
+
+                    loadingPB.setVisibility(View.VISIBLE);
+
+                    // build a string with selected ingredients
+                    StringBuilder stringBuilder3 = new StringBuilder();
+                    // use for loop
+                    for (int j = 0; j < ingredientList.size(); j++) {
+                        // concat array value
+                        stringBuilder3.append(ingredientList.get(j));
+                        // check condition
+                        if (j != ingredientList.size() - 1) {
+                            // When j value  not equal
+                            // to lang list size - 1
+                            // add comma
+                            stringBuilder3.append(", ");
+                        }
+                    }
+                    ingredientsSelectionString = stringBuilder3.toString();
+
+                    // assign values to variable which will be used to update recipe object
+                    String recipeName = Objects.requireNonNull(recipeNameEdt.getText()).toString();
+                    String recipeCookingTime = Objects.requireNonNull(recipeCookingTimeEdt.getText()).toString();
+                    String recipePrepTime = Objects.requireNonNull(recipePrepTimeEdt.getText()).toString();
+                    String recipeServings = Objects.requireNonNull(recipeServingsEdt.getText()).toString();
+                    String recipeSuitedFor = recipeSuitabilityEdt.getText().toString();
+                    String recipeCuisine = recipeCuisineEdt.getText().toString();
+                    String recipeImg = Objects.requireNonNull(recipeImgEdt.getText()).toString();
+                    String recipeLink = Objects.requireNonNull(recipeLinkEdt.getText()).toString();
+                    String recipeDesc = Objects.requireNonNull(recipeDescEdt.getText()).toString();
+                    String recipeMethod = Objects.requireNonNull(recipeMethodEdt.getText()).toString();
+                    String recipeIngredients = Objects.requireNonNull(ingredientsSelectionString);
+                    Boolean recipePublic = recipePublicEdt.isChecked();
+
+                    // map the values to the object variables
+                    Map<String,Object> map = new HashMap<>();
+                    map.put("recipeName",recipeName);
+                    map.put("recipeCookingTime",recipeCookingTime);
+                    map.put("recipePrepTime",recipePrepTime);
+                    map.put("recipeServings",recipeServings);
+                    map.put("recipeSuitedFor",recipeSuitedFor);
+                    map.put("recipeCuisine",recipeCuisine);
+                    map.put("recipeImg",recipeImg);
+                    map.put("recipeLink",recipeLink);
+                    map.put("recipeDescription",recipeDesc);
+                    map.put("recipeMethod",recipeMethod);
+                    map.put("recipeIngredients",recipeIngredients);
+                    map.put("recipePublic",recipePublic);
+                    map.put("recipeID",recipeID);
+
+                    // database reference value event lister
+                    databaseReference.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            loadingPB.setVisibility(View.GONE);
+                            // update the recipe object using the mapped values defined above
+                            databaseReference.updateChildren(map);
+                            Toast.makeText(EditRecipeActivity.this, "Recipe Updated", Toast.LENGTH_SHORT).show();
+                            // redirect the user to the main activity screen (My Recipes)
+                            startActivity(new Intent(EditRecipeActivity.this, MainActivity.class));
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Toast.makeText(EditRecipeActivity.this, "Failed to update recipe", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                });
 
                 // Set the Negative button with No name Lambda OnClickListener method is use of DialogInterface interface.
                 builder4.setNegativeButton("No", (dialog, which) -> {
@@ -451,72 +519,6 @@ public class EditRecipeActivity extends AppCompatActivity {
 
                 // Show the Alert Dialog box
                 alertDialog.show();
-
-                loadingPB.setVisibility(View.VISIBLE);
-
-                // build a string with selected ingredients
-                StringBuilder stringBuilder3 = new StringBuilder();
-                // use for loop
-                for (int j = 0; j < ingredientList.size(); j++) {
-                    // concat array value
-                    stringBuilder3.append(ingredientList.get(j));
-                    // check condition
-                    if (j != ingredientList.size() - 1) {
-                        // When j value  not equal
-                        // to lang list size - 1
-                        // add comma
-                        stringBuilder3.append(", ");
-                    }
-                }
-                ingredientsSelectionString = stringBuilder3.toString();
-
-                // assign values to variable which will be used to update recipe object
-                String recipeName = Objects.requireNonNull(recipeNameEdt.getText()).toString();
-                String recipeCookingTime = Objects.requireNonNull(recipeCookingTimeEdt.getText()).toString();
-                String recipePrepTime = Objects.requireNonNull(recipePrepTimeEdt.getText()).toString();
-                String recipeServings = Objects.requireNonNull(recipeServingsEdt.getText()).toString();
-                String recipeSuitedFor = recipeSuitabilityEdt.getText().toString();
-                String recipeCuisine = recipeCuisineEdt.getText().toString();
-                String recipeImg = Objects.requireNonNull(recipeImgEdt.getText()).toString();
-                String recipeLink = Objects.requireNonNull(recipeLinkEdt.getText()).toString();
-                String recipeDesc = Objects.requireNonNull(recipeDescEdt.getText()).toString();
-                String recipeMethod = Objects.requireNonNull(recipeMethodEdt.getText()).toString();
-                String recipeIngredients = Objects.requireNonNull(ingredientsSelectionString);
-                Boolean recipePublic = recipePublicEdt.isChecked();
-
-                // map the values to the object variables
-                Map<String,Object> map = new HashMap<>();
-                map.put("recipeName",recipeName);
-                map.put("recipeCookingTime",recipeCookingTime);
-                map.put("recipePrepTime",recipePrepTime);
-                map.put("recipeServings",recipeServings);
-                map.put("recipeSuitedFor",recipeSuitedFor);
-                map.put("recipeCuisine",recipeCuisine);
-                map.put("recipeImg",recipeImg);
-                map.put("recipeLink",recipeLink);
-                map.put("recipeDescription",recipeDesc);
-                map.put("recipeMethod",recipeMethod);
-                map.put("recipeIngredients",recipeIngredients);
-                map.put("recipePublic",recipePublic);
-                map.put("recipeID",recipeID);
-
-                // database reference value event lister
-                databaseReference.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        loadingPB.setVisibility(View.GONE);
-                        // update the recipe object using the mapped values defined above
-                        databaseReference.updateChildren(map);
-                        Toast.makeText(EditRecipeActivity.this, "Recipe Updated", Toast.LENGTH_SHORT).show();
-                        // redirect the user to the main activity screen (My Recipes)
-                        startActivity(new Intent(EditRecipeActivity.this, MainActivity.class));
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(EditRecipeActivity.this, "Failed to update recipe", Toast.LENGTH_SHORT).show();
-                    }
-                });
             }
         });
 
