@@ -2,7 +2,7 @@ package com.example.firebasecrudapplication.activities;
 
 import org.junit.jupiter.api.Test;
 
-class MainActivityTest {
+public class MainActivityTest {
 
     @Test
     void onCreate() {
@@ -17,6 +17,6 @@ class MainActivityTest {
     }
 
     @Test
-    void onOptionsItemSelected() {
+    public void onOptionsItemSelected() {
     }
 }

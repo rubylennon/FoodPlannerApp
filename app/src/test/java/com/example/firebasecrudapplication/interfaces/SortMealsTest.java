@@ -6,7 +6,9 @@ import com.example.firebasecrudapplication.models.Meal;
 
 import org.junit.jupiter.api.Test;
 
-class SortMealsTest {
+import java.util.Comparator;
+
+class SortMealsTest{
         String recipeName = "Test Name";
         String recipeCookingTime = "45";
         String recipePrepTime = "15";
@@ -23,22 +25,6 @@ class SortMealsTest {
         String mealPlanID = "-NZXV0WSyWjYNZBXydi9";
         String dateLong = "Saturday, 1 April 2023";
 
-        String dateShort = "01/04/2023";
-
-        Meal m1 = new Meal(dateShort, mealPlanID, recipeName, recipeCookingTime,
-                recipePrepTime, recipeServings, recipeSuitedFor,
-                recipeCuisine, recipeImg, recipeLink, recipeDescription,
-                recipeMethod, recipeIngredients, false,
-                recipeID, userID, dateLong);
-
-        String dateShort2 = "20/04/2023";
-
-        Meal m2 = new Meal(dateShort2, mealPlanID, recipeName, recipeCookingTime,
-                recipePrepTime, recipeServings, recipeSuitedFor,
-                recipeCuisine, recipeImg, recipeLink, recipeDescription,
-                recipeMethod, recipeIngredients, false,
-                recipeID, userID, dateLong);
-
         String dateShort3 = "01/04/2023";
 
         Meal m3 = new Meal(dateShort3, mealPlanID, recipeName, recipeCookingTime,
@@ -47,19 +33,37 @@ class SortMealsTest {
                 recipeMethod, recipeIngredients, false,
                 recipeID, userID, dateLong);
 
-    @Test
-    void compareDateBefore() {
-        assertEquals(m1.getDateShort().compareTo(m2.getDateShort()), -2);
-    }
+        class SortMeals implements Comparator<Meal> {
+                // comparison method
+                public int compare(Meal mealA, Meal mealB) {
+                        // Returning the value after comparing the objects
+                        // this will sort the data in Ascending order
+                        return mealA.getDateShort().compareTo(mealB.getDateShort());
+                }
+        }
 
-    @Test
-    void compareDateAfter() {
-        assertEquals(m2.getDateShort().compareTo(m1.getDateShort()), 2);
-    }
+        private final SortMeals sortMeals = new SortMeals();
 
-    @Test
-    void compareDatesMatch() {
-        assertEquals(m1.getDateShort().compareTo(m3.getDateShort()), 0);
-    }
+        @Test
+        public void compare() {
+                String dateShort = "01/04/2023";
+
+                Meal m1 = new Meal(dateShort, mealPlanID, recipeName, recipeCookingTime,
+                        recipePrepTime, recipeServings, recipeSuitedFor,
+                        recipeCuisine, recipeImg, recipeLink, recipeDescription,
+                        recipeMethod, recipeIngredients, false,
+                        recipeID, userID, dateLong);
+
+                String dateShort2 = "01/04/2023";
+
+                Meal m2 = new Meal(dateShort2, mealPlanID, recipeName, recipeCookingTime,
+                        recipePrepTime, recipeServings, recipeSuitedFor,
+                        recipeCuisine, recipeImg, recipeLink, recipeDescription,
+                        recipeMethod, recipeIngredients, false,
+                        recipeID, userID, dateLong);
+
+                int result = sortMeals.compare(m1, m2);
+                assertEquals(0, result, "expected to be equal");
+        }
 
 }

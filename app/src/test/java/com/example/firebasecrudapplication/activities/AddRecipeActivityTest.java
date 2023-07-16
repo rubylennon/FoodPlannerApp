@@ -1,21 +1,18 @@
 package com.example.firebasecrudapplication.activities;
 
-import android.view.MenuItem;
-
 import org.junit.jupiter.api.Test;
 
-class AddRecipeActivityTest {
+public class AddRecipeActivityTest{
 
     @Test
-    void onCreate() {
+    public void onCreate() {
     }
 
     @Test
-    void onCreateOptionsMenu() {
-        assert true;
+    public void onCreateOptionsMenu() {
     }
 
     @Test
-    void onOptionsItemSelected() {
+    public void onOptionsItemSelected() {
     }
 }
