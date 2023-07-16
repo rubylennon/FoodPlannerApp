@@ -399,6 +399,7 @@ public class EditRecipeActivity extends AppCompatActivity {
 
         // update button functionality
         updateRecipeBtn.setOnClickListener(v -> {
+
             // if statements to validate that all required fields are populated before adding recipe
             if(Objects.requireNonNull(recipeNameEdt.getText()).toString().equals("")){
                 Toast.makeText(EditRecipeActivity.this, "Please add a Recipe Name", Toast.LENGTH_SHORT).show();
@@ -423,6 +424,34 @@ public class EditRecipeActivity extends AppCompatActivity {
             }else if(ingredientList.isEmpty()){
                 Toast.makeText(EditRecipeActivity.this, "Please add Recipe Ingredients", Toast.LENGTH_SHORT).show();
             }else {
+
+                // Create the object of AlertDialog Builder class
+                AlertDialog.Builder builder4 = new AlertDialog.Builder(EditRecipeActivity.this);
+
+                // Set the message show for the Alert time
+                builder4.setMessage("Are you sure you to update this recipe?");
+
+                // Set Alert Title
+                builder4.setTitle("Update Recipe Confirmation");
+
+                // Set Cancelable false for when the user clicks on the outside the Dialog Box then it will remain show
+                builder4.setCancelable(false);
+
+                // Set the positive button with yes name Lambda OnClickListener method is use of DialogInterface interface.
+                builder4.setPositiveButton("Yes", (dialog, which) -> deleteRecipe());
+
+                // Set the Negative button with No name Lambda OnClickListener method is use of DialogInterface interface.
+                builder4.setNegativeButton("No", (dialog, which) -> {
+                    // If user click no then dialog box is canceled.
+                    dialog.cancel();
+                });
+
+                // Create the Alert dialog
+                AlertDialog alertDialog = builder4.create();
+
+                // Show the Alert Dialog box
+                alertDialog.show();
+
                 loadingPB.setVisibility(View.VISIBLE);
 
                 // build a string with selected ingredients
@@ -492,7 +521,34 @@ public class EditRecipeActivity extends AppCompatActivity {
         });
 
         // delete recipe button action
-        deleteRecipeBtn.setOnClickListener(v -> deleteRecipe());
+        deleteRecipeBtn.setOnClickListener(v -> {
+            // Create the object of AlertDialog Builder class
+            AlertDialog.Builder builder3 = new AlertDialog.Builder(EditRecipeActivity.this);
+
+            // Set the message show for the Alert time
+            builder3.setMessage("Are you sure you want to delete this recipe? This action cannot be undone.");
+
+            // Set Alert Title
+            builder3.setTitle("Delete Recipe Confirmation");
+
+            // Set Cancelable false for when the user clicks on the outside the Dialog Box then it will remain show
+            builder3.setCancelable(false);
+
+            // Set the positive button with yes name Lambda OnClickListener method is use of DialogInterface interface.
+            builder3.setPositiveButton("Yes", (dialog, which) -> deleteRecipe());
+
+            // Set the Negative button with No name Lambda OnClickListener method is use of DialogInterface interface.
+            builder3.setNegativeButton("No", (dialog, which) -> {
+                // If user click no then dialog box is canceled.
+                dialog.cancel();
+            });
+
+            // Create the Alert dialog
+            AlertDialog alertDialog = builder3.create();
+
+            // Show the Alert Dialog box
+            alertDialog.show();
+        });
     }
 
     // method for deleting recipe from Firebase Realtime database

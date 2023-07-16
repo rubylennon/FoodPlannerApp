@@ -125,7 +125,7 @@
         <item>Other</item>
     </string-array>
     <string-array name="dietary_requirements">
-        <item>All</item>
+        <item>Everyone</item>
         <item>Lactose intolerance</item>
         <item>Gluten intolerance or sensitivity</item>
         <item>Vegetarianism</item>
