@@ -32,4 +32,16 @@ class IngredientScannerRVAdapterTest {
 
         assertEquals(3, list.size());
     }
+
+    @Test
+    void testOnCreateViewHolder() {
+    }
+
+    @Test
+    void testOnBindViewHolder() {
+    }
+
+    @Test
+    void testGetItemCount() {
+    }
 }

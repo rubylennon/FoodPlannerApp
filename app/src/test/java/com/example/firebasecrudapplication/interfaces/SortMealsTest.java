@@ -25,25 +25,6 @@ class SortMealsTest{
         String mealPlanID = "-NZXV0WSyWjYNZBXydi9";
         String dateLong = "Saturday, 1 April 2023";
 
-        String dateShort3 = "01/04/2023";
-
-        Meal m3 = new Meal(dateShort3, mealPlanID, recipeName, recipeCookingTime,
-                recipePrepTime, recipeServings, recipeSuitedFor,
-                recipeCuisine, recipeImg, recipeLink, recipeDescription,
-                recipeMethod, recipeIngredients, false,
-                recipeID, userID, dateLong);
-
-        class SortMeals implements Comparator<Meal> {
-                // comparison method
-                public int compare(Meal mealA, Meal mealB) {
-                        // Returning the value after comparing the objects
-                        // this will sort the data in Ascending order
-                        return mealA.getDateShort().compareTo(mealB.getDateShort());
-                }
-        }
-
-        private final SortMeals sortMeals = new SortMeals();
-
         @Test
         public void compare() {
                 String dateShort = "01/04/2023";
@@ -62,8 +43,20 @@ class SortMealsTest{
                         recipeMethod, recipeIngredients, false,
                         recipeID, userID, dateLong);
 
-                int result = sortMeals.compare(m1, m2);
-                assertEquals(0, result, "expected to be equal");
+                String dateShort3 = "20/04/2023";
+
+                Meal m3 = new Meal(dateShort3, mealPlanID, recipeName, recipeCookingTime,
+                        recipePrepTime, recipeServings, recipeSuitedFor,
+                        recipeCuisine, recipeImg, recipeLink, recipeDescription,
+                        recipeMethod, recipeIngredients, false,
+                        recipeID, userID, dateLong);
+
+                SortMeals sortMeals = new SortMeals();
+
+                assertEquals(0, sortMeals.compare(m1, m2), "expected to be equal");
+                assertEquals(-2, sortMeals.compare(m2, m3), "expected to be greater");
+                assertEquals(2, sortMeals.compare(m3, m2), "expected to be less than");
+
         }
 
 }

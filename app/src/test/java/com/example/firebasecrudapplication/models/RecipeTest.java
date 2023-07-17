@@ -104,7 +104,7 @@ class RecipeTest {
 
     @Test
     void describeContents() {
-        assertEquals(0, 0);
+        assertEquals(r.describeContents(), 0);
     }
 
     @Test

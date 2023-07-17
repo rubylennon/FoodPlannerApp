@@ -117,7 +117,7 @@ class MealTest {
 
     @Test
     void describeContents() {
-        assertEquals(0, 0);
+        assertEquals(m.describeContents(), 0);
     }
 
     @Test

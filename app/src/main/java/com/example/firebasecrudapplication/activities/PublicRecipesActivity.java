@@ -122,7 +122,7 @@ public class PublicRecipesActivity extends AppCompatActivity implements RecipeRV
 
     // recipe bottom sheet dialog builder and functionality
     @SuppressLint("SetTextI18n")
-    private void displayBottomSheet(Recipe recipe){
+    protected void displayBottomSheet(Recipe recipe){
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
         View layout = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_dialog_public_recipe,bottomSheetRL);
         bottomSheetDialog.setContentView(layout);

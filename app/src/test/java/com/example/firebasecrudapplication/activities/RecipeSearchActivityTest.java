@@ -1,5 +1,7 @@
 package com.example.firebasecrudapplication.activities;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.Test;
 
 class RecipeSearchActivityTest {
@@ -17,7 +19,9 @@ class RecipeSearchActivityTest {
     }
 
     @Test
-    void onCreateOptionsMenu() {
+    public void onCreateOptionsMenu() {
+//        RecipeSearchActivity recipeSearchActivity = new RecipeSearchActivity();
+//        assertTrue(recipeSearchActivity.onCreateOptionsMenu(null));
     }
 
     @Test
