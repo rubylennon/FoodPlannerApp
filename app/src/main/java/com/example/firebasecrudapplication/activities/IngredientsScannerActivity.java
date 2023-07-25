@@ -21,6 +21,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.Menu;
@@ -34,14 +35,15 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.firebasecrudapplication.models.Ingredient;
-import com.example.firebasecrudapplication.adapters.IngredientScannerRVAdapter;
 import com.example.firebasecrudapplication.R;
+import com.example.firebasecrudapplication.adapters.IngredientScannerRVAdapter;
+import com.example.firebasecrudapplication.models.Ingredient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -70,6 +72,7 @@ public class IngredientsScannerActivity extends AppCompatActivity {
             noMatchingSearchTextTwo;
     private FirebaseAuth mAuth;
 
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,31 +120,31 @@ public class IngredientsScannerActivity extends AppCompatActivity {
 
         // select image button event listener
         mSelectButton.setOnClickListener(v -> {
-            Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(i, 1);
+            // request gallery permission if it is not already available
+            String[] permissionsStorage = {Manifest.permission.READ_MEDIA_IMAGES};
+            int requestExternalStorage = 2;
+            int externalStoragePermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES);
+            if (externalStoragePermission != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, permissionsStorage, requestExternalStorage);
+            } else{//if permission is granted
+                Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(i, 1);
+            }
         });
 
         // take photo button event listener
         mCaptureButton.setOnClickListener(v -> {
-            Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(i, 2);
+            // request camera permission if it is not already available
+            String[] permissionsCamera = {Manifest.permission.CAMERA};
+            int requestCamera = 1;
+            int cameraPermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
+            if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, permissionsCamera, requestCamera);
+            } else{//if permission is granted
+                Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(i, 2);
+            }
         });
-
-        // request read external storage permission if it is not already available
-        String[] permissionsStorage = {Manifest.permission.READ_EXTERNAL_STORAGE};
-        int requestExternalStorage = 1;
-        int externalStoragePermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
-        if (externalStoragePermission != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, permissionsStorage, requestExternalStorage);
-        }
-
-        // request camera permission if it is not already available
-        String[] permissionsCamera = {Manifest.permission.CAMERA};
-        int requestCamera = 1;
-        int cameraPermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
-        if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, permissionsCamera, requestCamera);
-        }
 
     }
 
