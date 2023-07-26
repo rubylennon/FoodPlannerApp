@@ -11,21 +11,16 @@ package com.example.firebasecrudapplication.activities;
 // Ref Description - Firebase Authentication 4: Change password, email & Delete users #2020 | Android Studio Tutorial
 
 //imports
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.firebasecrudapplication.R;
 import com.google.android.material.textfield.TextInputEditText;
@@ -36,7 +31,7 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class EditAccountActivity extends AppCompatActivity {
+public class EditAccountActivity extends BaseMenuActivity {
     // variables
     private TextInputEditText idEdtEmail,
             idEdtEmailConfirmation,
@@ -44,7 +39,6 @@ public class EditAccountActivity extends AppCompatActivity {
             idEdtConfirmNewPwdConfirmation,
             idCurrentEmail;
     private ProgressBar idPBLoading;
-    private FirebaseAuth mAuth;
     private TextView emailHelpText,
             pwdHelpText,
             pwdHelpText2,
@@ -59,7 +53,6 @@ public class EditAccountActivity extends AppCompatActivity {
         setTitle("Account Settings");
 
         // assign layout fields to variables
-        mAuth = FirebaseAuth.getInstance();
         Button idBtnUpdateEmail = findViewById(R.id.idBtnUpdateEmail);
         Button idBtnUpdatePassword = findViewById(R.id.idBtnUpdatePassword);
         Button idBtnDeleteAccount = findViewById(R.id.idBtnDeleteAccount);
@@ -348,56 +341,4 @@ public class EditAccountActivity extends AppCompatActivity {
         // matched the ReGex
         return m.matches();
     }
-
-    // settings menu start
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.settings_main,menu);
-        return true;
-    }
-
-    @SuppressLint("NonConstantResourceId")
-    public boolean onOptionsItemSelected(@NonNull MenuItem item){
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.idAddRecipe:
-                Intent i1 = new Intent(EditAccountActivity.this, AddRecipeActivity.class);
-                startActivity(i1);
-                return true;
-            case R.id.idMyRecipes:
-                Intent i2 = new Intent(EditAccountActivity.this, MainActivity.class);
-                startActivity(i2);
-                return true;
-            case R.id.idPublicRecipes:
-                Intent i3 = new Intent(EditAccountActivity.this, PublicRecipesActivity.class);
-                startActivity(i3);
-                return true;
-            case R.id.idScan:
-                Intent i4 = new Intent(EditAccountActivity.this, IngredientsScannerActivity.class);
-                startActivity(i4);
-                return true;
-            case R.id.idSearch:
-                Intent i5 = new Intent(EditAccountActivity.this, RecipeSearchActivity.class);
-                startActivity(i5);
-                return true;
-            case R.id.idMealPlan:
-                Intent i6 = new Intent(EditAccountActivity.this, MealPlanActivity.class);
-                startActivity(i6);
-                return true;
-            case R.id.idEditAccount:
-                Intent i7 = new Intent(EditAccountActivity.this, EditAccountActivity.class);
-                startActivity(i7);
-                return true;
-            case R.id.idLogout:
-                Toast.makeText(this, "User Logged Out", Toast.LENGTH_SHORT).show();
-                mAuth.signOut();
-                Intent i8 = new Intent(EditAccountActivity.this, LoginActivity.class);
-                startActivity(i8);
-                this.finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-    // settings menu end
 }

@@ -1,6 +1,7 @@
 package com.example.firebasecrudapplication.adapters;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import android.view.View;
 
@@ -67,5 +68,13 @@ class RecipeRVAdapterTest {
     @Test
     void getActivity() {
 
+    }
+
+    @Test
+    void testGetItemCount() {
+        View itemView = null;
+        assertThrows(IllegalArgumentException.class, () -> {
+            new RecipeRVAdapter.ViewHolder(itemView);
+        });
     }
 }

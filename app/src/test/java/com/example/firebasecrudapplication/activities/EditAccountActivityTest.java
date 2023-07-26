@@ -22,13 +22,4 @@ class EditAccountActivityTest {
         assertFalse(EditAccountActivity.isValidPassword("password1#"));
     }
 
-    @Test
-    public void onCreateOptionsMenu() {
-//        EditAccountActivity editAccountActivity = new EditAccountActivity();
-//        assertTrue(editAccountActivity.onCreateOptionsMenu(null));
-    }
-
-    @Test
-    void onOptionsItemSelected() {
-    }
 }

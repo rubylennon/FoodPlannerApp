@@ -46,13 +46,4 @@ class PublicRecipesActivityTest {
 //        verify(spy).displayBottomSheet(r);
     }
 
-    @Test
-    public void onCreateOptionsMenu() {
-//        PublicRecipesActivity publicRecipesActivity = new PublicRecipesActivity();
-//        assertTrue(publicRecipesActivity.onCreateOptionsMenu(null));
-    }
-
-    @Test
-    void onOptionsItemSelected() {
-    }
 }

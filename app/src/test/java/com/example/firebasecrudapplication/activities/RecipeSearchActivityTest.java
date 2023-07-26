@@ -18,13 +18,4 @@ class RecipeSearchActivityTest {
     void onRecipeClick() {
     }
 
-    @Test
-    public void onCreateOptionsMenu() {
-//        RecipeSearchActivity recipeSearchActivity = new RecipeSearchActivity();
-//        assertTrue(recipeSearchActivity.onCreateOptionsMenu(null));
-    }
-
-    @Test
-    void onOptionsItemSelected() {
-    }
 }

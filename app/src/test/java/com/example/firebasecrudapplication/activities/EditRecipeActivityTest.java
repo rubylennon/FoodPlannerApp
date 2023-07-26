@@ -10,13 +10,4 @@ class EditRecipeActivityTest {
     void onCreate() {
     }
 
-    @Test
-    public void onCreateOptionsMenu() {
-//        EditRecipeActivity editRecipeActivity = new EditRecipeActivity();
-//        assertTrue(editRecipeActivity.onCreateOptionsMenu(null));
-    }
-
-    @Test
-    void onOptionsItemSelected() {
-    }
 }

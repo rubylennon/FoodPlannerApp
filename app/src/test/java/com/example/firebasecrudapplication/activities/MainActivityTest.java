@@ -2,6 +2,7 @@ package com.example.firebasecrudapplication.activities;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.apache.tools.ant.Main;
 import org.junit.jupiter.api.Test;
 
 public class MainActivityTest {
@@ -14,13 +15,4 @@ public class MainActivityTest {
     void onRecipeClick() {
     }
 
-    @Test
-    public void onCreateOptionsMenu() {
-//        MainActivity mainActivity = new MainActivity();
-//        assertTrue(mainActivity.onCreateOptionsMenu(null));
-    }
-
-    @Test
-    public void onOptionsItemSelected() {
-    }
 }

@@ -18,4 +18,5 @@ class IngredientTest {
     void getIngredientDescription() {
         assertEquals("Test Description", i.getIngredientDescription());
     }
+
 }

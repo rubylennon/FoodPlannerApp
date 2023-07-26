@@ -14,13 +14,4 @@ class MealPlanActivityTest {
     void onMealPlanClick() {
     }
 
-    @Test
-    public void onCreateOptionsMenu() {
-//        MealPlanActivity mealPlanActivity = new MealPlanActivity();
-//        assertTrue(mealPlanActivity.onCreateOptionsMenu(null));
-    }
-
-    @Test
-    void onOptionsItemSelected() {
-    }
 }

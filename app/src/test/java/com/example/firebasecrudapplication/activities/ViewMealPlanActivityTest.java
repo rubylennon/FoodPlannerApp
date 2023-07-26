@@ -14,13 +14,4 @@ class ViewMealPlanActivityTest {
     void onStart() {
     }
 
-    @Test
-    public void onCreateOptionsMenu() {
-//        ViewMealPlanActivity viewMealPlanActivity = new ViewMealPlanActivity();
-//        assertTrue(viewMealPlanActivity.onCreateOptionsMenu(null));
-    }
-
-    @Test
-    void onOptionsItemSelected() {
-    }
 }

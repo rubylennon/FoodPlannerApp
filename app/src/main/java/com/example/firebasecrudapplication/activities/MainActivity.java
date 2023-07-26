@@ -11,13 +11,12 @@ package com.example.firebasecrudapplication.activities;
 // Ref Description - User Authentication and CRUD Operation with Firebase Realtime Database in Android
 
 // imports
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -25,10 +24,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -48,12 +45,11 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity implements RecipeRVAdapter.RecipeClickInterface {
+public class MainActivity extends BaseMenuActivity implements RecipeRVAdapter.RecipeClickInterface {
     private ProgressBar loadingPB;
     private ArrayList<Recipe> recipeArrayList;
     private RelativeLayout bottomSheetRL;
     private RecipeRVAdapter recipeRVAdapter;
-    private FirebaseAuth mAuth;
     private Query query;
     private ImageView noMatchingSearchResultsIcon;
     private TextView noMatchingSearchTextOne,
@@ -81,7 +77,6 @@ public class MainActivity extends AppCompatActivity implements RecipeRVAdapter.R
         query = databaseReference.orderByChild("userID").equalTo(userID);
         recipeArrayList = new ArrayList<>();
         bottomSheetRL = findViewById(R.id.idRLBSheet);
-        mAuth = FirebaseAuth.getInstance();
         recipeRVAdapter = new RecipeRVAdapter(recipeArrayList, this, this);
         recipeRV.setLayoutManager(new LinearLayoutManager(this));
         recipeRV.setAdapter(recipeRVAdapter);
@@ -212,56 +207,4 @@ public class MainActivity extends AppCompatActivity implements RecipeRVAdapter.R
         noMatchingSearchTextOne.setVisibility(View.VISIBLE);
         noMatchingSearchTextTwo.setVisibility(View.VISIBLE);
     }
-
-    // settings menu code start
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.settings_main,menu);
-        return true;
-    }
-
-    @SuppressLint("NonConstantResourceId")
-    public boolean onOptionsItemSelected(@NonNull MenuItem item){
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.idAddRecipe:
-                Intent i1 = new Intent(MainActivity.this, AddRecipeActivity.class);
-                startActivity(i1);
-                return true;
-            case R.id.idMyRecipes:
-                Intent i2 = new Intent(MainActivity.this, MainActivity.class);
-                startActivity(i2);
-                return true;
-            case R.id.idPublicRecipes:
-                Intent i3 = new Intent(MainActivity.this, PublicRecipesActivity.class);
-                startActivity(i3);
-                return true;
-            case R.id.idScan:
-                Intent i4 = new Intent(MainActivity.this, IngredientsScannerActivity.class);
-                startActivity(i4);
-                return true;
-            case R.id.idSearch:
-                Intent i5 = new Intent(MainActivity.this, RecipeSearchActivity.class);
-                startActivity(i5);
-                return true;
-            case R.id.idMealPlan:
-                Intent i6 = new Intent(MainActivity.this, MealPlanActivity.class);
-                startActivity(i6);
-                return true;
-            case R.id.idEditAccount:
-                Intent i7 = new Intent(MainActivity.this, EditAccountActivity.class);
-                startActivity(i7);
-                return true;
-            case R.id.idLogout:
-                Toast.makeText(this, "User Logged Out", Toast.LENGTH_SHORT).show();
-                mAuth.signOut();
-                Intent i8 = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(i8);
-                this.finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-    // settings menu code end
 }

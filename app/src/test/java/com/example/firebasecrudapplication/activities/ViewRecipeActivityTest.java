@@ -1,6 +1,9 @@
 package com.example.firebasecrudapplication.activities;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import android.view.Menu;
 
 import org.junit.jupiter.api.Test;
 
@@ -14,13 +17,4 @@ class ViewRecipeActivityTest {
     void onDateSet() {
     }
 
-    @Test
-    public void onCreateOptionsMenu() {
-//        ViewRecipeActivity viewRecipeActivity = new ViewRecipeActivity();
-//        assertTrue(viewRecipeActivity.onCreateOptionsMenu(null));
-    }
-
-    @Test
-    void onOptionsItemSelected() {
-    }
 }
