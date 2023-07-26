@@ -2,7 +2,12 @@ package com.example.firebasecrudapplication.activities;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import android.content.ComponentName;
+import android.content.Intent;
+import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.view.SubMenu;
 
 import org.checkerframework.checker.nullness.qual.AssertNonNullIfNonNull;
 import org.junit.jupiter.api.Test;
@@ -13,8 +18,7 @@ class BaseMenuActivityTest {
     @Test
     void onCreateOptionsMenu() {
         assertThrows(NullPointerException.class, () -> {
-            BaseMenuActivity baseMenuActivity = new BaseMenuActivity();
-            baseMenuActivity.onCreateOptionsMenu(null);
+            new BaseMenuActivity().onCreateOptionsMenu(null);
         });
     }
 

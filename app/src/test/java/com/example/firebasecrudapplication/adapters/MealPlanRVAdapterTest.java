@@ -3,8 +3,10 @@ package com.example.firebasecrudapplication.adapters;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import android.content.Context;
 import android.view.View;
 
+import com.example.firebasecrudapplication.activities.MealPlanActivity;
 import com.example.firebasecrudapplication.models.Meal;
 
 import org.junit.jupiter.api.Test;
@@ -63,10 +65,18 @@ class MealPlanRVAdapterTest {
         list.add(m3);
 
         assertEquals(3, list.size());
+
+        Context context = null;
+        assertEquals(3, new MealPlanRVAdapter(list, context, new MealPlanRVAdapter.MealPlanClickInterface() {
+            @Override
+            public void onMealPlanClick(int position) {
+
+            }
+        }).getItemCount());
     }
 
     @Test
-    void MyViewHolder() {
+    void viewHolderNullTest() {
         View itemView = null;
         assertThrows(IllegalArgumentException.class, () -> {
             new MealPlanRVAdapter.ViewHolder(itemView);

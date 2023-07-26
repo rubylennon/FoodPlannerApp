@@ -1,15 +1,21 @@
 package com.example.firebasecrudapplication.adapters;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import android.app.Activity;
+import android.content.Context;
 import android.view.View;
 
+import com.example.firebasecrudapplication.activities.MainActivity;
 import com.example.firebasecrudapplication.models.Recipe;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.manipulation.Ordering;
 
 import java.util.ArrayList;
 
@@ -63,15 +69,30 @@ class RecipeRVAdapterTest {
         list.add(r3);
 
         assertEquals(3, list.size());
+
+        Context context = null;
+
+        assertEquals(3, new RecipeRVAdapter(list, context, new RecipeRVAdapter.RecipeClickInterface() {
+            @Override
+            public void onRecipeClick(int position) {
+
+            }
+        }).getItemCount());
     }
 
     @Test
     void getActivity() {
+        Context context = null;
+        assertNull(new RecipeRVAdapter(list, context, new RecipeRVAdapter.RecipeClickInterface() {
+            @Override
+            public void onRecipeClick(int position) {
 
+            }
+        }).getActivity(context));
     }
 
     @Test
-    void testGetItemCount() {
+    void viewHolderNullTest() {
         View itemView = null;
         assertThrows(IllegalArgumentException.class, () -> {
             new RecipeRVAdapter.ViewHolder(itemView);

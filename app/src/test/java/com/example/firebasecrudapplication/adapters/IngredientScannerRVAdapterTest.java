@@ -37,6 +37,8 @@ class IngredientScannerRVAdapterTest {
         list.add(i3);
 
         assertEquals(3, list.size());
+
+        assertEquals(3, new IngredientScannerRVAdapter(list).getItemCount());
     }
 
     @Test
@@ -48,7 +50,7 @@ class IngredientScannerRVAdapterTest {
     }
 
     @Test
-    void testGetItemCount() {
+    void viewHolderNullTest() {
         View itemView = null;
         assertThrows(IllegalArgumentException.class, () -> {
             new IngredientScannerRVAdapter.MyViewHolder(itemView);
