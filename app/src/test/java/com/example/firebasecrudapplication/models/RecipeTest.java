@@ -1,16 +1,6 @@
 package com.example.firebasecrudapplication.models;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import android.os.Bundle;
-import android.os.IBinder;
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import com.example.firebasecrudapplication.R;
 
 import org.junit.jupiter.api.Test;
 
