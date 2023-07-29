@@ -8,7 +8,7 @@
     <string name="register">Register</string>
     <string name="new_user_register_here">New User? Register Here</string>
     <string name="enter_recipe_name">Enter Recipe Name</string>
-    <string name="enter_recipe_cooking_time">Enter Recipe Cooking Time</string>
+    <string name="enter_recipe_cooking_time">Enter Recipe Cooking Time (Minutes)</string>
     <string name="enter_recipe_suited_for">Enter Recipe Suited For</string>
     <string name="enter_recipe_image">Enter Recipe Image</string>
     <string name="enter_recipe_link">Enter Recipe Link</string>
@@ -104,9 +104,10 @@
     <string name="description_label">Description:</string>
     <string name="cooking_time_label">Cooking Time:</string>
     <string name="serves_label">Serves:</string>
-    <string name="enter_recipe_preparation_time">Enter Recipe Preparation Time</string>
+    <string name="enter_recipe_preparation_time">Enter Recipe Preparation Time (Minutes)</string>
     <string name="preparation_time">Preparation Time</string>
     <string name="preparation_time_label">Preparation Time:</string>
+    <string name="enter_email">Enter Email</string>
     <string-array name="cuisine_array">
         <item>Chinese</item>
         <item>Thai</item>
@@ -136,4 +137,18 @@
         <item>Pescetarianism</item>
         <item>Other</item>
     </string-array>
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
 </resources>

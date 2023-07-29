@@ -11,24 +11,21 @@ package com.example.firebasecrudapplication.activities;
 //@REF 2 - GeeksForGeeks Tutorial - https://www.youtube.com/watch?v=-Gvpf8tXpbc
 
 // imports
+
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Switch;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
-import com.example.firebasecrudapplication.fragments.DatePickerFragment;
 import com.example.firebasecrudapplication.R;
+import com.example.firebasecrudapplication.fragments.DatePickerFragment;
 import com.example.firebasecrudapplication.models.Meal;
 import com.example.firebasecrudapplication.models.MealIngredient;
 import com.example.firebasecrudapplication.models.Recipe;
@@ -41,7 +38,7 @@ import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Objects;
 
-public class ViewRecipeActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+public class ViewRecipeActivity extends BaseMenuActivity implements DatePickerDialog.OnDateSetListener {
     private TextInputEditText recipeNameEdt,
             recipeCookingTimeEdt,
             recipePrepTimeEdt,
@@ -59,7 +56,6 @@ public class ViewRecipeActivity extends AppCompatActivity implements DatePickerD
             recipeImgEdt,
             recipeLinkEdt;
     private Recipe recipe;
-    private FirebaseAuth mAuth;
 
     public ViewRecipeActivity() {
     }
@@ -89,8 +85,6 @@ public class ViewRecipeActivity extends AppCompatActivity implements DatePickerD
         Button viewSourceRecipe = findViewById(R.id.idBtnViewSourceRecipe);
         Button addRecipeToMealPlan = findViewById(R.id.idBtnAddToMealPlan);
         userID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
-        mAuth = FirebaseAuth.getInstance();
-
         recipe = getIntent().getParcelableExtra("recipe");
 
         // assign database reference to Meal Plan firebase realtime database reference
@@ -209,56 +203,4 @@ public class ViewRecipeActivity extends AppCompatActivity implements DatePickerD
         startActivity(new Intent(ViewRecipeActivity.this, MealPlanActivity.class));
 
     }
-
-    // setting menu code start
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.settings_main,menu);
-        return true;
-    }
-
-    @SuppressLint("NonConstantResourceId")
-    public boolean onOptionsItemSelected(@NonNull MenuItem item){
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.idAddRecipe:
-                Intent i1 = new Intent(ViewRecipeActivity.this, AddRecipeActivity.class);
-                startActivity(i1);
-                return true;
-            case R.id.idMyRecipes:
-                Intent i2 = new Intent(ViewRecipeActivity.this, MainActivity.class);
-                startActivity(i2);
-                return true;
-            case R.id.idPublicRecipes:
-                Intent i3 = new Intent(ViewRecipeActivity.this, PublicRecipesActivity.class);
-                startActivity(i3);
-                return true;
-            case R.id.idScan:
-                Intent i4 = new Intent(ViewRecipeActivity.this, IngredientsScannerActivity.class);
-                startActivity(i4);
-                return true;
-            case R.id.idSearch:
-                Intent i5 = new Intent(ViewRecipeActivity.this, RecipeSearchActivity.class);
-                startActivity(i5);
-                return true;
-            case R.id.idMealPlan:
-                Intent i6 = new Intent(ViewRecipeActivity.this, MealPlanActivity.class);
-                startActivity(i6);
-                return true;
-            case R.id.idEditAccount:
-                Intent i7 = new Intent(ViewRecipeActivity.this, EditAccountActivity.class);
-                startActivity(i7);
-                return true;
-            case R.id.idLogout:
-                Toast.makeText(this, "User Logged Out", Toast.LENGTH_SHORT).show();
-                mAuth.signOut();
-                Intent i8 = new Intent(ViewRecipeActivity.this, LoginActivity.class);
-                startActivity(i8);
-                this.finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-    // setting menu code end
 }

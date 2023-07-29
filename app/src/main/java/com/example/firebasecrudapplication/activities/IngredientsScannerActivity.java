@@ -14,17 +14,15 @@ package com.example.firebasecrudapplication.activities;
 // @REF 5 - User Authentication and CRUD Operation with Firebase Realtime Database in Android | GeeksForGeeks - https://www.youtube.com/watch?v=-Gvpf8tXpbc
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -34,15 +32,14 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.firebasecrudapplication.models.Ingredient;
-import com.example.firebasecrudapplication.adapters.IngredientScannerRVAdapter;
 import com.example.firebasecrudapplication.R;
-import com.google.firebase.auth.FirebaseAuth;
+import com.example.firebasecrudapplication.adapters.IngredientScannerRVAdapter;
+import com.example.firebasecrudapplication.models.Ingredient;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -57,7 +54,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class IngredientsScannerActivity extends AppCompatActivity {
+public class IngredientsScannerActivity extends BaseMenuActivity {
     private ImageView mImageView,
             noMatchingSearchResultsIcon;
     private Button mScanButton;
@@ -68,8 +65,8 @@ public class IngredientsScannerActivity extends AppCompatActivity {
     private RecyclerView ingredientsRV;
     private TextView noMatchingSearchTextOne,
             noMatchingSearchTextTwo;
-    private FirebaseAuth mAuth;
 
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,7 +89,6 @@ public class IngredientsScannerActivity extends AppCompatActivity {
         noMatchingSearchResultsIcon = findViewById(R.id.noSearchResultsIV);
         noMatchingSearchTextOne = findViewById(R.id.no_matching_results);
         noMatchingSearchTextTwo = findViewById(R.id.no_matching_results_help);
-        mAuth = FirebaseAuth.getInstance();
 
         // hide the no ingredients alert
         hideNoIngredientsAlert();
@@ -117,31 +113,31 @@ public class IngredientsScannerActivity extends AppCompatActivity {
 
         // select image button event listener
         mSelectButton.setOnClickListener(v -> {
-            Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(i, 1);
+            // request gallery permission if it is not already available
+            String[] permissionsStorage = {Manifest.permission.READ_MEDIA_IMAGES};
+            int requestExternalStorage = 2;
+            int externalStoragePermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES);
+            if (externalStoragePermission != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, permissionsStorage, requestExternalStorage);
+            } else{//if permission is granted
+                Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(i, 1);
+            }
         });
 
         // take photo button event listener
         mCaptureButton.setOnClickListener(v -> {
-            Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(i, 2);
+            // request camera permission if it is not already available
+            String[] permissionsCamera = {Manifest.permission.CAMERA};
+            int requestCamera = 1;
+            int cameraPermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
+            if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, permissionsCamera, requestCamera);
+            } else{//if permission is granted
+                Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(i, 2);
+            }
         });
-
-        // request read external storage permission if it is not already available
-        String[] permissionsStorage = {Manifest.permission.READ_EXTERNAL_STORAGE};
-        int requestExternalStorage = 1;
-        int externalStoragePermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
-        if (externalStoragePermission != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, permissionsStorage, requestExternalStorage);
-        }
-
-        // request camera permission if it is not already available
-        String[] permissionsCamera = {Manifest.permission.CAMERA};
-        int requestCamera = 1;
-        int cameraPermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
-        if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, permissionsCamera, requestCamera);
-        }
 
     }
 
@@ -336,56 +332,4 @@ public class IngredientsScannerActivity extends AppCompatActivity {
         noMatchingSearchTextOne.setVisibility(View.VISIBLE);
         noMatchingSearchTextTwo.setVisibility(View.VISIBLE);
     }
-
-    // settings menu code start
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.settings_main,menu);
-        return true;
-    }
-
-    @SuppressLint("NonConstantResourceId")
-    public boolean onOptionsItemSelected(@NonNull MenuItem item){
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.idAddRecipe:
-                Intent i1 = new Intent(IngredientsScannerActivity.this, AddRecipeActivity.class);
-                startActivity(i1);
-                return true;
-            case R.id.idMyRecipes:
-                Intent i2 = new Intent(IngredientsScannerActivity.this, MainActivity.class);
-                startActivity(i2);
-                return true;
-            case R.id.idPublicRecipes:
-                Intent i3 = new Intent(IngredientsScannerActivity.this, PublicRecipesActivity.class);
-                startActivity(i3);
-                return true;
-            case R.id.idScan:
-                Intent i4 = new Intent(IngredientsScannerActivity.this, IngredientsScannerActivity.class);
-                startActivity(i4);
-                return true;
-            case R.id.idSearch:
-                Intent i5 = new Intent(IngredientsScannerActivity.this, RecipeSearchActivity.class);
-                startActivity(i5);
-                return true;
-            case R.id.idMealPlan:
-                Intent i6 = new Intent(IngredientsScannerActivity.this, MealPlanActivity.class);
-                startActivity(i6);
-                return true;
-            case R.id.idEditAccount:
-                Intent i7 = new Intent(IngredientsScannerActivity.this, EditAccountActivity.class);
-                startActivity(i7);
-                return true;
-            case R.id.idLogout:
-                Toast.makeText(this, "User Logged Out", Toast.LENGTH_SHORT).show();
-                mAuth.signOut();
-                Intent i8 = new Intent(IngredientsScannerActivity.this, LoginActivity.class);
-                startActivity(i8);
-                this.finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-    // settings menu code end
 }

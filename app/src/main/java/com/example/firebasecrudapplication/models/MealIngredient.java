@@ -33,10 +33,6 @@ public class MealIngredient {
         return ingredient;
     }
 
-    public void setIngredient(String ingredient) {
-        this.ingredient = ingredient;
-    }
-
     public String getPurchased() {
         return purchased;
     }

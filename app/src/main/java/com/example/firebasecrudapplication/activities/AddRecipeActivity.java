@@ -16,8 +16,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,7 +27,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.firebasecrudapplication.R;
 import com.example.firebasecrudapplication.models.Recipe;
@@ -45,7 +42,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Objects;
 
-public class AddRecipeActivity extends AppCompatActivity {
+public class AddRecipeActivity extends BaseMenuActivity {
     // variables
     private TextInputEditText recipeNameEdt,
             recipeCookingTimeEdt,
@@ -73,7 +70,6 @@ public class AddRecipeActivity extends AppCompatActivity {
     private AlertDialog dialog;
     private LinearLayout layout;
     private final ArrayList<String> ingredientList = new ArrayList<>();
-    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +80,6 @@ public class AddRecipeActivity extends AppCompatActivity {
         setTitle("Add Recipe");
 
         // initialise variables
-        mAuth = FirebaseAuth.getInstance();
         recipeNameEdt = findViewById(R.id.idEdtRecipeName);
         recipeCookingTimeEdt = findViewById(R.id.idEdtRecipeCookingTime);
         recipePrepTimeEdt = findViewById(R.id.idEdtRecipePrepTime);
@@ -380,57 +375,5 @@ public class AddRecipeActivity extends AppCompatActivity {
 
         layout.addView(view);
     }
-
-    // settings code menu start
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.settings_main,menu);
-        return true;
-    }
-
-    @SuppressLint("NonConstantResourceId")
-    public boolean onOptionsItemSelected(@NonNull MenuItem item){
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.idAddRecipe:
-                Intent i1 = new Intent(AddRecipeActivity.this, AddRecipeActivity.class);
-                startActivity(i1);
-                return true;
-            case R.id.idMyRecipes:
-                Intent i2 = new Intent(AddRecipeActivity.this, MainActivity.class);
-                startActivity(i2);
-                return true;
-            case R.id.idPublicRecipes:
-                Intent i3 = new Intent(AddRecipeActivity.this, PublicRecipesActivity.class);
-                startActivity(i3);
-                return true;
-            case R.id.idScan:
-                Intent i4 = new Intent(AddRecipeActivity.this, IngredientsScannerActivity.class);
-                startActivity(i4);
-                return true;
-            case R.id.idSearch:
-                Intent i5 = new Intent(AddRecipeActivity.this, RecipeSearchActivity.class);
-                startActivity(i5);
-                return true;
-            case R.id.idMealPlan:
-                Intent i6 = new Intent(AddRecipeActivity.this, MealPlanActivity.class);
-                startActivity(i6);
-                return true;
-            case R.id.idEditAccount:
-                Intent i7 = new Intent(AddRecipeActivity.this, EditAccountActivity.class);
-                startActivity(i7);
-                return true;
-            case R.id.idLogout:
-                Toast.makeText(this, "User Logged Out", Toast.LENGTH_SHORT).show();
-                mAuth.signOut();
-                Intent i8 = new Intent(AddRecipeActivity.this, LoginActivity.class);
-                startActivity(i8);
-                this.finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-    // settings code menu end
 
 }
