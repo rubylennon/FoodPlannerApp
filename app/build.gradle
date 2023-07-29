@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace 'com.example.firebasecrudapplication'
+    namespace 'com.example.foodplannerapp'
     compileSdk 33
 
     testOptions {
@@ -15,7 +15,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.example.firebasecrudapplication"
+        applicationId "com.example.foodplannerapp"
         minSdk 24
         targetSdk 33
         versionCode 1
