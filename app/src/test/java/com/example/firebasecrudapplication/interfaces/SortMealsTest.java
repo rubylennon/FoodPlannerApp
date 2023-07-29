@@ -55,7 +55,7 @@ class SortMealsTest{
 
                 assertEquals(0, sortMeals.compare(m1, m2), "expected to be equal");
                 assertEquals(-2, sortMeals.compare(m2, m3), "expected to be greater");
-                assertEquals(2, sortMeals.compare(m3, m2), "expected to be less than");
+                assertEquals(2, sortMeals.compare(m3, m1), "expected to be less than");
 
         }
 

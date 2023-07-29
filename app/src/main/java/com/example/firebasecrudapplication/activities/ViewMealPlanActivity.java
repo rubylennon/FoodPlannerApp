@@ -27,7 +27,6 @@ import com.example.firebasecrudapplication.R;
 import com.example.firebasecrudapplication.models.Meal;
 import com.example.firebasecrudapplication.models.MealIngredient;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

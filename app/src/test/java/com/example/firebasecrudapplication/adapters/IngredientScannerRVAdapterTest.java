@@ -1,12 +1,9 @@
 package com.example.firebasecrudapplication.adapters;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import android.view.View;
-
-import androidx.appcompat.view.menu.MenuView;
 
 import com.example.firebasecrudapplication.models.Ingredient;
 
