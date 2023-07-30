@@ -1,4 +1,4 @@
-package com.example.foodplannerapp.activities;
+package com.example.foodplannerapp;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -20,6 +20,7 @@ import androidx.test.filters.LargeTest;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.example.foodplannerapp.R;
+import com.example.foodplannerapp.activities.MainActivity;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;

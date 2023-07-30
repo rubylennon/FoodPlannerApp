@@ -85,6 +85,19 @@
             </AndroidTestResultsTableState>
           </value>
         </entry>
+        <entry key="-1215540653">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Copy_of_Nexus_5X_API_30_BACKUP" value="120" />
+                  <entry key="Duration" value="90" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
         <entry key="-1167107825">
           <value>
             <AndroidTestResultsTableState>
@@ -107,6 +120,19 @@
                   <entry key="Tests" value="360" />
                   <entry key="ZY22GNTP2C" value="120" />
                   <entry key="motorola&#10; moto e13" value="120" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="-447948056">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Copy_of_Nexus_5X_API_30_BACKUP" value="120" />
+                  <entry key="Duration" value="90" />
+                  <entry key="Tests" value="360" />
                 </map>
               </option>
             </AndroidTestResultsTableState>
@@ -192,6 +218,19 @@
             </AndroidTestResultsTableState>
           </value>
         </entry>
+        <entry key="483716675">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Copy_of_Nexus_5X_API_30_BACKUP" value="120" />
+                  <entry key="Duration" value="90" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
         <entry key="491433426">
           <value>
             <AndroidTestResultsTableState>
@@ -206,6 +245,45 @@
           </value>
         </entry>
         <entry key="835699445">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Copy_of_Nexus_5X_API_30_BACKUP" value="120" />
+                  <entry key="Duration" value="90" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="871503864">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Copy_of_Nexus_5X_API_30_BACKUP" value="120" />
+                  <entry key="Duration" value="90" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="1095821490">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Copy_of_Nexus_5X_API_30_BACKUP" value="120" />
+                  <entry key="Duration" value="90" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="1458136856">
           <value>
             <AndroidTestResultsTableState>
               <option name="preferredColumnWidths">
