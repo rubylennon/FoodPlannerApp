@@ -23,7 +23,7 @@ import com.example.foodplannerapp.models.Ingredient;
 import java.util.ArrayList;
 
 public class IngredientScannerRVAdapter extends RecyclerView.Adapter<IngredientScannerRVAdapter.MyViewHolder> {
-    ArrayList<Ingredient> list;
+    final ArrayList<Ingredient> list;
     public IngredientScannerRVAdapter(ArrayList<Ingredient> list){
         this.list = list;
     }
@@ -47,7 +47,8 @@ public class IngredientScannerRVAdapter extends RecyclerView.Adapter<IngredientS
     }
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView name, description;
+        final TextView name;
+        final TextView description;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);

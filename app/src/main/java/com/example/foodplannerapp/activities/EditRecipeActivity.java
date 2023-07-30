@@ -76,7 +76,7 @@ public class EditRecipeActivity extends BaseMenuActivity {
     private AlertDialog dialog;
     private LinearLayout layout;
     private final ArrayList<String> ingredientList = new ArrayList<>();
-    AtomicReference<Boolean> editPageInitialLoad = new AtomicReference<>(true);
+    final AtomicReference<Boolean> editPageInitialLoad = new AtomicReference<>(true);
 
     // on create method
     @Override
