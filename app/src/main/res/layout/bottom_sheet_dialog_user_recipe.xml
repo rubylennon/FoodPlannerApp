@@ -133,7 +133,6 @@
         android:gravity="center"
         android:orientation="horizontal"
         android:weightSum="2"
-        android:id="@+id/idBtnGroup1"
         android:layout_below="@id/idTVCookingTime">
 
         <Button

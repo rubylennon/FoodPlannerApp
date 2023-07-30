@@ -157,7 +157,6 @@
         android:orientation="horizontal"
         android:weightSum="2"
         android:gravity="center"
-        android:id="@+id/idBtnGroup1"
         android:layout_below="@id/idTVCookingTimeLabel">
 
         <Button
