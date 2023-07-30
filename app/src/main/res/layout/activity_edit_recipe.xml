@@ -67,7 +67,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
-                android:hint="Enter Recipe Preparation Time"
+                android:hint="@string/enter_recipe_preparation_time"
                 style="@style/TextInputLayout"
                 android:padding="5dp"
                 android:textColorHint="@color/blue_shade_2"

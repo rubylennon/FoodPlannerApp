@@ -219,7 +219,6 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/deleteAccountLL"
             android:layout_below="@id/updatePwdLL"
             android:layout_margin="10dp"
             android:gravity="center"

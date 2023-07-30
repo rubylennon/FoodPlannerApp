@@ -12,6 +12,8 @@ package com.example.foodplannerapp.activities;
 // @REF 3 - How to Capture Image And Display in ImageView in android Studio - https://www.youtube.com/watch?v=d7Nia9vKUDM
 // @REF 4 - Search Bar + RecyclerView+Firebase Realtime Database easy Steps - https://www.youtube.com/watch?v=PmqYd-AdmC0
 // @REF 5 - User Authentication and CRUD Operation with Firebase Realtime Database in Android | GeeksForGeeks - https://www.youtube.com/watch?v=-Gvpf8tXpbc
+// @REF 6 - ActivityResultLauncher Java Android | Pick Image From Gallery - https://www.youtube.com/watch?v=f2odwvwRTKo
+// @REF 7 - ActivityResultLauncher Java Android | Take Image From Camera - https://www.youtube.com/watch?v=JMdHMMEO8ZQ
 
 import android.Manifest;
 import android.content.Intent;
@@ -30,8 +32,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -120,8 +123,8 @@ public class IngredientsScannerActivity extends BaseMenuActivity {
             if (externalStoragePermission != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, permissionsStorage, requestExternalStorage);
             } else{//if permission is granted
-                Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(i, 1);
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                selectImage.launch(intent);
             }
         });
 
@@ -134,8 +137,8 @@ public class IngredientsScannerActivity extends BaseMenuActivity {
             if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, permissionsCamera, requestCamera);
             } else{//if permission is granted
-                Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(i, 2);
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                captureImage.launch(intent);
             }
         });
 
@@ -268,45 +271,53 @@ public class IngredientsScannerActivity extends BaseMenuActivity {
         loadingPB.setVisibility(View.GONE);
     }
 
-    // activity result handler including select and upload image functionality
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    // activity result handler for select image functionality
+    final ActivityResultLauncher<Intent> selectImage = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+               result -> {
+                    if(result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        Uri selectedImage = result.getData().getData();
+                        String[] filepath = {MediaStore.Images.Media.DATA};
+                        Cursor cursor = getContentResolver().query(selectedImage, filepath, null, null, null);
+                        cursor.moveToFirst();
+                        int columnIndex = cursor.getColumnIndex(filepath[0]);
+                        String picturePath = cursor.getString(columnIndex);
+                        cursor.close();
 
-        // if activity result is 1 (Gallery Image Selection Activity)
-        if (requestCode == 1 && resultCode == RESULT_OK && null != data){
-            Uri selectedImage = data.getData();
-            String[] filepath = {MediaStore.Images.Media.DATA};
-            Cursor cursor = getContentResolver().query(selectedImage, filepath, null, null, null);
-            cursor.moveToFirst();
-            int columnIndex = cursor.getColumnIndex(filepath[0]);
-            String picturePath = cursor.getString(columnIndex);
-            cursor.close();
+                        // update the image view with the selected photo
+                        mImageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+                        mImageView.buildDrawingCache();
+                        mSelectedImage = mImageView.getDrawingCache();
 
-            // update the image view with the selected photo
-            mImageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-            mImageView.buildDrawingCache();
-            mSelectedImage = mImageView.getDrawingCache();
+                        // re-enable scan ingredients button
+                        mScanButton.setEnabled(true);
 
-            // re-enable scan ingredients button
-            mScanButton.setEnabled(true);
+                        clearIngredientsList();
+                    }
+                }
+            );
 
-            clearIngredientsList();
 
-        // if activity result is 1 (Capture Photo Activity)
-        } else if (requestCode == 2 && resultCode == RESULT_OK && null != data){
-            Bitmap capturedImage = (Bitmap)data.getExtras().get("data");
+    final ActivityResultLauncher<Intent> captureImage = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if(result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    Bundle bundle = result.getData().getExtras();
 
-            // update the image view with the captured photo
-            mImageView.setImageBitmap(capturedImage);
-            mImageView.buildDrawingCache();
-            mSelectedImage = mImageView.getDrawingCache();
+                    Bitmap capturedImage = (Bitmap) bundle.get("data");
 
-            // re-enable scan ingredients button
-            mScanButton.setEnabled(true);
+                    // update the image view with the captured photo
+                    mImageView.setImageBitmap(capturedImage);
+                    mImageView.buildDrawingCache();
+                    mSelectedImage = mImageView.getDrawingCache();
 
-            clearIngredientsList();
-        }
-    }
+                    // re-enable scan ingredients button
+                    mScanButton.setEnabled(true);
+
+                    clearIngredientsList();
+                }
+            }
+    );
 
     public void clearIngredientsList(){
         hideNoIngredientsAlert();
