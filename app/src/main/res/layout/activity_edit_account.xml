@@ -221,6 +221,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/updatePwdLL"
             android:layout_margin="10dp"
+            android:id="@+id/deleteAccountLL"
             android:gravity="center"
             android:background="@drawable/custom_border">
 
