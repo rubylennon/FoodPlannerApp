@@ -47,6 +47,7 @@ public class EditAccountActivity extends BaseMenuActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // set the layout view
         setContentView(R.layout.activity_edit_account);
 
         // set the actionbar title
@@ -125,14 +126,14 @@ public class EditAccountActivity extends BaseMenuActivity {
                     //update email of signed in user using new email value
                     user.updateEmail(idEdtEmail.getText().toString().trim())
                             .addOnCompleteListener(task -> {
-
+                            // if the task is successful
                             if(task.isSuccessful()){
                                 Toast.makeText(EditAccountActivity.this, "Email updated", Toast.LENGTH_SHORT).show();
                                 idCurrentEmail.setText(newEmail);
                                 idPBLoading.setVisibility(View.GONE);
-                            }else{
+                            }else{// if the task is not successful
                                 idPBLoading.setVisibility(View.GONE);
-
+                                // return different errors based on exception from Firebase Authentication
                                 if(Objects.requireNonNull(task.getException()).toString().contains("The email address is badly formatted.")){
                                     Toast.makeText(EditAccountActivity.this, "Email update failed. Please add valid email.", Toast.LENGTH_SHORT).show();
                                 } else if(Objects.requireNonNull(task.getException()).toString().contains("The email address is already in use by another account")){
@@ -286,12 +287,17 @@ public class EditAccountActivity extends BaseMenuActivity {
                         Intent i = new Intent(EditAccountActivity.this, LoginActivity.class);
                         startActivity(i);
                         finish();
-                    }else if(Objects.requireNonNull(task.getException()).toString().contains("This operation is sensitive and requires recent authentication. Log in again before retrying this request.")){
-                        Toast.makeText(EditAccountActivity.this, "Account deletion failed. Please log in again before retrying this request.", Toast.LENGTH_SHORT).show();
+                    }else if(Objects.requireNonNull(task.getException()).toString().contains("This " +
+                            "operation is sensitive and requires recent authentication. Log in " +
+                            "again before retrying this request.")){
+                        Toast.makeText(EditAccountActivity.this, "Account deletion " +
+                                "failed. Please log in again before retrying this request.",
+                                Toast.LENGTH_SHORT).show();
                         deleteHelpText.setVisibility(View.VISIBLE);
                         idPBLoading.setVisibility(View.GONE);
                     } else{
-                        Toast.makeText(EditAccountActivity.this, "Account Deletion Failed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(EditAccountActivity.this, "Account Deletion " +
+                                "Failed", Toast.LENGTH_SHORT).show();
                         idPBLoading.setVisibility(View.GONE);
                     }
 
@@ -315,6 +321,7 @@ public class EditAccountActivity extends BaseMenuActivity {
         });
     }
 
+    // @Reference - https://www.geeksforgeeks.org/how-to-validate-a-password-using-regular-expressions-in-java/
     // method for checking if user supplied password is valid
     public static boolean isValidPassword(String password){
         // Regex to check valid password.

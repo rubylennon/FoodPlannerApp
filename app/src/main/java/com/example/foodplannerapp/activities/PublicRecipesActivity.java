@@ -64,23 +64,25 @@ public class PublicRecipesActivity extends BaseMenuActivity implements RecipeRVA
         // declare variables
         RecyclerView recipeRV = findViewById(R.id.idRVRecipes);
         loadingPB = findViewById(R.id.idPBLoading);
+        bottomSheetRL = findViewById(R.id.idRLBSheet_Public);
+        recipeArrayList = new ArrayList<>();
+
+        // firebase variables
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = firebaseDatabase.getReference("Recipes");
         query = databaseReference.orderByChild("recipePublic").equalTo(true);
-        recipeArrayList = new ArrayList<>();
-        bottomSheetRL = findViewById(R.id.idRLBSheet_Public);
+
+        // recycler view
         recipeRVAdapter = new RecipeRVAdapter(recipeArrayList, this, this);
         recipeRV.setLayoutManager(new LinearLayoutManager(this));
         recipeRV.setAdapter(recipeRVAdapter);
 
         // retrieve and display all public recipes from Firebase Realtime Database
         getAllPublicRecipes();
-
     }
 
     // retrieve and display all public recipes from Firebase Realtime Database
     private void getAllPublicRecipes() {
-
         // clear recipeArrayList before adding recipes
         recipeArrayList.clear();
 
@@ -89,23 +91,19 @@ public class PublicRecipesActivity extends BaseMenuActivity implements RecipeRVA
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 loadingPB.setVisibility(View.GONE);
-
                 if (dataSnapshot.exists()) {
                     Log.d("snapshot2", String.valueOf(dataSnapshot));
-
                     for (DataSnapshot issue : dataSnapshot.getChildren()) {
                         recipeArrayList.add(issue.getValue(Recipe.class));
                         recipeRVAdapter.notifyDataSetChanged();
                     }
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
-
     }
 
     // method for displaying clicked recipe bottom sheet dialog

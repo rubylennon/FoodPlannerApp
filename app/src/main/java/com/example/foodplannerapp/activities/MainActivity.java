@@ -11,7 +11,6 @@ package com.example.foodplannerapp.activities;
 // Ref Description - User Authentication and CRUD Operation with Firebase Realtime Database in Android
 
 // imports
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -69,20 +68,25 @@ public class MainActivity extends BaseMenuActivity implements RecipeRVAdapter.Re
         // locate layout elements by ID and assign to variables
         // declare variables
         RecyclerView recipeRV = findViewById(R.id.idRVRecipes);
-        loadingPB = findViewById(R.id.idPBLoading);
-        ImageButton addFAB = findViewById(R.id.idAddFAB);
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        String userID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
-        DatabaseReference databaseReference = firebaseDatabase.getReference("Recipes");
-        query = databaseReference.orderByChild("userID").equalTo(userID);
         recipeArrayList = new ArrayList<>();
         bottomSheetRL = findViewById(R.id.idRLBSheet);
-        recipeRVAdapter = new RecipeRVAdapter(recipeArrayList, this, this);
-        recipeRV.setLayoutManager(new LinearLayoutManager(this));
-        recipeRV.setAdapter(recipeRVAdapter);
         noMatchingSearchResultsIcon = findViewById(R.id.noSearchResultsIV);
         noMatchingSearchTextOne = findViewById(R.id.no_matching_results);
         noMatchingSearchTextTwo = findViewById(R.id.no_matching_results_help);
+        loadingPB = findViewById(R.id.idPBLoading);
+        ImageButton addFAB = findViewById(R.id.idAddFAB);
+
+        // declare and initialise recipe Recycler View
+        recipeRVAdapter = new RecipeRVAdapter(recipeArrayList, this, this);
+        recipeRV.setLayoutManager(new LinearLayoutManager(this));
+        recipeRV.setAdapter(recipeRVAdapter);
+
+        // firebase variables
+        String userID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference("Recipes");
+        // set the query to filter the database reference to recipes that match the logged in users ID
+        query = databaseReference.orderByChild("userID").equalTo(userID);
 
         // if the add floating actions button is clicked then direct user to add recipe page
         addFAB.setOnClickListener(v -> startActivity(new Intent(MainActivity.this,
@@ -93,27 +97,24 @@ public class MainActivity extends BaseMenuActivity implements RecipeRVAdapter.Re
 
         // get all user recipes from firebase database
         getAllUserRecipes();
-
     }
 
+    // get all user recipe from Firebase Realtime Database
     private void getAllUserRecipes() {
-
         // clear the recipe arraylist
         recipeArrayList.clear();
-
         // add value event listener to firebase query
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // hide the loading bar
                 loadingPB.setVisibility(View.GONE);
-
                 if (dataSnapshot.exists()) {
-
                     for (DataSnapshot issue : dataSnapshot.getChildren()) {
+                        // add the retrieved recipes to an ArrayList
                         recipeArrayList.add(issue.getValue(Recipe.class));
                         recipeRVAdapter.notifyDataSetChanged();
-
                         // if there are no recipes returned then show the no recipes notice
                         if(recipeArrayList.isEmpty()){
                             showNoRecipesAlert();
@@ -123,13 +124,11 @@ public class MainActivity extends BaseMenuActivity implements RecipeRVAdapter.Re
                     }
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
-
     }
 
     // if a recipe is clicked
@@ -143,7 +142,8 @@ public class MainActivity extends BaseMenuActivity implements RecipeRVAdapter.Re
     @SuppressLint("SetTextI18n")
     private void displayBottomSheet(Recipe recipe){
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
-        View layout = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_dialog_user_recipe,bottomSheetRL);
+        View layout = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_dialog_user_recipe,
+                bottomSheetRL);
         bottomSheetDialog.setContentView(layout);
         bottomSheetDialog.setCancelable(false);
         bottomSheetDialog.setCanceledOnTouchOutside(true);

@@ -145,9 +145,7 @@ public class IngredientsScannerActivity extends BaseMenuActivity {
     }
 
     protected void onStart() {
-
         super.onStart();
-
         // if the ingredients database reference is not null
         if(ingredientsDBRef != null){
             // create ingredients db reference value events listener
@@ -162,14 +160,13 @@ public class IngredientsScannerActivity extends BaseMenuActivity {
                         }
                     }
                 }
-
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(IngredientsScannerActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(IngredientsScannerActivity.this, error.getMessage(),
+                            Toast.LENGTH_SHORT).show();
                 }
             });
         }
-        // SEARCH CODE END
     }
 
     // method for searching for matching ingredients in database and displaying to user
@@ -203,6 +200,8 @@ public class IngredientsScannerActivity extends BaseMenuActivity {
         loadingPB.setVisibility(View.GONE);
     }
 
+    // Reference - Google MLKit Samples
+    // https://github.com/googlesamples/mlkit/tree/master/android/vision-quickstart
     // method for running text recognition functionality
     private void runTextRecognition() {
         InputImage image = InputImage.fromBitmap(mSelectedImage, 0);

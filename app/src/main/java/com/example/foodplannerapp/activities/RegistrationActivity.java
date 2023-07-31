@@ -126,11 +126,10 @@ public class RegistrationActivity extends AppCompatActivity {
                      }
                  });
             }
-
         });
-
     }
 
+    //@Reference - https://www.geeksforgeeks.org/how-to-validate-a-password-using-regular-expressions-in-java/
     //method for checking that the password provided is valid
     public static boolean isValidPassword(String password){
 

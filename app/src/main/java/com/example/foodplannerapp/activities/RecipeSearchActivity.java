@@ -192,8 +192,8 @@ public class RecipeSearchActivity extends BaseMenuActivity
                 }
             });
         }
-        // SEARCH CODE END
 
+        // recipe search bar functionality
         if (searchView != null){
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
@@ -211,7 +211,6 @@ public class RecipeSearchActivity extends BaseMenuActivity
                     return true;
                 }
             });
-
             searchView.setOnCloseListener(() -> {
                 searchView.setQuery("", false);
                 searchView.clearFocus();
@@ -249,7 +248,6 @@ public class RecipeSearchActivity extends BaseMenuActivity
     }
 
     private void getAllRecipes() {
-
         originalRecipesList.clear();
         databaseReferenceRecipes.addChildEventListener(new ChildEventListener() {
             @SuppressLint("NotifyDataSetChanged")
@@ -288,19 +286,19 @@ public class RecipeSearchActivity extends BaseMenuActivity
             }
         });
 
+        // database query value event listener
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // hide the loading bar
                 loadingPB.setVisibility(View.GONE);
-
                 if (dataSnapshot.exists()) {
-
                     for (DataSnapshot issue : dataSnapshot.getChildren()) {
-
+                        // get the current users ID
                         String userID = Objects.requireNonNull(FirebaseAuth.getInstance()
                                 .getCurrentUser()).getUid();
-
+                        // only store recipes that belong to the current user or are set to public
                         if(Objects.equals(issue.child("userID").getValue(), userID)
                                 && Objects.equals(issue.child("recipePublic")
                                 .getValue(), true)){
@@ -320,17 +318,14 @@ public class RecipeSearchActivity extends BaseMenuActivity
                     }
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
-
     }
 
     private void showIngredientsDialog(ArrayList<Ingredient> allIngredientsList){
-
         // create string arraylist to store all ingredients names
         ArrayList<String> ingredientsStringArrayList = new ArrayList<>();
 
@@ -361,21 +356,15 @@ public class RecipeSearchActivity extends BaseMenuActivity
                         selectedItems.remove(Integer.valueOf(indexSelected));
                     }
                 }).setPositiveButton("Search", (dialog, id) -> {
-                    //  Your code when user clicked on OK
-
                     // set the loading progress bar to visible
                     loadingPB.setVisibility(View.VISIBLE);
-
                     // run filterRecipes method and pass selected ingredients (indexes)
                     filterRecipesByIngredients(selectedItems);
-
                 }).setNegativeButton("Cancel", (dialog, id) -> {
-                    //todo
                 }).create();
 
         // show the alert dialog
         alertDialog.show();
-
     }
 
     private void searchByCuisine(){
@@ -446,7 +435,6 @@ public class RecipeSearchActivity extends BaseMenuActivity
 
     @SuppressLint("SetTextI18n")
     private void filterRecipesByIngredients(ArrayList<Object> selectedItems){
-
         ArrayList<String> filteredIngredients = new ArrayList<>();
 
         for(Object object : selectedItems){

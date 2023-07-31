@@ -102,7 +102,6 @@ public class EditRecipeActivity extends BaseMenuActivity {
         recipeMethodEdt = findViewById(R.id.idEdtRecipeMethod);
         recipePublicEdt = findViewById(R.id.idPublicSwitch);
         loadingPB = findViewById(R.id.idPBLoading);
-
         Button addIngredient = findViewById(R.id.add);
         layout = findViewById(R.id.container);
 
@@ -119,7 +118,7 @@ public class EditRecipeActivity extends BaseMenuActivity {
         // get the parcelable recipe object received when the edit recipe page was opened
         Recipe recipe = getIntent().getParcelableExtra("recipe");
 
-        // if a recipe is returned from the database
+        // if the recipe object is not null update the input text fields with the recipe data
         if (recipe != null){
             recipeNameEdt.setText(recipe.getRecipeName());
             recipeCookingTimeEdt.setText(recipe.getRecipeCookingTime());
@@ -138,15 +137,12 @@ public class EditRecipeActivity extends BaseMenuActivity {
             String previouslySelectedIngredients = recipe.getRecipeIngredients();
             String[] previouslySelectedIngredientsArray =
                     previouslySelectedIngredients.split(",");
-
             // add previously added ingredients to view (saved ingredients)
             for(String ingredient : previouslySelectedIngredientsArray){
                 addCard(ingredient);
             }
-
             // after adding previously added ingredients to view set editPageInitialLoad to false
             editPageInitialLoad.set(false);
-
             recipePublicEdt.setChecked(recipe.getRecipePublic().equals(true));
             recipeID = recipe.getRecipeID();
         }
@@ -317,7 +313,6 @@ public class EditRecipeActivity extends BaseMenuActivity {
                         suitabilityList.add(index);
                     }
                 }
-
                 // check condition
                 if (b) {
                     // when checkbox selected
@@ -326,7 +321,6 @@ public class EditRecipeActivity extends BaseMenuActivity {
                     // Sort array list
                     Collections.sort(suitabilityList);
                     newSuitabilitySelectionInitiated.set(true);
-
                 } else {
                     // when checkbox unselected
                     // Remove position from suitability list

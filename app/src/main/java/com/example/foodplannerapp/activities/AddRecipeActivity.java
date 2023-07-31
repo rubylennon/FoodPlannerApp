@@ -74,6 +74,7 @@ public class AddRecipeActivity extends BaseMenuActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // set the activity layout
         setContentView(R.layout.activity_add_recipe);
 
         // set the actionbar title
@@ -92,12 +93,16 @@ public class AddRecipeActivity extends BaseMenuActivity {
         recipeMethodEdt = findViewById(R.id.idEdtRecipeMethod);
         recipePublicEdt = findViewById(R.id.idPublicSwitch);
         Button addRecipeBtn = findViewById(R.id.idBtnAddRecipe);
-        userID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         loadingPB = findViewById(R.id.idPBLoading);
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference("Recipes");
         Button addIngredient = findViewById(R.id.add);
         layout = findViewById(R.id.container);
+
+        // get the currently signed in users ID from the current Firebase Auth instance
+        userID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+        // get instance of Firebase realtime database
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        // create database 'Recipes' reference
+        databaseReference = firebaseDatabase.getReference("Recipes");
 
         // build alert dialog for adding ingredients to recipe
         buildDialogAddIngredient();
@@ -286,15 +291,14 @@ public class AddRecipeActivity extends BaseMenuActivity {
                     // check condition
                     if (j != ingredientList.size() - 1) {
                         // When j value  not equal
-                        // to lang list size - 1
+                        // to ingredient list size - 1
                         // add comma
                         stringBuilder3.append(", ");
                     }
                 }
                 ingredientsSelectionString = stringBuilder3.toString();
-                Log.d("stringBuilder3.toString()", stringBuilder3.toString());
-                Log.d("ingredientsSelectionString", ingredientsSelectionString);
 
+                // set the loading bar to visible
                 loadingPB.setVisibility(View.VISIBLE);
 
                 // get user input text from fields
@@ -313,15 +317,21 @@ public class AddRecipeActivity extends BaseMenuActivity {
                 recipeID = databaseReference.push().getKey();
 
                 // build the object using the above variables
-                Recipe recipe = new Recipe(recipeName,recipeCookingTime,recipePrepTime,recipeServings,recipeSuitedFor,recipeCuisine,recipeImg,recipeLink,recipeDesc,recipeMethod,recipeIngredients,recipePublic,recipeID,userID);
+                Recipe recipe = new Recipe(recipeName,recipeCookingTime,recipePrepTime,
+                        recipeServings,recipeSuitedFor,recipeCuisine,recipeImg,recipeLink,
+                        recipeDesc,recipeMethod,recipeIngredients,recipePublic,recipeID,userID);
 
                 // add the new recipe to the database
                 databaseReference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        // hide the loading bar
                         loadingPB.setVisibility(View.GONE);
+                        // add the recipe object to the database
                         databaseReference.child(recipeID).setValue(recipe);
+                        // display a toast notification
                         Toast.makeText(AddRecipeActivity.this, "Recipe Added", Toast.LENGTH_SHORT).show();
+                        // redirect the user to the MainActivity (My Recipes) screen
                         startActivity(new Intent(AddRecipeActivity.this, MainActivity.class));
                     }
 

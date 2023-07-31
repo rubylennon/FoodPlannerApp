@@ -50,6 +50,7 @@ public class LoginActivity extends AppCompatActivity {
         loadingPB = findViewById(R.id.idPBLoading);
         loadingPB.setVisibility(View.GONE);
         TextView registerTV = findViewById(R.id.idTVRegister);
+
         mAuth = FirebaseAuth.getInstance();
 
         // set the activity title to Login
@@ -81,7 +82,8 @@ public class LoginActivity extends AppCompatActivity {
                 mAuth.signInWithEmailAndPassword(userName,pwd).addOnCompleteListener(task -> {
                     if(task.isSuccessful()){
                         loadingPB.setVisibility(View.GONE);
-                        Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Login Successful",
+                                Toast.LENGTH_SHORT).show();
                         // redirect the user to the main activity (My Recipes)
                         Intent i = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(i);
@@ -89,7 +91,8 @@ public class LoginActivity extends AppCompatActivity {
                     } else {
                         // if the login fails then execute the following
                         loadingPB.setVisibility(View.GONE);
-                        Toast.makeText(LoginActivity.this, "Login Failed. Please try again...", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Login Failed. Please try again...",
+                                Toast.LENGTH_SHORT).show();
                     }
                 });
             }
