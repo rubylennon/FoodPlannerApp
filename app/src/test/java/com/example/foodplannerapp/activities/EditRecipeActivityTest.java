@@ -1,7 +1,6 @@
 package com.example.foodplannerapp.activities;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import android.os.Bundle;
 

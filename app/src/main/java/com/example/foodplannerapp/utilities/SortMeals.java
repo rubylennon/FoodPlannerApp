@@ -1,4 +1,4 @@
-package com.example.foodplannerapp.interfaces;
+package com.example.foodplannerapp.utilities;
 
 /*
  * @Author: Ruby Lennon (x19128355)

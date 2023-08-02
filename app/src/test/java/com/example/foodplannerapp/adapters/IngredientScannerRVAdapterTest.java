@@ -50,6 +50,7 @@ class IngredientScannerRVAdapterTest {
     void viewHolderNullTest() {
         View itemView = null;
         assertThrows(IllegalArgumentException.class, () -> {
+            assert false;
             new IngredientScannerRVAdapter.MyViewHolder(itemView);
         });
     }

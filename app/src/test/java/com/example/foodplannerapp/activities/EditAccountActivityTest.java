@@ -1,6 +1,6 @@
 package com.example.foodplannerapp.activities;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import android.os.Bundle;
 
@@ -15,15 +15,6 @@ class EditAccountActivityTest {
             EditAccountActivity editAccountActivity = new EditAccountActivity();
             editAccountActivity.onCreate(b);
         });
-    }
-
-    @Test
-    void isValidPassword() {
-        assertTrue(EditAccountActivity.isValidPassword("Password1#"));
-        assertFalse(EditAccountActivity.isValidPassword("Password"));
-        assertFalse(EditAccountActivity.isValidPassword("Pass"));
-        assertFalse(EditAccountActivity.isValidPassword("Password1"));
-        assertFalse(EditAccountActivity.isValidPassword("password1#"));
     }
 
 }

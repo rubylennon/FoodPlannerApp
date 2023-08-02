@@ -1,4 +1,4 @@
-package com.example.foodplannerapp.interfaces;
+package com.example.foodplannerapp.utilities;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

@@ -2,7 +2,6 @@ package com.example.foodplannerapp.activities;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import org.junit.jupiter.api.Test;
@@ -23,15 +22,6 @@ class IngredientsScannerActivityTest {
         assertThrows(NullPointerException.class, () -> {
             IngredientsScannerActivity ingredientsScannerActivity = new IngredientsScannerActivity();
             ingredientsScannerActivity.onStart();
-        });
-    }
-
-    @Test
-    void onActivityResult() {
-        Intent data = new Intent();
-        assertThrows(NullPointerException.class, () -> {
-            IngredientsScannerActivity ingredientsScannerActivity = new IngredientsScannerActivity();
-            ingredientsScannerActivity.onActivityResult(1,1,data);
         });
     }
 

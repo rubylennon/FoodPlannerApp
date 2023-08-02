@@ -1,6 +1,6 @@
 package com.example.foodplannerapp.activities;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
@@ -8,9 +8,7 @@ class BaseMenuActivityTest {
 
     @Test
     void onCreateOptionsMenu() {
-        assertThrows(NullPointerException.class, () -> {
-            new BaseMenuActivity().onCreateOptionsMenu(null);
-        });
+        assertThrows(NullPointerException.class, () -> new BaseMenuActivity().onCreateOptionsMenu(null));
     }
 
     @Test
