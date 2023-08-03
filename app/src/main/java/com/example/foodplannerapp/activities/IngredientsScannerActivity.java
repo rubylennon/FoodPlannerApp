@@ -241,6 +241,8 @@ public class IngredientsScannerActivity extends BaseMenuActivity {
         // store the OCR text to variable
         String result_text = texts.getText();
 
+        System.out.println("RESULT TEXT" + result_text);
+
         // update the stored OCR result text by formatting as below
         // remove new lines
         result_text = result_text.replaceAll("\\n", " ");

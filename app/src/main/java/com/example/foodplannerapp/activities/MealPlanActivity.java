@@ -32,7 +32,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodplannerapp.R;
 import com.example.foodplannerapp.adapters.MealPlanRVAdapter;
-import com.example.foodplannerapp.utilities.SortMeals;
+import com.example.foodplannerapp.interfaces.SortMeals;
 import com.example.foodplannerapp.models.Meal;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
