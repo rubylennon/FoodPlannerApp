@@ -7,15 +7,10 @@ package com.example.foodplannerapp.activities;
  * Description - Add Recipe Activity for creating new recipes
  */
 
-// @REF 1 - https://developer.android.com/develop/ui/views/components/spinner
-// @REF 2 - https://www.geeksforgeeks.org/how-to-implement-multiselect-dropdown-in-android/
-// @REF 3 - https://codevedanam.blogspot.com/2021/04/dynamic-views-in-android.html
-// @REF 4 - https://www.youtube.com/watch?v=-Gvpf8tXpbc
-
+// imports
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -43,7 +38,7 @@ import java.util.Collections;
 import java.util.Objects;
 
 public class AddRecipeActivity extends BaseMenuActivity {
-    // variables
+    // declare variables
     private TextInputEditText recipeNameEdt,
             recipeCookingTimeEdt,
             recipePrepTimeEdt,
@@ -67,10 +62,11 @@ public class AddRecipeActivity extends BaseMenuActivity {
             suitabilityList = new ArrayList<>();
     private String[] cuisineArray,
             suitabilityArray;
-    private AlertDialog dialog;
-    private LinearLayout layout;
-    private final ArrayList<String> ingredientList = new ArrayList<>();
+    private AlertDialog addIngredientDialog;
+    private LinearLayout ingredientCardsContainer;
+    private final ArrayList<String> ingredientArrayList = new ArrayList<>();
 
+    // on create method to be executed when activity is launched
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,86 +88,81 @@ public class AddRecipeActivity extends BaseMenuActivity {
         recipeDescEdt = findViewById(R.id.idEdtRecipeDesc);
         recipeMethodEdt = findViewById(R.id.idEdtRecipeMethod);
         recipePublicEdt = findViewById(R.id.idPublicSwitch);
-        Button addRecipeBtn = findViewById(R.id.idBtnAddRecipe);
         loadingPB = findViewById(R.id.idPBLoading);
-        Button addIngredient = findViewById(R.id.add);
-        layout = findViewById(R.id.container);
+        ingredientCardsContainer = findViewById(R.id.container);
+        Button addRecipeBtn = findViewById(R.id.idBtnAddRecipe);
+        Button addIngredientBtn = findViewById(R.id.add);
 
         // get the currently signed in users ID from the current Firebase Auth instance
         userID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         // get instance of Firebase realtime database
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        // create database 'Recipes' reference
+        // create Firebase database 'Recipes' reference
         databaseReference = firebaseDatabase.getReference("Recipes");
 
         // build alert dialog for adding ingredients to recipe
         buildDialogAddIngredient();
 
-        // when the add ingredients button is clicked show the dialog
-        addIngredient.setOnClickListener(v -> dialog.show());
+        // when the add ingredients button is clicked show the add ingredient dialog box
+        addIngredientBtn.setOnClickListener(v -> addIngredientDialog.show());
 
         // SELECT CUISINE DIALOG START
+        // @Reference - https://www.geeksforgeeks.org/how-to-implement-multiselect-dropdown-in-android/
+        // Reference description - tutorial on how to implement a MultiSelect DropDown in Android
         // add items from resource cuisine array to local cuisine array
         cuisineArray = getResources().getStringArray(R.array.cuisine_array);
-
         // initialize selected language array
         selectedCuisine = new boolean[cuisineArray.length];
-
+        // on click listener for cuisine dropdown field click
         recipeCuisineEdt.setOnClickListener(view -> {
-
             // Initialize alert dialog
             AlertDialog.Builder builder = new AlertDialog.Builder(AddRecipeActivity.this);
-
-            // set title
+            // set dialog title
             builder.setTitle("Select Cuisine");
-
-            // set dialog non cancelable
+            // set dialog to non cancelable
             builder.setCancelable(false);
-
+            // set the multi-choice items for the dialog
             builder.setMultiChoiceItems(cuisineArray, selectedCuisine, (dialogInterface, i, b) -> {
                 // check condition
                 if (b) {
-                    // when checkbox selected
-                    // Add position  in lang list
+                    // when a checkbox is selected add its position to cuisine list
                     cuisineList.add(i);
-                    // Sort array list
+                    // Sort the array list
                     Collections.sort(cuisineList);
                 } else {
-                    // when checkbox unselected
-                    // Remove position from langList
+                    // when a checkbox is unselected remove its position from the cuisine list
                     cuisineList.remove(Integer.valueOf(i));
                 }
             });
-
+            // set the positive button action for the dialog
             builder.setPositiveButton("OK", (dialogInterface, i) -> {
                 // Initialize string builder
                 StringBuilder stringBuilder = new StringBuilder();
                 // use for loop
                 for (int j = 0; j < cuisineList.size(); j++) {
-                    // concat array value
+                    // concatenate the array value using a string builder
                     stringBuilder.append(cuisineArray[cuisineList.get(j)]);
                     // check condition
                     if (j != cuisineList.size() - 1) {
-                        // When j value  not equal
-                        // to lang list size - 1
-                        // add comma
+                        // When j value not equal to cuisine list size - 1 then add a comma
                         stringBuilder.append(", ");
                     }
                 }
-                // set text on textView
+                // set the selected cuisine text in the textView
                 recipeCuisineEdt.setText(stringBuilder.toString());
             });
-
+            // set the cancel button action for the dialog
             builder.setNegativeButton("Cancel", (dialogInterface, i) -> {
-                // dismiss dialog
+                // dismiss the dialog
                 dialogInterface.dismiss();
             });
+            // set the clear all button action for the dialog
             builder.setNeutralButton("Clear All", (dialogInterface, i) -> {
-                // use for loop
+                // use a for loop
                 for (int j = 0; j < selectedCuisine.length; j++) {
-                    // remove all selection
+                    // remove all selected cuisine from selected cuisine array
                     selectedCuisine[j] = false;
-                    // clear language list
+                    // clear the cuisine list
                     cuisineList.clear();
                     // clear text view value
                     recipeCuisineEdt.setText("");
@@ -183,67 +174,62 @@ public class AddRecipeActivity extends BaseMenuActivity {
         // SELECT CUISINE DIALOG END
 
         // SELECT SUITABILITY DIALOG START
-        // add items from resource cuisine array to local cuisine array
+        // @Reference - https://www.geeksforgeeks.org/how-to-implement-multiselect-dropdown-in-android/
+        // Reference description - tutorial on how to implement a MultiSelect DropDown in Android
+        // add items from resource suitability array to local suitability array
         suitabilityArray = getResources().getStringArray(R.array.dietary_requirements);
-
         // initialize selected language array
         selectedSuitability = new boolean[suitabilityArray.length];
-
+        // on click listener for suitability dropdown field click
         recipeSuitabilityEdt.setOnClickListener(view -> {
-
             // Initialize alert dialog
             AlertDialog.Builder builder2 = new AlertDialog.Builder(AddRecipeActivity.this);
-
             // set title
             builder2.setTitle("Select Recipe Suitability");
-
-            // set dialog non cancelable
+            // set dialog to non cancelable
             builder2.setCancelable(false);
-
+            // set the multi-choice items for the dialog
             builder2.setMultiChoiceItems(suitabilityArray, selectedSuitability, (dialogInterface, i, b) -> {
                 // check condition
                 if (b) {
-                    // when checkbox selected
-                    // Add position  in lang list
+                    // when checkbox is selected add the position in the suitability list
                     suitabilityList.add(i);
-                    // Sort array list
+                    // Sort the suitability array list
                     Collections.sort(suitabilityList);
                 } else {
-                    // when checkbox unselected
-                    // Remove position from langList
+                    // when a checkbox is unselected remove its position from suitability list
                     suitabilityList.remove(Integer.valueOf(i));
                 }
             });
-
+            // set the positive button action for the dialog
             builder2.setPositiveButton("OK", (dialogInterface, i) -> {
                 // Initialize string builder
                 StringBuilder stringBuilder = new StringBuilder();
                 // use for loop
                 for (int j = 0; j < suitabilityList.size(); j++) {
-                    // concat array value
+                    // concatenate the array value to string using string builder
                     stringBuilder.append(suitabilityArray[suitabilityList.get(j)]);
                     // check condition
                     if (j != suitabilityList.size() - 1) {
-                        // When j value  not equal
-                        // to lang list size - 1
-                        // add comma
+                        // When j value is not equal to suitability list size - 1 add a comma
                         stringBuilder.append(", ");
                     }
                 }
-                // set text on textView
+                // set text on suitability textView
                 recipeSuitabilityEdt.setText(stringBuilder.toString());
             });
-
+            // set the negative button action for the dialog
             builder2.setNegativeButton("Cancel", (dialogInterface, i) -> {
                 // dismiss dialog
                 dialogInterface.dismiss();
             });
+            // set the clear all button action for the dialog
             builder2.setNeutralButton("Clear All", (dialogInterface, i) -> {
-                // use for loop
+                // use a for loop
                 for (int j = 0; j < selectedSuitability.length; j++) {
-                    // remove all selection
+                    // remove all selection from selected suitability array
                     selectedSuitability[j] = false;
-                    // clear language list
+                    // clear suitability list
                     suitabilityList.clear();
                     // clear text view value
                     recipeSuitabilityEdt.setText("");
@@ -256,7 +242,6 @@ public class AddRecipeActivity extends BaseMenuActivity {
 
         // add recipe button click event action
         addRecipeBtn.setOnClickListener(v -> {
-
             // if statements to validate that all required fields are populated before adding recipe
             if(Objects.requireNonNull(recipeNameEdt.getText()).toString().equals("")){
                 Toast.makeText(AddRecipeActivity.this, "Please add a Recipe Name", Toast.LENGTH_SHORT).show();
@@ -278,29 +263,29 @@ public class AddRecipeActivity extends BaseMenuActivity {
                 Toast.makeText(AddRecipeActivity.this, "Please Recipe Description", Toast.LENGTH_SHORT).show();
             }else if(Objects.requireNonNull(recipeMethodEdt.getText()).toString().equals("")){
                 Toast.makeText(AddRecipeActivity.this, "Please add Recipe Method", Toast.LENGTH_SHORT).show();
-            }else if(ingredientList.isEmpty()){
+            }else if(ingredientArrayList.isEmpty()){
                 Toast.makeText(AddRecipeActivity.this, "Please add Recipe Ingredients", Toast.LENGTH_SHORT).show();
-            }else {
-
-                // build a string with selected ingredients
+            }else {// if all required fields are populated with values then execute the following
+                // build a string with selected ingredients using string builder
                 StringBuilder stringBuilder3 = new StringBuilder();
-                // use for loop
-                for (int j = 0; j < ingredientList.size(); j++) {
-                    // concat array value
-                    stringBuilder3.append(ingredientList.get(j));
+                // use a for loop
+                for (int j = 0; j < ingredientArrayList.size(); j++) {
+                    // concatenate array values to string
+                    stringBuilder3.append(ingredientArrayList.get(j));
                     // check condition
-                    if (j != ingredientList.size() - 1) {
-                        // When j value  not equal
-                        // to ingredient list size - 1
-                        // add comma
+                    if (j != ingredientArrayList.size() - 1) {
+                        // When j value  not equal to ingredient list size - 1 add a comma
                         stringBuilder3.append(", ");
                     }
                 }
+                //store the string builder value to a string variable
                 ingredientsSelectionString = stringBuilder3.toString();
 
                 // set the loading bar to visible
                 loadingPB.setVisibility(View.VISIBLE);
 
+                // @Reference - https://www.geeksforgeeks.org/user-authentication-and-crud-operation-with-firebase-realtime-database-in-android/
+                // Reference description - tutorial on how to add an object to the Firebase Realtime Database
                 // get user input text from fields
                 String recipeName = recipeNameEdt.getText().toString();
                 String recipeCookingTime = recipeCookingTimeEdt.getText().toString();
@@ -314,15 +299,17 @@ public class AddRecipeActivity extends BaseMenuActivity {
                 String recipeMethod = recipeMethodEdt.getText().toString();
                 String recipeIngredients = ingredientsSelectionString;
                 Boolean recipePublic = recipePublicEdt.isChecked();
+                // get the database reference value for the new recipe object
                 recipeID = databaseReference.push().getKey();
 
-                // build the object using the above variables
+                // create a recipe object to store the new recipe values
                 Recipe recipe = new Recipe(recipeName,recipeCookingTime,recipePrepTime,
                         recipeServings,recipeSuitedFor,recipeCuisine,recipeImg,recipeLink,
                         recipeDesc,recipeMethod,recipeIngredients,recipePublic,recipeID,userID);
 
-                // add the new recipe to the database
+                // add the new recipe object to the Firebase Realtime database reference (Recipes)
                 databaseReference.addValueEventListener(new ValueEventListener() {
+                    // execute the following if the add value action is successful
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         // hide the loading bar
@@ -334,7 +321,7 @@ public class AddRecipeActivity extends BaseMenuActivity {
                         // redirect the user to the MainActivity (My Recipes) screen
                         startActivity(new Intent(AddRecipeActivity.this, MainActivity.class));
                     }
-
+                    // execute the following if the add value action fails
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                         Toast.makeText(AddRecipeActivity.this, "Error is " + error, Toast.LENGTH_SHORT).show();
@@ -344,49 +331,60 @@ public class AddRecipeActivity extends BaseMenuActivity {
         });
     }
 
+    // @Reference - https://codevedanam.blogspot.com/2021/04/dynamic-views-in-android.html
+    // Reference description - tutorial on how to add dynamic views in Android
+    // Ingredient list alert dialog builder for adding ingredients to recipe
     private void buildDialogAddIngredient() {
+        // initialise alert dialog builder
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        // create the new view and inflater
         View view = getLayoutInflater().inflate(R.layout.new_ingredient_dialog, null);
-
+        // declare and assign the view elements
         final EditText name = view.findViewById(R.id.nameEdit);
-
+        // set the builder view to view created
         builder.setView(view);
+        // set the title and set the positive button action
         builder.setTitle("Enter Ingredient")
                 .setPositiveButton("OK", (dialog, which) -> {
+                    // if the ingredient name value is blank or not added show an alert
                     if(name.getText().toString().trim().equals("") || name.getText().toString().equals("Name")){
                         Toast.makeText(this, "Ingredient cannot be blank.", Toast.LENGTH_SHORT).show();
-                        name.setText("");
+                        name.setText("");// clear the ingredient textview field value
                     }else if(name.getText().toString().trim().contains(",")){
+                        //if the ingredient name contains a comma show and alert
                         Toast.makeText(this, "Ingredient cannot contain commas", Toast.LENGTH_SHORT).show();
-                        name.setText("");
+                        name.setText("");// clear the ingredient textview field value
                     } else{
-                        addCard(name.getText().toString());
-                        ingredientList.add(name.getText().toString());
-                        name.setText("");
+                        addIngredientCard(name.getText().toString());// add ingredient card with ingredient name
+                        ingredientArrayList.add(name.getText().toString());// add the ingredient to the ArrayList
+                        name.setText("");// clear the ingredient textview field value
                     }
                 })
-                .setNegativeButton("Cancel", (dialog, which) -> name.setText(""));
-
-        dialog = builder.create();
+                .setNegativeButton("Cancel", (dialog, which) -> name.setText(""));// Cancel button action
+        // create the add ingredient dialog
+        addIngredientDialog = builder.create();
     }
 
+    //@Reference - https://codevedanam.blogspot.com/2021/04/dynamic-views-in-android.html
+    //Reference description - tutorial on how to add dynamic views in Android
     // add ingredient card to screen
-    private void addCard(String name) {
-        @SuppressLint("InflateParams") final View view = getLayoutInflater().inflate(R.layout.ingredient_card_rounded, null);
-
+    private void addIngredientCard(String name) {
+        // create new view for the new ingredient card to be added to Add Recipe screen
+        @SuppressLint("InflateParams") final View view = getLayoutInflater()
+                .inflate(R.layout.ingredient_card_rounded, null);
+        // declare and assign the view variables
         TextView nameView = view.findViewById(R.id.name);
         Button delete = view.findViewById(R.id.delete);
-
+        // set the ingredient name to the text entered by the user when adding ingredient
         nameView.setText(name);
-
         // delete ingredient button action
         delete.setOnClickListener(v -> {
-            ingredientList.remove(name);
-            Log.d("ingredientList", String.valueOf(ingredientList));
-            layout.removeView(view);
+            // remove the ingredient from the ingredients ArrayList
+            ingredientArrayList.remove(name);
+            // remove the ingredient card from the ingredients list
+            ingredientCardsContainer.removeView(view);
         });
-
-        layout.addView(view);
+        // add the new card to the ingredients card container
+        ingredientCardsContainer.addView(view);
     }
-
 }

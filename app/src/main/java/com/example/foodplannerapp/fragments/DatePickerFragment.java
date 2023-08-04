@@ -7,8 +7,7 @@ package com.example.foodplannerapp.fragments;
  * Description - Dialog Fragment for Meal Plan Date selection on the Recipe Details page
  */
 
-// @REF 1 - https://www.youtube.com/watch?v=33BFCdL0Di0 DatePickerDialog - Android Studio Tutorial
-
+// imports
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
@@ -17,9 +16,10 @@ import androidx.fragment.app.DialogFragment;
 
 import java.util.Calendar;
 
+// @Reference - https://www.youtube.com/watch?v=33BFCdL0Di0
+// Reference description - tutorial on how to create a date picker dialog fragment
 // dialog fragment class for meal plan date selection on recipe view page
 public class DatePickerFragment extends DialogFragment {
-
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

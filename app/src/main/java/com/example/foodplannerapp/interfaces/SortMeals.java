@@ -7,13 +7,15 @@ package com.example.foodplannerapp.interfaces;
  * Description - Meal Plan comparator class used to sort Meal Plan Meals by date
  */
 
+// imports
 import com.example.foodplannerapp.models.Meal;
 
 import java.util.Comparator;
 
+// @Reference - https://www.geeksforgeeks.org/java-program-to-sort-objects-in-arraylist-by-date/
+// Reference description - tutorial on how to sort Objects in ArrayList by Date
 public class SortMeals implements Comparator<Meal> {
     // comparison method
-    //Reference - https://www.geeksforgeeks.org/java-program-to-sort-objects-in-arraylist-by-date/
     public int compare(Meal mealA, Meal mealB) {
         // Returning the value after comparing the objects
         // this will sort the data in Ascending order
