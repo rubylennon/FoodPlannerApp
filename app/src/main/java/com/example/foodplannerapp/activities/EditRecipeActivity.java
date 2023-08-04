@@ -566,7 +566,10 @@ public class EditRecipeActivity extends BaseMenuActivity {
                     if(name.getText().toString().trim().equals("") || name.getText().toString().equals("Name")){
                         Toast.makeText(this, "Ingredient cannot be blank.", Toast.LENGTH_SHORT).show();
                         name.setText("");
-                    }else{// if the user input ingredient is not blank then execute the following
+                    }else if(name.getText().toString().trim().contains(",")){
+                        Toast.makeText(this, "Ingredient cannot contain commas.", Toast.LENGTH_SHORT).show();
+                        name.setText("");
+                    } else{// if the user input ingredient is not blank then execute the following
                         // create a card view item for the new ingredient
                         addCard(name.getText().toString());
                         // add the new ingredient to the recipe ingredients list
