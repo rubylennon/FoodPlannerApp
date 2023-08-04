@@ -65,4 +65,5 @@ dependencies {
     testImplementation 'org.powermock:powermock-module-junit4:1.6.6'
     // Text features
     implementation 'com.google.android.gms:play-services-mlkit-text-recognition:16.0.0'
+    implementation 'com.google.android.gms:play-services-tflite-java:16.1.0'
 }

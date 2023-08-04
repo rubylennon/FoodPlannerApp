@@ -12,6 +12,7 @@ package com.example.foodplannerapp.activities;
 //@REF 3 - https://www.geeksforgeeks.org/how-to-validate-a-password-using-regular-expressions-in-java/
 
 // imports
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -24,12 +25,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.foodplannerapp.R;
+import com.example.foodplannerapp.utilities.ValidPasswordCheck;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class RegistrationActivity extends AppCompatActivity {
     // variables
@@ -96,7 +96,7 @@ public class RegistrationActivity extends AppCompatActivity {
             } else if(pwd.length() > MAX_PASSWORD_LENGTH){
                 loadingPB.setVisibility(View.GONE);
                 Toast.makeText(RegistrationActivity.this, "Passwords must be less than 20 characters", Toast.LENGTH_SHORT).show();
-            } else if(!isValidPassword(pwd)){
+            } else if(ValidPasswordCheck.isPasswordValid(pwd)){
                 loadingPB.setVisibility(View.GONE);
                 Toast.makeText(RegistrationActivity.this, "Invalid password.", Toast.LENGTH_SHORT).show();
                 pwdHelpText.setVisibility(View.VISIBLE);
@@ -127,34 +127,5 @@ public class RegistrationActivity extends AppCompatActivity {
                  });
             }
         });
-    }
-
-    //@Reference - https://www.geeksforgeeks.org/how-to-validate-a-password-using-regular-expressions-in-java/
-    //method for checking that the password provided is valid
-    public static boolean isValidPassword(String password){
-
-        // Regex to check valid password.
-        String regex = "^(?=.*\\d)"
-                + "(?=.*[a-z])(?=.*[A-Z])"
-                + "(?=.*[@#$%^&+=])"
-                + "(?=\\S+$).{8,20}$";
-
-        // Compile the ReGex
-        Pattern p = Pattern.compile(regex);
-
-        // If the password is empty
-        // return false
-        if (password == null) {
-            return false;
-        }
-
-        // Pattern class contains matcher() method
-        // to find matching between given password
-        // and regular expression.
-        Matcher m = p.matcher(password);
-
-        // Return if the password
-        // matched the ReGex
-        return m.matches();
     }
 }

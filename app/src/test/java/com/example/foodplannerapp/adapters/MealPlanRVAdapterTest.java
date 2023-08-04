@@ -66,19 +66,14 @@ class MealPlanRVAdapterTest {
         assertEquals(3, list.size());
 
         Context context = null;
-        assertEquals(3, new MealPlanRVAdapter(list, context, new MealPlanRVAdapter.MealPlanClickInterface() {
-            @Override
-            public void onMealPlanClick(int position) {
+        assertEquals(3, new MealPlanRVAdapter(list, context, position -> {
 
-            }
         }).getItemCount());
     }
 
     @Test
     void viewHolderNullTest() {
         View itemView = null;
-        assertThrows(IllegalArgumentException.class, () -> {
-            new MealPlanRVAdapter.ViewHolder(itemView);
-        });
+        assertThrows(IllegalArgumentException.class, () -> new MealPlanRVAdapter.ViewHolder(itemView));
     }
 }

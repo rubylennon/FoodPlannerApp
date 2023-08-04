@@ -11,6 +11,7 @@ package com.example.foodplannerapp.activities;
 // Ref Description - Firebase Authentication 4: Change password, email & Delete users #2020 | Android Studio Tutorial
 
 //imports
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -23,13 +24,12 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 
 import com.example.foodplannerapp.R;
+import com.example.foodplannerapp.utilities.ValidPasswordCheck;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class EditAccountActivity extends BaseMenuActivity {
     // variables
@@ -194,7 +194,7 @@ public class EditAccountActivity extends BaseMenuActivity {
             } else if(pwd.length() > MAX_PASSWORD_LENGTH){
                 idPBLoading.setVisibility(View.GONE);
                 Toast.makeText(EditAccountActivity.this, "Passwords must be less than 20 characters", Toast.LENGTH_SHORT).show();
-            } else if(!isValidPassword(pwd)){
+            } else if(ValidPasswordCheck.isPasswordValid(pwd)){
                 idPBLoading.setVisibility(View.GONE);
                 Toast.makeText(EditAccountActivity.this, "Invalid password.", Toast.LENGTH_SHORT).show();
                 pwdHelpText.setVisibility(View.VISIBLE);
@@ -319,33 +319,5 @@ public class EditAccountActivity extends BaseMenuActivity {
             alertDialog.show();
 
         });
-    }
-
-    // @Reference - https://www.geeksforgeeks.org/how-to-validate-a-password-using-regular-expressions-in-java/
-    // method for checking if user supplied password is valid
-    public static boolean isValidPassword(String password){
-        // Regex to check valid password.
-        String regex = "^(?=.*\\d)"
-                + "(?=.*[a-z])(?=.*[A-Z])"
-                + "(?=.*[@#$%^&+=])"
-                + "(?=\\S+$).{8,20}$";
-
-        // Compile the ReGex
-        Pattern p = Pattern.compile(regex);
-
-        // If the password is empty
-        // return false
-        if (password == null) {
-            return false;
-        }
-
-        // Pattern class contains matcher() method
-        // to find matching between given password
-        // and regular expression.
-        Matcher m = p.matcher(password);
-
-        // Return if the password
-        // matched the ReGex
-        return m.matches();
     }
 }

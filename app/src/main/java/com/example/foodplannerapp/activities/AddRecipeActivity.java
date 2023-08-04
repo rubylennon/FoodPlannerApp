@@ -356,7 +356,10 @@ public class AddRecipeActivity extends BaseMenuActivity {
                     if(name.getText().toString().trim().equals("") || name.getText().toString().equals("Name")){
                         Toast.makeText(this, "Ingredient cannot be blank.", Toast.LENGTH_SHORT).show();
                         name.setText("");
-                    }else{
+                    }else if(name.getText().toString().trim().contains(",")){
+                        Toast.makeText(this, "Ingredient cannot contain commas", Toast.LENGTH_SHORT).show();
+                        name.setText("");
+                    } else{
                         addCard(name.getText().toString());
                         ingredientList.add(name.getText().toString());
                         name.setText("");

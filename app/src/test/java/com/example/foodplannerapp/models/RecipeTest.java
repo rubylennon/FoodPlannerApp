@@ -104,29 +104,5 @@ class RecipeTest {
 
     @Test
     void writeToParcel() {
-//        Recipe r2 = new Recipe(recipeName, recipeCookingTime,
-//                recipePrepTime, recipeServings, recipeSuitedFor,
-//                recipeCuisine, recipeImg, recipeLink, recipeDescription,
-//                recipeMethod, recipeIngredients, recipePublic,
-//                recipeID, userID);
-//
-//        Recipe recipe = new Recipe();
-//
-//        // Obtain a Parcel object and write the parcelable object to it:
-//        Parcel parcel = Parcel.obtain();
-//        r2.writeToParcel(parcel, 0);
-//
-//        //>>>>> Record dataPosition
-//        int eop = parcel.dataPosition();
-//
-//        // After you're done with writing, you need to reset the parcel for reading:
-//        parcel.setDataPosition(0);
-//
-//        // Reconstruct object from parcel and asserts:
-//        Recipe createdFromParcel = Recipe.CREATOR.createFromParcel(parcel);
-//        assertEquals(r2, createdFromParcel);
-//
-//        //>>>>> Verify dataPosition
-//        assertEquals(eop, parcel.dataPosition());
     }
 }
