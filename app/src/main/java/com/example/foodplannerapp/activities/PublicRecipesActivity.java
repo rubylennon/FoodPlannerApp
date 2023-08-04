@@ -7,16 +7,11 @@ package com.example.foodplannerapp.activities;
  * Description - Activity for viewing public recipes
  */
 
-// @REF: GeeksForGeeks Tutorial - https://www.youtube.com/watch?v=-Gvpf8tXpbc
-// Ref Description - User Authentication and CRUD Operation with Firebase Realtime Database in Android
-
 // imports
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.SpannableString;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -43,13 +38,17 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+// @Reference - https://www.geeksforgeeks.org/user-authentication-and-crud-operation-with-firebase-realtime-database-in-android/
+// Reference description - tutorial on how to display retrieved data from Firebase realtime database in RecyclerView using adapter class
 public class PublicRecipesActivity extends BaseMenuActivity implements RecipeRVAdapter.RecipeClickInterface {
+    // declare variables
     private ProgressBar loadingPB;
     private ArrayList<Recipe> recipeArrayList;
     private RelativeLayout bottomSheetRL;
     private RecipeRVAdapter recipeRVAdapter;
     private Query query;
 
+    // activity onCreate method to be executed when activity is launched
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,9 +66,11 @@ public class PublicRecipesActivity extends BaseMenuActivity implements RecipeRVA
         bottomSheetRL = findViewById(R.id.idRLBSheet_Public);
         recipeArrayList = new ArrayList<>();
 
-        // firebase variables
+        // get instance of Firebase realtime database
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        // create Firebase database 'Recipes' reference
         DatabaseReference databaseReference = firebaseDatabase.getReference("Recipes");
+        // set the query to filter the database reference to public recipes
         query = databaseReference.orderByChild("recipePublic").equalTo(true);
 
         // recycler view
@@ -85,42 +86,49 @@ public class PublicRecipesActivity extends BaseMenuActivity implements RecipeRVA
     private void getAllPublicRecipes() {
         // clear recipeArrayList before adding recipes
         recipeArrayList.clear();
-
+        // add value event listener to firebase query
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                loadingPB.setVisibility(View.GONE);
-                if (dataSnapshot.exists()) {
-                    Log.d("snapshot2", String.valueOf(dataSnapshot));
+                loadingPB.setVisibility(View.GONE);// hide the loading bar
+                if (dataSnapshot.exists()) {// if a data snapshot is retrieved from database using query
                     for (DataSnapshot issue : dataSnapshot.getChildren()) {
+                        // add the retrieved recipes to an ArrayList
                         recipeArrayList.add(issue.getValue(Recipe.class));
+                        // notify the recycler view adapter the data has changed
                         recipeRVAdapter.notifyDataSetChanged();
                     }
                 }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
     }
 
+    // @Reference - https://www.geeksforgeeks.org/user-authentication-and-crud-operation-with-firebase-realtime-database-in-android/
+    // Reference description - tutorial on how to display a bottom sheet dialog for a clicked item in Recycler View
     // method for displaying clicked recipe bottom sheet dialog
     @Override
     public void onRecipeClick(int position) {
+        // then display the bottom sheet dialog for that recipe
         displayBottomSheet(recipeArrayList.get(position));
     }
 
+    // @Reference - https://www.geeksforgeeks.org/user-authentication-and-crud-operation-with-firebase-realtime-database-in-android/
+    // Reference description - tutorial on how to display a bottom sheet dialog for a clicked item in Recycler View
     // recipe bottom sheet dialog builder and functionality
     @SuppressLint("SetTextI18n")
     protected void displayBottomSheet(Recipe recipe){
+        // create a bottom sheet dialog object
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        // create a view object and set the layouts to be inflated
         View layout = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_dialog_public_recipe,bottomSheetRL);
         bottomSheetDialog.setContentView(layout);
         bottomSheetDialog.setCancelable(false);
         bottomSheetDialog.setCanceledOnTouchOutside(true);
-        bottomSheetDialog.show();
+        bottomSheetDialog.show();// show the bottom sheet dialog
 
         // get the bottom sheet dialog elements by ID and assign to local variables
         TextView recipeNameTV = layout.findViewById(R.id.idTVRecipeName);
@@ -140,6 +148,10 @@ public class PublicRecipesActivity extends BaseMenuActivity implements RecipeRVA
         // load and display the recipe image using the recipe URL
         Picasso.get().load(recipe.getRecipeImg()).into(recipeIV);
 
+        // @Reference - https://developer.android.com/reference/android/text/style/StyleSpan
+        // Reference description - Android guide/documentation on StyleSpan
+        // @Reference 2 - https://developer.android.com/reference/android/text/SpannableString
+        // Reference description - Android guide/documentation on Spannable
         // set recipe description and use spannable to partially style the text view
         String DescriptionLabel = "Description: ";
         String Description = DescriptionLabel + recipe.getRecipeDescription();
@@ -148,13 +160,13 @@ public class PublicRecipesActivity extends BaseMenuActivity implements RecipeRVA
                 DescriptionLabel.length(), 0);
         recipeDescTV.setText(content);
 
-        // view recipe details button
+        // if the bottom sheet dialog view details recipe button is clicked then direct user to
+        // view recipe page and pass selected recipe object
         viewDetailsBtn.setOnClickListener(v -> {
             // redirect user to recipe details page
             Intent i = new Intent(PublicRecipesActivity.this, ViewRecipeActivity.class);
             i.putExtra("recipe", recipe);
-            startActivity(i);
+            startActivity(i);// start View Recipe activity
         });
-
     }
 }

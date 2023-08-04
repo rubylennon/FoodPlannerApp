@@ -7,14 +7,9 @@ package com.example.foodplannerapp.activities;
  * Description - OCR Ingredients List Activity of Java Android App 'FoodPlannerApp'
  */
 
-// @REF 1 - Select image from gallery and show it in ImageView - https://www.youtube.com/watch?v=i3-WL9Xv4hA
-// @REF 2 - Google MLKit Samples - https://github.com/googlesamples/mlkit/tree/master/android/vision-quickstart
-// @REF 3 - How to Capture Image And Display in ImageView in android Studio - https://www.youtube.com/watch?v=d7Nia9vKUDM
-// @REF 4 - Search Bar + RecyclerView+Firebase Realtime Database easy Steps - https://www.youtube.com/watch?v=PmqYd-AdmC0
 // @REF 5 - User Authentication and CRUD Operation with Firebase Realtime Database in Android | GeeksForGeeks - https://www.youtube.com/watch?v=-Gvpf8tXpbc
-// @REF 6 - ActivityResultLauncher Java Android | Pick Image From Gallery - https://www.youtube.com/watch?v=f2odwvwRTKo
-// @REF 7 - ActivityResultLauncher Java Android | Take Image From Camera - https://www.youtube.com/watch?v=JMdHMMEO8ZQ
 
+// imports
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -58,6 +53,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class IngredientsScannerActivity extends BaseMenuActivity {
+    // declare variables
     private ImageView mImageView,
             noMatchingSearchResultsIcon;
     private Button mScanButton;
@@ -69,6 +65,7 @@ public class IngredientsScannerActivity extends BaseMenuActivity {
     private TextView noMatchingSearchTextOne,
             noMatchingSearchTextTwo;
 
+    // onCreate method executed when activity is launched
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,34 +113,40 @@ public class IngredientsScannerActivity extends BaseMenuActivity {
 
         // select image button event listener
         mSelectButton.setOnClickListener(v -> {
+            // @Reference - https://developer.huawei.com/consumer/en/doc/development/connectivity-Guides/adding-permissions-0000001064141094
+            // Reference description - Tutorial on how to request permissions
             // request gallery permission if it is not already available
             String[] permissionsStorage = {Manifest.permission.READ_MEDIA_IMAGES};
             int requestExternalStorage = 2;
             int externalStoragePermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES);
-            if (externalStoragePermission != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, permissionsStorage, requestExternalStorage);
+            if (externalStoragePermission != PackageManager.PERMISSION_GRANTED) {// if permission is not granted
+                ActivityCompat.requestPermissions(this, permissionsStorage, requestExternalStorage);//request permission
             } else{//if permission is granted
                 Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                selectImage.launch(intent);
+                selectImage.launch(intent);// launch select image activity
             }
         });
 
         // take photo button event listener
         mCaptureButton.setOnClickListener(v -> {
+            // @Reference - https://developer.huawei.com/consumer/en/doc/development/connectivity-Guides/adding-permissions-0000001064141094
+            // Reference description - Tutorial on how to request permissions
             // request camera permission if it is not already available
             String[] permissionsCamera = {Manifest.permission.CAMERA};
             int requestCamera = 1;
             int cameraPermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
-            if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, permissionsCamera, requestCamera);
+            if (cameraPermission != PackageManager.PERMISSION_GRANTED) {// if permission is not granted
+                ActivityCompat.requestPermissions(this, permissionsCamera, requestCamera);//request permission
             } else{//if permission is granted
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                captureImage.launch(intent);
+                captureImage.launch(intent);// launch capture image activity
             }
         });
-
     }
 
+    // @Reference - https://www.geeksforgeeks.org/user-authentication-and-crud-operation-with-firebase-realtime-database-in-android/
+    // Reference description - tutorial on how to retrieve data from Firebase database and display in Recycler View using adapter
+    // onCreate method executed when activity is started
     protected void onStart() {
         super.onStart();
         // if the ingredients database reference is not null
@@ -200,17 +203,17 @@ public class IngredientsScannerActivity extends BaseMenuActivity {
         loadingPB.setVisibility(View.GONE);
     }
 
-    // Reference - Google MLKit Samples
-    // https://github.com/googlesamples/mlkit/tree/master/android/vision-quickstart
+    // @Reference - https://github.com/android/codelab-mlkit-android/blob/master/vision/final/app/src/main/java/com/google/codelab/mlkit/MainActivity.java
+    // Reference description - Code Lab sample application on how to implement Google ML Kit Vision Text Recognition
     // method for running text recognition functionality
     private void runTextRecognition() {
+        // create instance of input image using selected image bitmap
         InputImage image = InputImage.fromBitmap(mSelectedImage, 0);
+        // create text recogniser
         TextRecognizer recognizer = TextRecognition.getClient();
-
         // disable scan ingredients button
         mScanButton.setEnabled(false);
-
-        // text recognition functionality
+        // pass the image to the process method
         recognizer.process(image)
                 .addOnSuccessListener(
                         texts -> {
@@ -228,6 +231,8 @@ public class IngredientsScannerActivity extends BaseMenuActivity {
                         });
     }
 
+    // @Reference - https://github.com/android/codelab-mlkit-android/blob/master/vision/final/app/src/main/java/com/google/codelab/mlkit/MainActivity.java
+    // Reference description - Code Lab sample application on how to implement Google ML Kit Vision Text Recognition
     // method for processing text recognition result
     private void processTextRecognitionResult(Text texts) {
         // if no text is recognised execute the following
@@ -240,8 +245,6 @@ public class IngredientsScannerActivity extends BaseMenuActivity {
 
         // store the OCR text to variable
         String result_text = texts.getText();
-
-        System.out.println("RESULT TEXT" + result_text);
 
         // update the stored OCR result text by formatting as below
         // remove new lines
@@ -262,7 +265,6 @@ public class IngredientsScannerActivity extends BaseMenuActivity {
 
         // pass the scanned ingredients to search method to find matching ingredients
         searchIngredients(scannedIngredients);
-
     }
 
     // if no ingredients are found in scanned image display the following toast
@@ -272,10 +274,12 @@ public class IngredientsScannerActivity extends BaseMenuActivity {
         loadingPB.setVisibility(View.GONE);
     }
 
+    // @Reference - https://www.youtube.com/watch?v=f2odwvwRTKo
+    // Reference description - Tutorial on how to pick an image from a gallery using ActivityResultLauncher
     // activity result handler for select image functionality
     final ActivityResultLauncher<Intent> selectImage = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
-               result -> {
+               result -> {// if the activity launch is successful
                     if(result.getResultCode() == RESULT_OK && result.getData() != null) {
                         Uri selectedImage = result.getData().getData();
                         String[] filepath = {MediaStore.Images.Media.DATA};
@@ -293,18 +297,20 @@ public class IngredientsScannerActivity extends BaseMenuActivity {
                         // re-enable scan ingredients button
                         mScanButton.setEnabled(true);
 
+                        // clear any currently listed ingredients
                         clearIngredientsList();
                     }
                 }
             );
 
-
+    // @Reference - https://www.youtube.com/watch?v=JMdHMMEO8ZQ
+    // Reference description - Tutorial on how to capture an image with camera using ActivityResultLauncher
+    // activity result handler for capture image functionality
     final ActivityResultLauncher<Intent> captureImage = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
-            result -> {
+            result -> {// if the activity launch is successful
                 if(result.getResultCode() == RESULT_OK && result.getData() != null) {
                     Bundle bundle = result.getData().getExtras();
-
                     Bitmap capturedImage = (Bitmap) bundle.get("data");
 
                     // update the image view with the captured photo
@@ -315,17 +321,20 @@ public class IngredientsScannerActivity extends BaseMenuActivity {
                     // re-enable scan ingredients button
                     mScanButton.setEnabled(true);
 
+                    // clear any currently listed ingredients
                     clearIngredientsList();
                 }
             }
     );
 
+    // clear the ingredients listed in the RecyclerView
     public void clearIngredientsList(){
         hideNoIngredientsAlert();
 
+        // create new empty matchingIngredientsList
         ArrayList<Ingredient> matchingIngredientsList = new ArrayList<>();
 
-        // update the ingredients recyclerview with matching ingredients
+        // update the ingredients recyclerview with empty matching ingredients list
         IngredientScannerRVAdapter ingredientScannerRVAdapter = new IngredientScannerRVAdapter(matchingIngredientsList);
         ingredientsRV.setLayoutManager(new LinearLayoutManager(IngredientsScannerActivity.this));
         ingredientsRV.setAdapter(ingredientScannerRVAdapter);

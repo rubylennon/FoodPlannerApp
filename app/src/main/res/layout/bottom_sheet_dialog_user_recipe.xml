@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--@Reference - https://www.geeksforgeeks.org/user-authentication-and-crud-operation-with-firebase-realtime-database-in-android/-->
+<!--Ref description - tutorial on how to create a bottom sheet dialog -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"

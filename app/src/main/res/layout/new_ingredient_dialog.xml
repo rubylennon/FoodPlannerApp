@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--@Reference - https://codevedanam.blogspot.com/2021/04/dynamic-views-in-android.html-->
+<!--Ref description - tutorial on how to create a dynamic view -->
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="wrap_content"
@@ -14,5 +16,4 @@
         android:autofillHints="Ingredient Name"
         android:layout_centerHorizontal="true"
         android:inputType="text" />
-
 </RelativeLayout>

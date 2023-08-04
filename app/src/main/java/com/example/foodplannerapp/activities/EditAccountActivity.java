@@ -7,11 +7,7 @@ package com.example.foodplannerapp.activities;
  * Description - Edit Account Activity for editing user account details
  */
 
-// @REF 1 - https://www.youtube.com/watch?v=FptELNWvnqQ
-// Ref Description - Firebase Authentication 4: Change password, email & Delete users #2020 | Android Studio Tutorial
-
 //imports
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -32,7 +28,7 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.Objects;
 
 public class EditAccountActivity extends BaseMenuActivity {
-    // variables
+    // declare variables
     private TextInputEditText idEdtEmail,
             idEdtEmailConfirmation,
             idEdtPasswordNewPwd,
@@ -44,6 +40,7 @@ public class EditAccountActivity extends BaseMenuActivity {
             pwdHelpText2,
             deleteHelpText;
 
+    // onCreate method for Edit Account activity which executes when activity launches
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,12 +61,14 @@ public class EditAccountActivity extends BaseMenuActivity {
         idEdtConfirmNewPwdConfirmation = findViewById(R.id.idEdtConfirmNewPwdConfirmation);
         idCurrentEmail = findViewById(R.id.idCurrentEmail);
         emailHelpText = findViewById(R.id.emailHelpText);
-        emailHelpText.setVisibility(View.GONE);
         pwdHelpText = findViewById(R.id.pwdHelpText);
-        pwdHelpText.setVisibility(View.GONE);
         pwdHelpText2 = findViewById(R.id.pwdHelpText2);
-        pwdHelpText2.setVisibility(View.GONE);
         deleteHelpText = findViewById(R.id.deleteHelpText);
+
+        // hide help text
+        emailHelpText.setVisibility(View.GONE);
+        pwdHelpText.setVisibility(View.GONE);
+        pwdHelpText2.setVisibility(View.GONE);
         deleteHelpText.setVisibility(View.GONE);
 
         //get current user
@@ -94,7 +93,7 @@ public class EditAccountActivity extends BaseMenuActivity {
             String newEmail = Objects.requireNonNull(idEdtEmail.getText()).toString();
             String newEmailConfirmation = Objects.requireNonNull(idEdtEmailConfirmation.getText()).toString();
 
-            // if the email field is empty do the following
+            // if the email fields are empty, do not match or are current email do the following
             if(TextUtils.isEmpty(newEmail)){
                 Toast.makeText(EditAccountActivity.this, "Please enter your new email", Toast.LENGTH_SHORT).show();
                 idPBLoading.setVisibility(View.GONE);
@@ -107,32 +106,31 @@ public class EditAccountActivity extends BaseMenuActivity {
             } else if (!newEmail.equals(newEmailConfirmation)){
                 Toast.makeText(EditAccountActivity.this, "Email addresses do not match", Toast.LENGTH_SHORT).show();
                 idPBLoading.setVisibility(View.GONE);
-            } else {
-
-                // Create the object of AlertDialog Builder class
+            } else { // if the above checks pass then execute the following
+                //@Reference - https://www.geeksforgeeks.org/how-to-create-an-alert-dialog-box-in-android/
+                //Reference description - tutorial on how to Create an Alert Dialog Box in Android
+                // Create AlertDialog Builder class object
                 AlertDialog.Builder builder = new AlertDialog.Builder(EditAccountActivity.this);
-
-                // Set the message show for the Alert time
+                // Set the alert dialog message
                 builder.setMessage("Do you want to update your email address?");
-
-                // Set Alert Title
+                // Set alert Title
                 builder.setTitle("Update Email Confirmation");
-
-                // Set Cancelable false for when the user clicks on the outside the Dialog Box then it will remain show
+                // set cancelable by clicking outside dialog to false
                 builder.setCancelable(false);
-
-                // Set the positive button with yes name Lambda OnClickListener method is use of DialogInterface interface.
+                // Set Yes button action
                 builder.setPositiveButton("Yes", (dialog, which) -> {
-                    //update email of signed in user using new email value
+                    // @Reference - https://www.youtube.com/watch?v=FptELNWvnqQ
+                    // Ref Description - Tutorial on how to update Firebase Authentication users password/email
+                    // and on how to delete users
+                    // update email of signed in user using new email value
                     user.updateEmail(idEdtEmail.getText().toString().trim())
                             .addOnCompleteListener(task -> {
-                            // if the task is successful
-                            if(task.isSuccessful()){
+                            if(task.isSuccessful()){// if the task is successful
                                 Toast.makeText(EditAccountActivity.this, "Email updated", Toast.LENGTH_SHORT).show();
-                                idCurrentEmail.setText(newEmail);
-                                idPBLoading.setVisibility(View.GONE);
+                                idCurrentEmail.setText(newEmail);// update the current email textview value
+                                idPBLoading.setVisibility(View.GONE);// hide the progress bar
                             }else{// if the task is not successful
-                                idPBLoading.setVisibility(View.GONE);
+                                idPBLoading.setVisibility(View.GONE);// hide the progress bar
                                 // return different errors based on exception from Firebase Authentication
                                 if(Objects.requireNonNull(task.getException()).toString().contains("The email address is badly formatted.")){
                                     Toast.makeText(EditAccountActivity.this, "Email update failed. Please add valid email.", Toast.LENGTH_SHORT).show();
@@ -140,184 +138,160 @@ public class EditAccountActivity extends BaseMenuActivity {
                                     Toast.makeText(EditAccountActivity.this, "Email update failed. The email address is already in use by another account.", Toast.LENGTH_SHORT).show();
                                 } else if(Objects.requireNonNull(task.getException()).toString().contains("This operation is sensitive and requires recent authentication. Log in again before retrying this request.")){
                                     Toast.makeText(EditAccountActivity.this, "Email update failed. Please log in again before retrying this request.", Toast.LENGTH_SHORT).show();
-                                    emailHelpText.setVisibility(View.VISIBLE);
+                                    emailHelpText.setVisibility(View.VISIBLE);// display the email help text on screen
                                 } else {
                                     Toast.makeText(EditAccountActivity.this, "Email update failed. Please try again...", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
                 });
-
-                // Set the Negative button with No name Lambda OnClickListener method is use of DialogInterface interface.
+                // Set the No button action
                 builder.setNegativeButton("No", (dialog, which) -> {
-                    // If user click no then dialog box is canceled.
-                    dialog.cancel();
-                    idPBLoading.setVisibility(View.GONE);
+                    dialog.cancel();// If user click no then dialog box is canceled and closed
+                    idPBLoading.setVisibility(View.GONE);// hide progress bar
                 });
-
                 // Create the Alert dialog
                 AlertDialog alertDialog = builder.create();
-
-                // Show the Alert Dialog box
+                // Show the Alert Dialog
                 alertDialog.show();
-
             }
         });
 
         // update password button functionality
         idBtnUpdatePassword.setOnClickListener(view -> {
-            idPBLoading.setVisibility(View.VISIBLE);
-            pwdHelpText.setVisibility(View.GONE);
-            pwdHelpText2.setVisibility(View.GONE);
+            idPBLoading.setVisibility(View.VISIBLE);// show the progress bar
+            pwdHelpText.setVisibility(View.GONE);// hide the password help text
+            pwdHelpText2.setVisibility(View.GONE);// hide the password help text
 
             // get text from input fields
             String pwd = Objects.requireNonNull(idEdtPasswordNewPwd.getText()).toString();
             String cnfPwd = Objects.requireNonNull(idEdtConfirmNewPwdConfirmation.getText()).toString();
 
-            // minimum and password length
+            // set minimum and password length
             int MIN_PASSWORD_LENGTH = 8;
             int MAX_PASSWORD_LENGTH = 20;
 
-            // if the password field is not empty complete the following
+            // password validation checks
             if(TextUtils.isEmpty(pwd)){
-                idPBLoading.setVisibility(View.GONE);
+                idPBLoading.setVisibility(View.GONE);// hide the progress bar
                 Toast.makeText(EditAccountActivity.this, "Please add your new password...", Toast.LENGTH_SHORT).show();
-            }else if(TextUtils.isEmpty(cnfPwd) || cnfPwd.equals("Confirm New Email")) {
-                idPBLoading.setVisibility(View.GONE);
+            }else if(TextUtils.isEmpty(cnfPwd) || cnfPwd.equals("Confirm New Password")) {
+                idPBLoading.setVisibility(View.GONE);// hide the progress bar
                 Toast.makeText(EditAccountActivity.this, "Please confirm your new password...", Toast.LENGTH_SHORT).show();
             }else if(!pwd.equals(cnfPwd)){
-                idPBLoading.setVisibility(View.GONE);
+                idPBLoading.setVisibility(View.GONE);// hide the progress bar
                 Toast.makeText(EditAccountActivity.this, "Passwords must match", Toast.LENGTH_SHORT).show();
             } else if(pwd.length() < MIN_PASSWORD_LENGTH){
-                idPBLoading.setVisibility(View.GONE);
+                idPBLoading.setVisibility(View.GONE);// hide the progress bar
                 Toast.makeText(EditAccountActivity.this, "Passwords must be at least 8 characters", Toast.LENGTH_SHORT).show();
             } else if(pwd.length() > MAX_PASSWORD_LENGTH){
-                idPBLoading.setVisibility(View.GONE);
+                idPBLoading.setVisibility(View.GONE);// hide the progress bar
                 Toast.makeText(EditAccountActivity.this, "Passwords must be less than 20 characters", Toast.LENGTH_SHORT).show();
-            } else if(ValidPasswordCheck.isPasswordValid(pwd)){
-                idPBLoading.setVisibility(View.GONE);
+            } else if(ValidPasswordCheck.isPasswordValid(pwd)){// password check using ValidPasswordCheck isPasswordValid utility method
+                idPBLoading.setVisibility(View.GONE);// hide the progress bar
                 Toast.makeText(EditAccountActivity.this, "Invalid password.", Toast.LENGTH_SHORT).show();
-                pwdHelpText.setVisibility(View.VISIBLE);
-            } else{
-
-                // Create the object of AlertDialog Builder class
+                pwdHelpText.setVisibility(View.VISIBLE);// display password help text
+            } else{// if password checks pass then execute the following
+                //@Reference - https://www.geeksforgeeks.org/how-to-create-an-alert-dialog-box-in-android/
+                //Reference description - tutorial on how to Create an Alert Dialog Box in Android
+                // Create AlertDialog Builder class object
                 AlertDialog.Builder builder2 = new AlertDialog.Builder(EditAccountActivity.this);
-
-                // Set the message show for the Alert time
+                // Set the alert dialog message
                 builder2.setMessage("Do you want to update your password?");
-
                 // Set Alert Title
                 builder2.setTitle("Update Password Confirmation");
-
-                // Set Cancelable false for when the user clicks on the outside the Dialog Box then it will remain show
+                // set cancelable by clicking outside dialog to false
                 builder2.setCancelable(false);
-
-                // Set the positive button with yes name Lambda OnClickListener method is use of DialogInterface interface.
+                // Set the Yes button action
                 builder2.setPositiveButton("Yes", (dialog, which) -> {
-
+                    // @Reference - https://www.youtube.com/watch?v=FptELNWvnqQ
+                    // Ref Description - Tutorial on how to update Firebase Authentication users password/email
+                    // and on how to delete users
                     //update the users password
                     user.updatePassword(pwd).addOnCompleteListener(task -> {
-                        if(task.isSuccessful()){
+                        if(task.isSuccessful()){// if the task is successful
                             Toast.makeText(EditAccountActivity.this, "Password updated", Toast.LENGTH_SHORT).show();
-                            idPBLoading.setVisibility(View.GONE);
-                            pwdHelpText.setVisibility(View.GONE);
-                        }else{
-                            pwdHelpText.setVisibility(View.GONE);
+                            idPBLoading.setVisibility(View.GONE);// hide the progress bar
+                            pwdHelpText.setVisibility(View.GONE);// hide the password help text
+                        }else{// display different error message based on error received from Firebase Authenticate
+                            pwdHelpText.setVisibility(View.GONE);// hide the password help text
                             if(Objects.requireNonNull(task.getException()).toString().contains("The given password is invalid. [ Password should be at least 6 characters ]")){
                                 Toast.makeText(EditAccountActivity.this, "Registration failed. Password should be at least 6 characters.", Toast.LENGTH_SHORT).show();
                             } else if(Objects.requireNonNull(task.getException()).toString().contains("This operation is sensitive and requires recent authentication. Log in again before retrying this request.")){
                                 Toast.makeText(EditAccountActivity.this, "Email update failed. Please log in again before retrying this request.", Toast.LENGTH_SHORT).show();
-                                pwdHelpText2.setVisibility(View.VISIBLE);
+                                pwdHelpText2.setVisibility(View.VISIBLE);// display help text
                             } else {
                                 Toast.makeText(EditAccountActivity.this, "Password update failed. Please try again...", Toast.LENGTH_SHORT).show();
                             }
-                            idPBLoading.setVisibility(View.GONE);
+                            idPBLoading.setVisibility(View.GONE);// hide the progress bar
                         }
                     });
-
                 });
-
-                // Set the Negative button with No name Lambda OnClickListener method is use of DialogInterface interface.
+                // Set the No button action
                 builder2.setNegativeButton("No", (dialog, which) -> {
-                    // If user click no then dialog box is canceled.
-                    dialog.cancel();
-                    // hide the progress bar
-                    idPBLoading.setVisibility(View.GONE);
+                    dialog.cancel();// If user click no then dialog box is canceled and closed
+                    idPBLoading.setVisibility(View.GONE);// hide the progress bar
                 });
-
-                // Create the Alert dialog
+                // Create Alert dialog
                 AlertDialog alertDialog = builder2.create();
-
-                // Show the Alert Dialog box
+                // Show Alert Dialog box
                 alertDialog.show();
-
             }
         });
 
         // delete account button functionality
         idBtnDeleteAccount.setOnClickListener(view -> {
-
-            // Create the object of AlertDialog Builder class
+            //@Reference - https://www.geeksforgeeks.org/how-to-create-an-alert-dialog-box-in-android/
+            //Reference description - tutorial on how to Create an Alert Dialog Box in Android
+            // Create AlertDialog Builder class object
             AlertDialog.Builder builder = new AlertDialog.Builder(EditAccountActivity.this);
-
-            // Set the message show for the Alert time
+            // Set the alert message
             builder.setMessage("Do you want to delete your account? This action cannot be undone. " +
                     "Any public recipes you own will still be visible to other users.");
-
             // Set Alert Title
             builder.setTitle("Delete Account Confirmation");
-
-            // Set Cancelable false for when the user clicks on the outside the Dialog Box then it will remain show
+            // set cancelable by clicking outside dialog to false
             builder.setCancelable(false);
-
-            // Set the positive button with yes name Lambda OnClickListener method is use of DialogInterface interface.
+            // Set the Yes button action
             builder.setPositiveButton("Yes", (dialog, which) -> {
-
-                idPBLoading.setVisibility(View.VISIBLE);
-                deleteHelpText.setVisibility(View.GONE);
-
+                idPBLoading.setVisibility(View.VISIBLE);// show loading bar
+                deleteHelpText.setVisibility(View.GONE);// hide delete help text
+                // @Reference - https://www.youtube.com/watch?v=FptELNWvnqQ
+                // Ref Description - Tutorial on how to update Firebase Authentication users password/email
+                // and on how to delete users
                 user.delete().addOnCompleteListener(task -> {
-
-                    if(task.isSuccessful()){
+                    if(task.isSuccessful()){// if task is successful
                         // display the following toast notification
                         Toast.makeText(EditAccountActivity.this, "Account Successfully Deleted", Toast.LENGTH_SHORT).show();
-                        idPBLoading.setVisibility(View.GONE);
-
-                        //navigate to login page
+                        idPBLoading.setVisibility(View.GONE);// hide loading bar
                         Intent i = new Intent(EditAccountActivity.this, LoginActivity.class);
-                        startActivity(i);
-                        finish();
+                        startActivity(i);//navigate to login page
+                        finish();// finish the activity
+                    // if the action is unsuccessful then execute the following
                     }else if(Objects.requireNonNull(task.getException()).toString().contains("This " +
                             "operation is sensitive and requires recent authentication. Log in " +
                             "again before retrying this request.")){
                         Toast.makeText(EditAccountActivity.this, "Account deletion " +
                                 "failed. Please log in again before retrying this request.",
                                 Toast.LENGTH_SHORT).show();
-                        deleteHelpText.setVisibility(View.VISIBLE);
-                        idPBLoading.setVisibility(View.GONE);
+                        deleteHelpText.setVisibility(View.VISIBLE);// display delete help text
+                        idPBLoading.setVisibility(View.GONE);// hide loading bar
                     } else{
                         Toast.makeText(EditAccountActivity.this, "Account Deletion " +
                                 "Failed", Toast.LENGTH_SHORT).show();
-                        idPBLoading.setVisibility(View.GONE);
+                        idPBLoading.setVisibility(View.GONE);// hide loading bar
                     }
-
                 });
-
             });
-
-            // Set the Negative button with No name Lambda OnClickListener method is use of DialogInterface interface.
+            // Set the No button action
             builder.setNegativeButton("No", (dialog, which) -> {
-                // If user click no then dialog box is canceled.
-                dialog.cancel();
-                // hide the progress loading bar
-                idPBLoading.setVisibility(View.GONE);
+                dialog.cancel();// If user click no then dialog box is canceled and closed
+                idPBLoading.setVisibility(View.GONE);// hide the progress loading bar
             });
-
-            // Create the Alert dialog
+            // Create Alert dialog
             AlertDialog alertDialog = builder.create();
-            // Show the Alert Dialog box
+            // Show Alert Dialog box
             alertDialog.show();
-
         });
     }
 }

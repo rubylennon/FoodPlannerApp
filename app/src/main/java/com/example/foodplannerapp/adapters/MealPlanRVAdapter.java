@@ -7,8 +7,6 @@ package com.example.foodplannerapp.adapters;
  * Description - Ingredient RecyclerView Adapter class
  */
 
-// @REF 1 - https://www.youtube.com/watch?v=-Gvpf8tXpbc
-
 // imports
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -28,12 +26,16 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+// @Reference - https://www.geeksforgeeks.org/user-authentication-and-crud-operation-with-firebase-realtime-database-in-android/
+// Reference description - tutorial on how to create a Recycler View Adapter
 public class MealPlanRVAdapter extends RecyclerView.Adapter<MealPlanRVAdapter.ViewHolder> {
+    // declare variables
     int lastPos = -1;
     private final ArrayList<Meal> mealArrayList;
     private final Context context;
     private final MealPlanClickInterface mealPlanClickInterface;
 
+    // create constructor
     public MealPlanRVAdapter(ArrayList<Meal> mealArrayList, Context context,
                              MealPlanClickInterface mealPlanClickInterface) {
         this.mealArrayList = mealArrayList;
@@ -45,6 +47,7 @@ public class MealPlanRVAdapter extends RecyclerView.Adapter<MealPlanRVAdapter.Vi
     @Override
     public MealPlanRVAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
                                                            int viewType) {
+        // inflate specified layout
         View view = LayoutInflater.from(context)
                 .inflate(R.layout.meal_rv_item,parent, false);
         return new ViewHolder(view);
@@ -52,14 +55,17 @@ public class MealPlanRVAdapter extends RecyclerView.Adapter<MealPlanRVAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull MealPlanRVAdapter.ViewHolder holder, int position) {
+        // set data to recycler view
         Meal meal = mealArrayList.get(position);
         holder.recipeNameTV.setText(meal.getRecipeName());
         holder.mealPlanDate.setText(meal.getDateLong());
         Picasso.get().load(meal.getRecipeImg()).into(holder.recipeTV);
+        // add animation to recycler view item
         setAnimation(holder.itemView, position);
         holder.itemView.setOnClickListener(v -> mealPlanClickInterface.onMealPlanClick(position));
     }
 
+    // set animation to RV item
     private void setAnimation(View itemView, int position){
         if(position > lastPos){
             Animation animation = AnimationUtils.loadAnimation(context,
@@ -75,11 +81,11 @@ public class MealPlanRVAdapter extends RecyclerView.Adapter<MealPlanRVAdapter.Vi
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-
+        // create variables image and text views
         private final TextView recipeNameTV,
                 mealPlanDate;
         private final ImageView recipeTV;
-
+        // initialize variables
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             recipeNameTV = itemView.findViewById(R.id.idTVRecipeName);
@@ -88,6 +94,7 @@ public class MealPlanRVAdapter extends RecyclerView.Adapter<MealPlanRVAdapter.Vi
         }
     }
 
+    // create click interface
     public interface MealPlanClickInterface{
         void onMealPlanClick(int position);
     }

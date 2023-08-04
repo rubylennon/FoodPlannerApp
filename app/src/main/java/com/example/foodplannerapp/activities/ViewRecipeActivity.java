@@ -7,11 +7,7 @@ package com.example.foodplannerapp.activities;
  * Description - Activity for viewing Recipe details
  */
 
-//@REF 1 - https://www.youtube.com/watch?v=33BFCdL0Di0 DatePickerDialog - Android Studio Tutorial
-//@REF 2 - GeeksForGeeks Tutorial - https://www.youtube.com/watch?v=-Gvpf8tXpbc
-
 // imports
-
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -39,6 +35,7 @@ import java.util.Calendar;
 import java.util.Objects;
 
 public class ViewRecipeActivity extends BaseMenuActivity implements DatePickerDialog.OnDateSetListener {
+    // declare variables
     private TextInputEditText recipeNameEdt,
             recipeCookingTimeEdt,
             recipePrepTimeEdt,
@@ -60,6 +57,7 @@ public class ViewRecipeActivity extends BaseMenuActivity implements DatePickerDi
     public ViewRecipeActivity() {
     }
 
+    // on create method to be executed when activity is launched
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,8 +68,10 @@ public class ViewRecipeActivity extends BaseMenuActivity implements DatePickerDi
         // set the actionbar title
         setTitle("Recipe Details");
 
+        // get parcelable extra using meal object passed to activity intent
+        recipe = getIntent().getParcelableExtra("recipe");
+
         // initialise variables
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         recipeNameEdt = findViewById(R.id.idEdtRecipeName);
         recipeCookingTimeEdt = findViewById(R.id.idEdtRecipeCookingTime);
         recipePrepTimeEdt = findViewById(R.id.idEdtRecipePrepTime);
@@ -84,13 +84,17 @@ public class ViewRecipeActivity extends BaseMenuActivity implements DatePickerDi
         recipePublicEdt = findViewById(R.id.idPublicSwitch);
         Button viewSourceRecipe = findViewById(R.id.idBtnViewSourceRecipe);
         Button addRecipeToMealPlan = findViewById(R.id.idBtnAddToMealPlan);
-        userID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
-        recipe = getIntent().getParcelableExtra("recipe");
 
+        // get instance of Firebase realtime database
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        // get the currently signed in users ID from the current Firebase Auth instance
+        userID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         // assign database reference to Meal Plan firebase realtime database reference
         databaseReferenceMealPlan = firebaseDatabase.getReference("Meal Plans");
 
-        // populate the layout fields with the recipe details from the database
+        // @Reference - https://www.geeksforgeeks.org/user-authentication-and-crud-operation-with-firebase-realtime-database-in-android/
+        // Reference description - tutorial on how to retrieve and display Firebase data objects
+        // populate the layout fields with the meal details from the database
         if (recipe != null){
             recipeNameEdt.setText(recipe.getRecipeName());
             recipeCookingTimeEdt.setText(recipe.getRecipeCookingTime());
@@ -117,7 +121,6 @@ public class ViewRecipeActivity extends BaseMenuActivity implements DatePickerDi
         recipeDescEdt.setFocusable(false);
         recipeMethodEdt.setFocusable(false);
         recipeIngredientsEdt.setFocusable(false);
-
         // disable input fields
         recipeNameEdt.setEnabled(false);
         recipeCookingTimeEdt.setEnabled(false);
@@ -128,7 +131,6 @@ public class ViewRecipeActivity extends BaseMenuActivity implements DatePickerDi
         recipeDescEdt.setEnabled(false);
         recipeMethodEdt.setEnabled(false);
         recipeIngredientsEdt.setEnabled(false);
-
         // disable input fields cursor visibility
         recipeNameEdt.setCursorVisible(false);
         recipeCookingTimeEdt.setCursorVisible(false);
@@ -139,7 +141,6 @@ public class ViewRecipeActivity extends BaseMenuActivity implements DatePickerDi
         recipeDescEdt.setCursorVisible(false);
         recipeMethodEdt.setCursorVisible(false);
         recipeIngredientsEdt.setCursorVisible(false);
-
         // set switch button to non clickable
         recipePublicEdt.setClickable(false);
 
@@ -147,10 +148,12 @@ public class ViewRecipeActivity extends BaseMenuActivity implements DatePickerDi
         viewSourceRecipe.setOnClickListener(v -> {
             Intent i = new Intent(Intent.ACTION_VIEW);
             i.setData(Uri.parse(recipe.getRecipeLink()));
-            startActivity(i);
+            startActivity(i);// launch browser using URL
         });
 
-        // view recipe source page in browser using recipe link
+        // @Reference - https://www.youtube.com/watch?v=33BFCdL0Di0
+        // Reference description - tutorial on how to create a date picker dialog fragment
+        // add recipe to meal plan button functionality
         addRecipeToMealPlan.setOnClickListener(v -> {
             DialogFragment datePicker = new DatePickerFragment();
             datePicker.show(getSupportFragmentManager(), "date picker");
@@ -158,6 +161,8 @@ public class ViewRecipeActivity extends BaseMenuActivity implements DatePickerDi
 
     }
 
+    // @Reference - https://www.youtube.com/watch?v=33BFCdL0Di0
+    // Reference description - tutorial on how to create a date picker dialog fragment
     // method for adding recipe to meal plan
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -167,6 +172,8 @@ public class ViewRecipeActivity extends BaseMenuActivity implements DatePickerDi
         calendar.set(Calendar.MONTH, month);
         calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
+        //@Reference - https://www.geeksforgeeks.org/user-authentication-and-crud-operation-with-firebase-realtime-database-in-android/
+        //Reference description - tutorial on how to add an object to the Firebase Realtime Database
         // set values for new meal plan object
         String currentDateStringShort = DateFormat.getDateInstance(DateFormat.SHORT).format(calendar.getTime());
         String currentDateStringLong = DateFormat.getDateInstance(DateFormat.FULL).format(calendar.getTime());
@@ -183,24 +190,28 @@ public class ViewRecipeActivity extends BaseMenuActivity implements DatePickerDi
         String recipeIngredients = Objects.requireNonNull(recipeIngredientsEdt.getText()).toString();
         String[] ingredientsArray = recipeIngredients.split(",");
         Boolean recipePublic = recipePublicEdt.isChecked();
+        // get the ID for the new meal
         String mealPlanID = databaseReferenceMealPlan.push().getKey();
 
-        Meal meal = new Meal(currentDateStringShort, mealPlanID, recipeName, recipeCookingTime, recipePrepTime, recipeServings, recipeSuitedFor, recipeCuisine, recipeImg, recipeLink, recipeDesc, recipeMethod, recipeIngredients, recipePublic, recipeID, userID, currentDateStringLong);
+        // create a meal object to store the new meal values
+        Meal meal = new Meal(currentDateStringShort, mealPlanID, recipeName, recipeCookingTime,
+                recipePrepTime, recipeServings, recipeSuitedFor, recipeCuisine, recipeImg,
+                recipeLink, recipeDesc, recipeMethod, recipeIngredients, recipePublic, recipeID,
+                userID, currentDateStringLong);
         assert mealPlanID != null;
         // create new meal plan object
         databaseReferenceMealPlan.child(mealPlanID).setValue(meal);
 
-        // store ingredients to ingredients child object
-        for (String ingredient : ingredientsArray) {
+        // store ingredients to ingredients child object of the new meal object
+        for (String ingredient : ingredientsArray) {// for every recipe ingredient
+            // create a new meal ingredient object
             MealIngredient mealIngredient = new MealIngredient(ingredient.trim(), "false");
-            //databaseReferenceMealPlan.child(mealPlanID).child("ingredients").child(ingredient.trim()).setValue(false);
+            // add the new meal ingredient object as a child of the new meal created
             databaseReferenceMealPlan.child(mealPlanID).child("ingredients").push().setValue(mealIngredient);
         }
-
+        // show toast
         Toast.makeText(ViewRecipeActivity.this, "Recipe Added to Meal Plan", Toast.LENGTH_SHORT).show();
-
         // redirect user to Meal Planner activity
         startActivity(new Intent(ViewRecipeActivity.this, MealPlanActivity.class));
-
     }
 }

@@ -8,7 +8,6 @@ package com.example.foodplannerapp.activities;
  */
 
 // imports
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
@@ -37,6 +36,7 @@ import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class ViewMealPlanActivity extends BaseMenuActivity {
+    // declare variables
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     private Switch recipePublicEdt;
     private DatabaseReference databaseReferenceIngredients,
@@ -45,13 +45,14 @@ public class ViewMealPlanActivity extends BaseMenuActivity {
             mealPlanDate;
     private Meal meal;
     private MealIngredient mealIngredient;
-    private LinearLayout layout;
+    private LinearLayout shoppingListContainer;
     private final AtomicReference<Boolean> initialLoad = new AtomicReference<>(true);
     private ArrayList<MealIngredient> ingredientsList;
 
     public ViewMealPlanActivity() {
     }
 
+    // on create method to be executed when activity is launched
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,8 +60,13 @@ public class ViewMealPlanActivity extends BaseMenuActivity {
         // set activity layout
         setContentView(R.layout.activity_view_meal_plan);
 
+        // set the actionbar title
+        setTitle("Meal Details - " + mealPlanDate);
+
+        // get parcelable extra using meal object passed to activity intent
+        meal = getIntent().getParcelableExtra("MealPlan");
+
         // initialise variables
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         TextInputEditText recipeNameEdt = findViewById(R.id.idEdtRecipeName);
         TextInputEditText recipeCookingTimeEdt = findViewById(R.id.idEdtRecipeCookingTime);
         TextInputEditText recipePrepTimeEdt = findViewById(R.id.idEdtRecipePrepTime);
@@ -70,12 +76,16 @@ public class ViewMealPlanActivity extends BaseMenuActivity {
         TextInputEditText recipeDescEdt = findViewById(R.id.idEdtRecipeDesc);
         TextInputEditText recipeMethodEdt = findViewById(R.id.idEdtRecipeMethod);
         TextInputEditText recipeIngredientsEdt = findViewById(R.id.idEdtRecipeIngredients);
-        recipePublicEdt = findViewById(R.id.idPublicSwitch);
         Button viewSourceRecipe = findViewById(R.id.idBtnViewSourceRecipe);
-        meal = getIntent().getParcelableExtra("MealPlan");
-        layout = findViewById(R.id.shopping_List_item);
+        recipePublicEdt = findViewById(R.id.idPublicSwitch);
+        shoppingListContainer = findViewById(R.id.shopping_List_item);
 
-        // populate the layout fields with the recipe details from the database
+        // get instance of Firebase realtime database
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+
+        // @Reference - https://www.geeksforgeeks.org/user-authentication-and-crud-operation-with-firebase-realtime-database-in-android/
+        // Reference description - tutorial on how to retrieve and display Firebase data objects
+        // populate the layout fields with the meal details from the database
         if (meal != null) {
             mealPlanDate = meal.getDateShort();
             recipeNameEdt.setText(meal.getRecipeName());
@@ -91,9 +101,6 @@ public class ViewMealPlanActivity extends BaseMenuActivity {
             mealPlanID = meal.getMealPlanID();
         }
 
-        // set the actionbar title
-        setTitle("Meal Details - " + mealPlanDate);
-
         // set input fields to non focusable
         recipeNameEdt.setFocusable(false);
         recipeCookingTimeEdt.setFocusable(false);
@@ -104,7 +111,6 @@ public class ViewMealPlanActivity extends BaseMenuActivity {
         recipeDescEdt.setFocusable(false);
         recipeMethodEdt.setFocusable(false);
         recipeIngredientsEdt.setFocusable(false);
-
         // disable input fields
         recipeNameEdt.setEnabled(false);
         recipeCookingTimeEdt.setEnabled(false);
@@ -115,7 +121,6 @@ public class ViewMealPlanActivity extends BaseMenuActivity {
         recipeDescEdt.setEnabled(false);
         recipeMethodEdt.setEnabled(false);
         recipeIngredientsEdt.setEnabled(false);
-
         // disable input fields cursor visibility
         recipeNameEdt.setCursorVisible(false);
         recipeCookingTimeEdt.setCursorVisible(false);
@@ -126,11 +131,10 @@ public class ViewMealPlanActivity extends BaseMenuActivity {
         recipeDescEdt.setCursorVisible(false);
         recipeMethodEdt.setCursorVisible(false);
         recipeIngredientsEdt.setCursorVisible(false);
-
         // set switch button to non clickable
         recipePublicEdt.setClickable(false);
 
-        // meal plan ingredients child reference
+        // create meal plan ingredients database reference required for updating meal ingredient values in shopping list
         ingredientsDBRef = firebaseDatabase.getReference("Meal Plans").child(mealPlanID)
                 .child("ingredients");
 
@@ -138,7 +142,7 @@ public class ViewMealPlanActivity extends BaseMenuActivity {
         viewSourceRecipe.setOnClickListener(v -> {
             Intent i = new Intent(Intent.ACTION_VIEW);
             i.setData(Uri.parse(meal.getRecipeLink()));
-            startActivity(i);
+            startActivity(i);// launch browser using URL
         });
 
         // meal plan ingredients child reference
@@ -146,10 +150,11 @@ public class ViewMealPlanActivity extends BaseMenuActivity {
                 .child(mealPlanID).child("ingredients");
     }
 
+    // on create method to be executed when activity is started
     @Override
     protected void onStart() {
         super.onStart();
-
+        // if the database reference is not null
         if(ingredientsDBRef != null){
             // create ingredients db reference value events listener
             ingredientsDBRef.addValueEventListener(new ValueEventListener() {
@@ -157,39 +162,40 @@ public class ViewMealPlanActivity extends BaseMenuActivity {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if(dataSnapshot.exists()){
                         ingredientsList = new ArrayList<>();
-                        // store db ingredients to arraylist
+                        // store db meal ingredients to arraylist
                         for(DataSnapshot ds : dataSnapshot.getChildren()){
                             mealIngredient = ds.getValue(MealIngredient.class);
                             assert mealIngredient != null;
-                            mealIngredient.key = ds.getKey();
-                            ingredientsList.add(mealIngredient);
+                            mealIngredient.key = ds.getKey();// set the meal ingredient key to the database key
+                            ingredientsList.add(mealIngredient);// store the meal ingredient to the ArrayList
                         }
-
+                        // if the page is being loaded for the first time add...
                         if(initialLoad.get()){
                             for(MealIngredient ingredientListItem : ingredientsList){
-                                addCard(ingredientListItem.getIngredient(),
+                                //...add the ingredients to the shopping list container
+                                // pass the ingredient name, purchase value and key to the addIngredientCard method
+                                addIngredientCard(ingredientListItem.getIngredient(),
                                         ingredientListItem.getPurchased(),
                                         ingredientListItem.getKey());
                             }
                         }
-
                         // set the indicator used to indicate whether the page is being loaded for
                         // the first time to false
                         initialLoad.set(false);
                     }
                 }
-
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
                     Toast.makeText(ViewMealPlanActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         }
-        // SEARCH CODE END
     }
 
-    // add ingredient cards to layout
-    private void addCard(String ingredient, String purchased, String key) {
+    // @Reference - https://codevedanam.blogspot.com/2021/04/dynamic-views-in-android.html
+    // Reference description - tutorial on how to add dynamic views in Android
+    // add ingredient cards to layout accepts (ingredient name, purchased value, key)
+    private void addIngredientCard(String ingredient, String purchased, String key) {
         @SuppressLint("InflateParams") final View view = getLayoutInflater()
                 .inflate(R.layout.shopping_list_item, null);
 
@@ -205,23 +211,23 @@ public class ViewMealPlanActivity extends BaseMenuActivity {
             checkBox.setChecked(true);
         }
 
-        // if the ingredient checkbox is checked then set the ingredients purchased value to true
+        // ingredient card checkbox checking functionality for updating purchased value in the database
         checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if(checkBox.isChecked()){
                 Toast.makeText(ViewMealPlanActivity.this, "Shopping List Updated",
                         Toast.LENGTH_SHORT).show();
                 databaseReferenceIngredients.child(key).child("purchased")
-                        .setValue("true");
-            }else{// if the ingredient checkbox is checked then set the ingredients purchased value
+                        .setValue("true");// set the meal ingredients purchased value to true
+            }else{// if the ingredient checkbox is checked then set the ingredients purchased value in the database
                 // to false
                 Toast.makeText(ViewMealPlanActivity.this, "Shopping List Updated",
                         Toast.LENGTH_SHORT).show();
                 databaseReferenceIngredients.child(key).child("purchased")
-                        .setValue("false");
+                        .setValue("false");// set the meal ingredients purchased value to false in the database
             }
         });
 
         // add the ingredient card to the layout
-        layout.addView(view);
+        shoppingListContainer.addView(view);
     }
 }

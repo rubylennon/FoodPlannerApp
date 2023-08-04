@@ -7,8 +7,6 @@ package com.example.foodplannerapp.models;
  * Description - Recipe Model class
  */
 
-// @REF 1 - GeeksForGeeks Tutorial - https://www.youtube.com/watch?v=-Gvpf8tXpbc
-
 // imports
 import android.os.Build;
 import android.os.Parcel;
@@ -38,6 +36,8 @@ public class Recipe implements Parcelable {
 
     }
 
+    // @Reference - https://www.geeksforgeeks.org/user-authentication-and-crud-operation-with-firebase-realtime-database-in-android/
+    // Reference description - tutorial on how to add an object to the Firebase Realtime Database
     public Recipe(String recipeName, String recipeCookingTime,String recipePrepTime,
                   String recipeServings, String recipeSuitedFor, String recipeCuisine,
                   String recipeImg, String recipeLink, String recipeDescription,
@@ -59,6 +59,8 @@ public class Recipe implements Parcelable {
         this.recipeID = recipeID;
     }
 
+    // @Reference - https://www.geeksforgeeks.org/user-authentication-and-crud-operation-with-firebase-realtime-database-in-android/
+    // Reference description - tutorial on how to add an object to the Firebase Realtime Database
     protected Recipe(Parcel in) {
         recipeName = in.readString();
         recipeCookingTime = in.readString();
@@ -152,6 +154,8 @@ public class Recipe implements Parcelable {
         return 0;
     }
 
+    // @Reference - https://www.geeksforgeeks.org/user-authentication-and-crud-operation-with-firebase-realtime-database-in-android/
+    // Reference description - tutorial on how to add an object to the Firebase Realtime Database
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeString(recipeName);

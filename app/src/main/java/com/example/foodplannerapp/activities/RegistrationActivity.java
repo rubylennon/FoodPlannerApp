@@ -7,12 +7,7 @@ package com.example.foodplannerapp.activities;
  * Description - Registration Activity to allow new users to register for an account
  */
 
-//@REF 1 - GeeksForGeeks Tutorial - https://www.youtube.com/watch?v=-Gvpf8tXpbc
-//@REF 2 - https://firebase.google.com/docs/auth/android/password-auth
-//@REF 3 - https://www.geeksforgeeks.org/how-to-validate-a-password-using-regular-expressions-in-java/
-
 // imports
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -31,15 +26,18 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
 
+// @Reference - https://www.geeksforgeeks.org/user-authentication-and-crud-operation-with-firebase-realtime-database-in-android/
+// Reference description - tutorial on how to create a Recycler View Adapter
 public class RegistrationActivity extends AppCompatActivity {
-    // variables
+    // declare variables
     private TextInputEditText userNameEdt,
             pwdEdt,
             cnfPwdEdt;
     private ProgressBar loadingPB;
-    private FirebaseAuth mAuth;
+    private FirebaseAuth firebaseAuth;
     private TextView pwdHelpText;
 
+    // onCreate method to be execute when activity is launched
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,24 +52,24 @@ public class RegistrationActivity extends AppCompatActivity {
         userNameEdt = findViewById(R.id.idEdtUserName);
         pwdEdt = findViewById(R.id.idEdtPwd);
         cnfPwdEdt = findViewById(R.id.idEdtCnfPwd);
-        Button registerBtn = findViewById(R.id.idBtnRegister);
         loadingPB = findViewById(R.id.idPBLoading);
         loadingPB.setVisibility(View.GONE);
-        mAuth = FirebaseAuth.getInstance();
-        TextView loginTV = findViewById(R.id.idTVLogin);
+        firebaseAuth = FirebaseAuth.getInstance();
         pwdHelpText = findViewById(R.id.pwdHelpText);
         pwdHelpText.setVisibility(View.GONE);
+        Button registerBtn = findViewById(R.id.idBtnRegister);
+        TextView loginTV = findViewById(R.id.idTVLogin);
 
         // if user clicks Login TextView redirect them to the Login Page
         loginTV.setOnClickListener(v -> {
             Intent i = new Intent(RegistrationActivity.this, LoginActivity.class);
-            startActivity(i);
+            startActivity(i);// start Login Activity
         });
 
         // if user clicks Register button execute the following
         registerBtn.setOnClickListener(v -> {
-            loadingPB.setVisibility(View.VISIBLE);
-            pwdHelpText.setVisibility(View.GONE);
+            loadingPB.setVisibility(View.VISIBLE);// show progress bar
+            pwdHelpText.setVisibility(View.GONE);// hide password help text
 
             // get text from input fields
             String userName = Objects.requireNonNull(userNameEdt.getText()).toString();
@@ -96,23 +94,23 @@ public class RegistrationActivity extends AppCompatActivity {
             } else if(pwd.length() > MAX_PASSWORD_LENGTH){
                 loadingPB.setVisibility(View.GONE);
                 Toast.makeText(RegistrationActivity.this, "Passwords must be less than 20 characters", Toast.LENGTH_SHORT).show();
-            } else if(ValidPasswordCheck.isPasswordValid(pwd)){
+            } else if(ValidPasswordCheck.isPasswordValid(pwd)){// check password meets requirements using ValidPasswordCheck isPasswordValid utility check
                 loadingPB.setVisibility(View.GONE);
                 Toast.makeText(RegistrationActivity.this, "Invalid password.", Toast.LENGTH_SHORT).show();
                 pwdHelpText.setVisibility(View.VISIBLE);
-            } else{
+            } else{// if all required information is valid and provided execute the following
+                // @Reference - https://www.geeksforgeeks.org/user-authentication-and-crud-operation-with-firebase-realtime-database-in-android/
+                // Reference description - tutorial on how to create a Register Activity for Firebase Authenticate
                 // create a Firebase Authentication user
-                 mAuth.createUserWithEmailAndPassword(userName,pwd).addOnCompleteListener(task -> {
+                firebaseAuth.createUserWithEmailAndPassword(userName,pwd).addOnCompleteListener(task -> {
                      if(task.isSuccessful()){ // if the task is successful then execute the following
-                         loadingPB.setVisibility(View.GONE);
+                         loadingPB.setVisibility(View.GONE);// hide the progress bar
                          Toast.makeText(RegistrationActivity.this, "Registration Successful", Toast.LENGTH_SHORT).show();
                          Intent i = new Intent(RegistrationActivity.this, MainActivity.class);
-                         startActivity(i);
+                         startActivity(i);// start Main activity
                          finish();
                      } else { // if the task fails execute the following
-                         // hide the loading progress bar
-                         loadingPB.setVisibility(View.GONE);
-
+                         loadingPB.setVisibility(View.GONE);// hide the loading progress bar
                          // display error toast with failure reason
                          if(Objects.requireNonNull(task.getException()).toString().contains("The email address is badly formatted.")){
                              Toast.makeText(RegistrationActivity.this, "Registration failed. Please add valid email.", Toast.LENGTH_SHORT).show();

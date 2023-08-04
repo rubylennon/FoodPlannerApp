@@ -38,6 +38,8 @@ public class Meal implements Parcelable {
     public Meal(){
     }
 
+    // @Reference - https://www.geeksforgeeks.org/user-authentication-and-crud-operation-with-firebase-realtime-database-in-android/
+    // Reference description - tutorial on how to add an object to the Firebase Realtime Database
     public Meal(String dateShort, String mealPlanID, String recipeName, String recipeCookingTime,
                 String recipePrepTime, String recipeServings, String recipeSuitedFor,
                 String recipeCuisine, String recipeImg, String recipeLink, String recipeDescription,
@@ -62,6 +64,8 @@ public class Meal implements Parcelable {
         this.dateLong = dateLong;
     }
 
+    // @Reference - https://www.geeksforgeeks.org/user-authentication-and-crud-operation-with-firebase-realtime-database-in-android/
+    // Reference description - tutorial on how to add an object to the Firebase Realtime Database
     protected Meal(Parcel in) {
         dateShort = in.readString();
         mealPlanID = in.readString();
@@ -171,6 +175,8 @@ public class Meal implements Parcelable {
         return 0;
     }
 
+    // @Reference - https://www.geeksforgeeks.org/user-authentication-and-crud-operation-with-firebase-realtime-database-in-android/
+    // Reference description - tutorial on how to add an object to the Firebase Realtime Database
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeString(dateShort);
