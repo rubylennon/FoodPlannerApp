@@ -187,7 +187,7 @@ public class EditAccountActivity extends BaseMenuActivity {
             } else if(pwd.length() > MAX_PASSWORD_LENGTH){
                 idPBLoading.setVisibility(View.GONE);// hide the progress bar
                 Toast.makeText(EditAccountActivity.this, "Passwords must be less than 20 characters", Toast.LENGTH_SHORT).show();
-            } else if(ValidPasswordCheck.isPasswordValid(pwd)){// password check using ValidPasswordCheck isPasswordValid utility method
+            } else if(!ValidPasswordCheck.isPasswordValid(pwd)){// password check using ValidPasswordCheck isPasswordValid utility method
                 idPBLoading.setVisibility(View.GONE);// hide the progress bar
                 Toast.makeText(EditAccountActivity.this, "Invalid password.", Toast.LENGTH_SHORT).show();
                 pwdHelpText.setVisibility(View.VISIBLE);// display password help text

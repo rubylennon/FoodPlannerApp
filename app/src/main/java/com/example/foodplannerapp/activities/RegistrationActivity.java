@@ -94,7 +94,7 @@ public class RegistrationActivity extends AppCompatActivity {
             } else if(pwd.length() > MAX_PASSWORD_LENGTH){
                 loadingPB.setVisibility(View.GONE);
                 Toast.makeText(RegistrationActivity.this, "Passwords must be less than 20 characters", Toast.LENGTH_SHORT).show();
-            } else if(ValidPasswordCheck.isPasswordValid(pwd)){// check password meets requirements using ValidPasswordCheck isPasswordValid utility check
+            } else if(!ValidPasswordCheck.isPasswordValid(pwd)){// check password meets requirements using ValidPasswordCheck isPasswordValid utility check
                 loadingPB.setVisibility(View.GONE);
                 Toast.makeText(RegistrationActivity.this, "Invalid password.", Toast.LENGTH_SHORT).show();
                 pwdHelpText.setVisibility(View.VISIBLE);

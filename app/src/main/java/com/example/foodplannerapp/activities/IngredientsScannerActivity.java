@@ -7,8 +7,6 @@ package com.example.foodplannerapp.activities;
  * Description - OCR Ingredients List Activity of Java Android App 'FoodPlannerApp'
  */
 
-// @REF 5 - User Authentication and CRUD Operation with Firebase Realtime Database in Android | GeeksForGeeks - https://www.youtube.com/watch?v=-Gvpf8tXpbc
-
 // imports
 import android.Manifest;
 import android.content.Intent;

@@ -60,9 +60,6 @@ public class ViewMealPlanActivity extends BaseMenuActivity {
         // set activity layout
         setContentView(R.layout.activity_view_meal_plan);
 
-        // set the actionbar title
-        setTitle("Meal Details - " + mealPlanDate);
-
         // get parcelable extra using meal object passed to activity intent
         meal = getIntent().getParcelableExtra("MealPlan");
 
@@ -100,6 +97,9 @@ public class ViewMealPlanActivity extends BaseMenuActivity {
             recipePublicEdt.setChecked(meal.getRecipePublic().equals(true));
             mealPlanID = meal.getMealPlanID();
         }
+
+        // set the actionbar title
+        setTitle("Meal Details - " + mealPlanDate);
 
         // set input fields to non focusable
         recipeNameEdt.setFocusable(false);
