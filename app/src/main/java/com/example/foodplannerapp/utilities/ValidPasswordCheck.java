@@ -14,32 +14,22 @@ import java.util.regex.Pattern;
 // @Reference - https://www.geeksforgeeks.org/how-to-validate-a-password-using-regular-expressions-in-java/
 // method for checking if user supplied password is valid
 public final class ValidPasswordCheck{
-
     private ValidPasswordCheck(){}
-
     public static boolean isPasswordValid(String password) {
-        // Regex to check valid password.
+        // create regex pattern
         String regex = "^(?=.*\\d)"
                 + "(?=.*[a-z])(?=.*[A-Z])"
                 + "(?=.*[@#$%^&+=])"
                 + "(?=\\S+$).{8,20}$";
-
-        // Compile the ReGex
-        Pattern p = Pattern.compile(regex);
-
-        // If the password is empty
-        // return false
+        // regex compilation
+        Pattern pattern = Pattern.compile(regex);
+        // return false if password is empty
         if (password == null) {
             return true;
         }
-
-        // Pattern class contains matcher() method
-        // to find matching between given password
-        // and regular expression.
-        Matcher m = p.matcher(password);
-
-        // Return if the password
-        // matched the ReGex
-        return m.matches();
+        // use matcher method to check if password matches
+        Matcher matcher = pattern.matcher(password);
+        // Return true if password matches regex
+        return matcher.matches();
     }
 }

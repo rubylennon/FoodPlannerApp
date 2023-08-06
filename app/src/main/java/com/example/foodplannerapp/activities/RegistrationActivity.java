@@ -113,11 +113,14 @@ public class RegistrationActivity extends AppCompatActivity {
                          loadingPB.setVisibility(View.GONE);// hide the loading progress bar
                          // display error toast with failure reason
                          if(Objects.requireNonNull(task.getException()).toString().contains("The email address is badly formatted.")){
-                             Toast.makeText(RegistrationActivity.this, "Registration failed. Please add valid email.", Toast.LENGTH_SHORT).show();
+                             Toast.makeText(RegistrationActivity.this, "Registration failed. Please add valid email.",
+                                     Toast.LENGTH_SHORT).show();
                          } else if(Objects.requireNonNull(task.getException()).toString().contains("The given password is invalid. [ Password should be at least 6 characters ]")){
-                             Toast.makeText(RegistrationActivity.this, "Registration failed. Password should be at least 6 characters.", Toast.LENGTH_SHORT).show();
+                             Toast.makeText(RegistrationActivity.this, "Registration failed. Password should be at least 6 characters.",
+                                     Toast.LENGTH_SHORT).show();
                          } else if(Objects.requireNonNull(task.getException()).toString().contains("The email address is already in use by another account")){
-                             Toast.makeText(RegistrationActivity.this, "Registration failed. The email address is already in use by another account.", Toast.LENGTH_SHORT).show();
+                             Toast.makeText(RegistrationActivity.this, "Registration failed. The email address is already in use by another account.",
+                                     Toast.LENGTH_SHORT).show();
                          } else {
                              Toast.makeText(RegistrationActivity.this, "Registration failed. Please try again...", Toast.LENGTH_SHORT).show();
                          }

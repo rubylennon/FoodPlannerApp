@@ -80,6 +80,8 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(LoginActivity.this, "Please add your credentials...",
                         Toast.LENGTH_SHORT).show();
             } else {
+                // @Reference - https://www.geeksforgeeks.org/user-authentication-and-crud-operation-with-firebase-realtime-database-in-android/
+                // Reference description - tutorial on how to create a Login Activity for Firebase Authenticate
                 // else if the password and username value is provided then execute the following
                 // sign in the user to their account using the provided username and password
                 firebaseAuth.signInWithEmailAndPassword(userName,pwd).addOnCompleteListener(task -> {
@@ -95,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
                         // if the login fails then execute the following
                         loadingPB.setVisibility(View.GONE);// hide the progress loading bar
                         Toast.makeText(LoginActivity.this, "Login Failed. Please try again...",
-                                Toast.LENGTH_SHORT).show();// show toasr
+                                Toast.LENGTH_SHORT).show();// show toast
                     }
                 });
             }

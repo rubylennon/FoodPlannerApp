@@ -257,7 +257,7 @@ public class EditAccountActivity extends BaseMenuActivity {
                 idPBLoading.setVisibility(View.VISIBLE);// show loading bar
                 deleteHelpText.setVisibility(View.GONE);// hide delete help text
                 // @Reference - https://www.youtube.com/watch?v=FptELNWvnqQ
-                // Ref Description - Tutorial on how to update Firebase Authentication users password/email
+                // Ref Description - Tutorial on how to delete Firebase Authentication users
                 // and on how to delete users
                 user.delete().addOnCompleteListener(task -> {
                     if(task.isSuccessful()){// if task is successful
